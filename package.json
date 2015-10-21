@@ -1,6 +1,6 @@
     {
     "name": "mocker-data-generator",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A simplified way to generate mock data, build over Faker",
     "main": "./build/mocker.min.js",
     "repository": {

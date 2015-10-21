@@ -67,9 +67,29 @@ m.generate('user', 2)
 ```
 
 ## Documentation
-#### Comming soon
+Data generation goes with model based composed by generators, the generators can have access to the data generated and to the entity generated. ***Generators run syncronously, take care of the related entities!!***
+
+#### Model definition
+
+Every model should contains the specified fields, ***right now not support more levels***. Every key should be the final key:
+
+- ***Normal string***: indicates the key.
+- ***Comaseparated string***: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment)
+
+Inside every value you can put:
+
+- ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker}```, and you can use faker functions, object (the specified model), db (actual data generated)
+- ***faker***: you can use directly faker functions without params, if you need to pass params, use function and inside use ```this.faker``` and the normal function
+- ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
+   - ***length***: to know how many values
+   - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
+
+#### More, Comming soon
 
 ## Release History
+
+####(0.0.2-0.0.3)
+- Update README.md
 
 ####(0.0.1)
 - First release i will update soon with tests and more examples, stay tuned!
