@@ -49,9 +49,7 @@ var config = {
         }
     }
 }
-
 var m = mocker(config)
-
 m.generate('user', 2)
     .then(m.generate('group', 2))
     .then(m.generate('conditionalField', 2))
@@ -74,7 +72,7 @@ Data generation goes with model based composed by generators, the generators can
 Every model should contains the specified fields, ***right now not support more levels***. Every key should be the final key:
 
 - ***Normal string***: indicates the key.
-- ***Comaseparated string***: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment)
+- ***Comaseparated string***: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
 
 Inside every value you can put:
 
@@ -84,12 +82,34 @@ Inside every value you can put:
    - ***length***: to know how many values
    - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
 
+#### Data generation
+Initialize mocker with the config, and then generate any entity with promises style, use generate funciton that accepts the name of the model and the amount of data to generate. Like the example:
+
+```javascript
+var m = mocker(config)
+m.generate('user', 2)
+    .then(m.generate('group', 2))
+    .then(m.generate('conditionalField', 2))
+    .then(function(data) {
+        console.log(util.inspect(data, { depth: 10 }))
+        })
+```
+
+You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the alues of the field you will specify. See the ouput of this example:
+
+```javascript
+var m = mocker(config)
+m.generate('user', 2)
+    .then(m.generate('group', 2))
+    .then(m.generate('conditionalField', {uniqueField: type}))
+    .then(function(data) {
+        console.log(util.inspect(data, { depth: 10 }))
+        })
+```
+
 #### More, Comming soon
 
 ## Release History
-
-####(0.0.2-0.0.3)
-- Update README.md
 
 ####(0.0.1)
 - First release i will update soon with tests and more examples, stay tuned!
