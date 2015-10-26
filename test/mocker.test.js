@@ -1,54 +1,227 @@
-var mocker = require('../')
-var util = require('util')
+var mocker    = require('../build/mocker.js')
+var expect    = require('chai').expect
+var assert    = require('chai').assert
+var faker     = require('faker')
 
 var config = {
-    user: {
-        firstName: {
-            faker: 'name.firstName'
-        },
-        lastName: {
-            faker: 'name.lastName'
-        },
-        country: {
-            faker: 'address.country'
-        },
-        createdAt: {
-            faker: 'date.past'
-        },
-        username:{
-            function: function() {
-                return this.object.lastName.substring(0, 5) + this.object.firstName.substring(0, 3) + Math.floor(Math.random() * 10)
-            }
-        }
-    },
-    group: {
-        description: {
-            faker: 'lorem.paragraph'
-        },
-        users: [{
-            function: function() {
-                return this.faker.random.arrayElement(this.db.users).username
-            }
-        }, {length: 10, fixedLength: false}],
-    },
-    conditionalField: {
-        type:{
-            values: ['HOUSE', 'CAR', 'MOTORBIKE']
-        },
-        'object.type=="HOUSE",location':{
-            faker: 'address.city'
-        },
-        'object.type=="CAR"||object.type=="MOTORBIKE",speed':{
+    user:{
+        test:{
             faker: 'random.number'
         }
     }
 }
-
 var m = mocker(config)
 
-m.generate('user', 2)
-    .then(m.generate('group', 2))
-    .then(m.generate('conditionalField', 2))
-    .then(function(data) {
-        console.log(util.inspect(data, { depth: 10 }))
+describe('Mocker: Basic', function() {
+    it('Should load config correctly', function() {
+        conf = m.config
+        expect(conf).to.deep.equal(config)
     })
+
+    it('Should not have init data', function() {
+        data = m.data
+        expect(data).to.deep.equal({})
+    })
+})
+
+describe('Mocker: Methods', function() {
+
+    var methods = ['generate','generateEntity','generateArrayField','generateField']
+    for (var i = 0; i < methods.length; i++) {
+        var method = methods[i]
+        it('Should have ' + method, function() {
+            expect(m[method]).to.be.a('function')
+        })
+    }
+})
+
+describe('Mocker: Generators (Fields)', function() {
+    describe('Generators: Fields options', function() {
+        describe('Options: Faker', function() {
+            it('Should have faker opts (have access to faker api)', function(done) {
+                m.generateField({faker: 'name.findName'}, function(str) {
+                    expect(str).to.be.a('string')
+                    m.generateField({faker: 'random.number'}, function(number) {
+                        expect(number).to.be.a('number')
+                        done()
+                    })
+                })
+            })
+        })
+
+        describe('Options: Static', function() {
+            it('Should have static opts', function(done) {
+                m.generateField({static: 'test'}, function(str) {
+                    expect(str).to.be.a('string')
+                    expect(str).to.deep.equal('test')
+                    done()
+                })
+            })
+        })
+
+        describe('Options: Function', function() {
+            it('Should have funtion opts', function(done) {
+                m.generateField({
+                    function: function() {
+                        return 'test'
+                    }
+                }, function(str) {
+                    expect(str).to.be.a('string')
+                    expect(str).to.deep.equal('test')
+                    done()
+                })
+            })
+
+            it('Should call function and have {db, object, faker} injected', function(done) {
+                m.generateField({
+                    function: function() {
+                        return this
+                    }
+                }, function(_this) {
+                    expect(_this).to.be.an('object')
+                    expect(_this.faker).to.deep.equal(faker)
+                    assert.property(_this, 'db')
+                    assert.property(_this, 'object')
+                    assert.property(_this, 'faker')
+                    done()
+                })
+
+            })
+        })
+
+        describe('Options: Values', function() {
+            it('Should have values opts', function(done) {
+                var values = ['test', 'this', 'awesome', 'module']
+                m.generateField({
+                    values: values
+                }, function(str) {
+                    expect(str).to.be.a('string')
+                    assert.ok(values.indexOf(str) > -1)
+                    done()
+                })
+
+            })
+        })
+    })
+
+    describe('Generators: Levels', function() {
+
+        it('Should iterate over more levels', function(done) {
+            var userMoreLvl = {
+                name: {
+                    firstName: {
+                        static: 'firstName'
+                    },
+                    lastName: {
+                        static: 'lastName'
+                    },
+                    much:{
+                        more: {
+                            level:{
+                                awesome:{
+                                    deeper: {
+                                        static: 'yeah'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            var expectedResult = {
+                name: {
+                    firstName: 'firstName',
+                    lastName: 'lastName',
+                    much:{
+                        more: {
+                            level:{
+                                awesome:{
+                                    deeper: 'yeah'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            var m = mocker({user: userMoreLvl})
+            m.generateEntity(userMoreLvl, function(data) {
+                expect(data).to.deep.equal(expectedResult)
+                done()
+            })
+        })
+
+        it('Should iterate over more complex levels (deeper & function used...)', function(done) {
+            var userMoreLvl = {
+                name: {
+                    firstName: {
+                        static: 'firstName'
+                    },
+                    lastName: {
+                        static: 'lastName'
+                    },
+                    much:{
+                        deeper: {
+                            function: function() {
+                                return this.object.name.firstName + ' ' + this.object.name.lastName
+                            }
+                        },
+                        more: {
+                            deeper: {
+                                function: function() {
+                                    return this.object.name.firstName + ' ' + this.object.name.lastName
+                                }
+                            },
+                            level:{
+                                deeper: {
+                                    function: function() {
+                                        return this.object.name.firstName + ' ' + this.object.name.lastName
+                                    }
+                                },
+                                awesome:{
+                                    deeper: {
+                                        function: function() {
+                                            return this.object.name.firstName + ' ' + this.object.name.lastName
+                                        }
+                                    },
+                                    deeper: {
+                                        function: function() {
+                                            return this.object.name.firstName + ' ' + this.object.name.lastName
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            var expectedResult = {
+                name: {
+                    firstName: 'firstName',
+                    lastName: 'lastName',
+                    much:{
+                        deeper: 'firstName lastName',
+                        more: {
+                            deeper: 'firstName lastName',
+                            level:{
+                                deeper: 'firstName lastName',
+                                awesome:{
+                                    deeper: 'firstName lastName',
+                                    deeper: 'firstName lastName'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            var m = mocker({user: userMoreLvl})
+            m.generateEntity(userMoreLvl, function(data) {
+                    expect(data).to.deep.equal(expectedResult)
+                    done()
+                })
+        })
+    })
+})
