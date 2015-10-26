@@ -288,28 +288,35 @@ describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Entities', function() {
         it('Should generate prefixed valued data', function(done) {
 
-            var length = 10
+            var length = 3
 
             var scheemas = {
                     request: {
                         type: {
                             values: []
+                        },
+                        number:{
+                            static: 23
                         }
                     }
                 }
-            var expectedResult = []
 
             for (var i = 0; i < length; i++) {
                 var w = faker.lorem.words(1)[0]
-                scheemas.request.type.values.push(w)
-                expectedResult.push({type: w})
+                scheemas.request.type.values[i] = w
             }
 
             var m = mocker(scheemas)
             m.generate('request', {uniqueField: 'type'})
                     .then(function(data) {
                         try {
-                            expect(data.requests).to.deep.equal(expectedResult)
+                            expect(data).to.have.property('requests')
+                            for (var i = 0; i < length; i++) {
+                                var r = data.requests[i]
+                                expect(r).to.have.property('type').not.to.be.null
+                                expect(r).to.have.property('number').not.to.be.null
+                            }
+
                             expect(data.requests.length).to.equal(length)
                             done()
                         } catch (x) {
@@ -334,12 +341,10 @@ describe('Mocker: Generators (Fields)', function() {
                     }
                 }
             }
-            var expectedResult = []
 
             for (var i = 0; i < length; i++) {
                 var w = faker.lorem.words(1)[0]
                 scheemas.request.type.values.push(w)
-                expectedResult.push({type: w})
             }
 
             var m = mocker(scheemas)
@@ -348,7 +353,12 @@ describe('Mocker: Generators (Fields)', function() {
                 .then(function(data) {
 
                     try { // boilerplate to be able to get the assert failures
-                        expect(data.requests).to.deep.equal(expectedResult)
+                        expect(data).to.have.property('requests')
+                        for (var i = 0; i < length; i++) {
+                            var r = data.requests[i]
+                            expect(r).to.have.property('type').not.to.be.null
+                        }
+
                         expect(data.requests.length).to.equal(length)
 
                         var b = data.requests[data.requests.length - 1]

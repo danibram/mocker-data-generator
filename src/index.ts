@@ -45,8 +45,9 @@ export default class Mocker {
                 utils.eachSeries(
                     possibleValues,
                     (k, nxt) => {
+                        let cfg = this.config.toJS()
                         this.initialData[f] = {static: k}
-                        this.generateEntity(this.config[entity], (data) => {
+                        this.generateEntity(cfg[entity], (data) => {
                             d.push(data)
                             nxt()
                         })
@@ -65,7 +66,7 @@ export default class Mocker {
         this.entity = (Object as any).assign({}, entityConfig)
 
         if (this.initialData){
-            this.entity = (Object as any).assign({}, entityConfig, this.initialData)
+            this.entity = (Object as any).assign({}, this.initialData, entityConfig)
         }
 
         this.iterator (this.entity, function (object){
