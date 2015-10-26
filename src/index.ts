@@ -1,107 +1,142 @@
 import faker = require('faker')
 import * as utils from './utils.ts'
 
+///MAKE the config object the final object!!!!
+
 export default class Mocker {
+
     public data = {}
+    public entity = {}
+    public initialData = null
+    public path = []
     constructor(private config: any) {}
 
     generate(entity: string, options: any) {
-        let Phase1 = new Promise((resolve, reject) => {
-            var d = []
+        return new Promise((resolve, reject) => {
+            let d = []
             if ((Number as any).isInteger(options)){
                 for (let i = 0; i < options; i++) {
-                    d.push( this.generateEntity(this.config[entity]) )
+                    this.generateEntity(this.config[entity], function(data){
+                        d.push(data)
+                    })
                 }
+                this.data[entity + 's'] = d
+                resolve(this.data)
+
+                /*this.data[entity + 's'] = []
+                utils.syncForFN(
+                    options,
+                    (nxt) => {
+                        this.generateEntity(this.config[entity], (data) => {
+                            this.data[entity + 's'].push(data)
+                            console.log(d)
+                            nxt()
+                        })
+                    },
+                    () => {
+                        console.log(this)
+                        console.log(this.data[entity + 's'] )
+
+                        this.data[entity + 's'] = d
+                        console.log(this.data[entity + 's'] )
+                        d = []
+                        resolve(this.data)
+                    }
+                )*/
             } else {
                 let cfg = this.config[entity]
                 let f = options.uniqueField
                 let possibleValues = cfg[f].values
                 let length = possibleValues.length
+                this.initialData = {}
 
-                for (let i = 0; i < length; i++) {
-                    let initialData = {}
-                    initialData[f] = possibleValues[i]
-                    d.push( this.generateEntity(this.config[entity], initialData) )
-                }
-            }
-
-            this.data[entity + 's'] = d
-            resolve(this.data)
-        })
-        return Phase1
-    }
-
-    generateEachData() {
-        return new Promise((resolve, reject) => {
-            let cfg = this.config
-            let keys = Object.keys(cfg)
-
-            for (let i = 0; i < keys.length; i++) {
-                let key = keys[i]
-                this.data[key + 's'] = [this.generateEntity(cfg[key])]
-            }
-
-            resolve(this.data)
-        })
-    }
-
-    generateEntity(entityConfig: Object, initialObject: Object = {} ){
-        let keys = Object.keys(entityConfig)
-        let data = initialObject
-        let initialKeys = Object.keys(data)
-
-        if (utils.iamLastParent(entityConfig)){
-            keys.map((k) => {
-                if (initialKeys.indexOf(k) === -1){
-                    let field = entityConfig[k]
-
-                    if (!utils.isConditional(k)){
-                        if ( !utils.isArray(field) ){
-                            if (field.values || field.faker || field.function) {
-                                data[k] = this.generateField(field, data)
-                            }
-                        } else {
-                            if (field[0].values || field[0].faker || field[0].function) {
-                                data[k] = this.generateArrayField(field[0], field[1], data)
-                            }
-                        }
-                    } else {
-                        if ( !utils.isArray(field) ){
-                            var key = k.split(',')
-                            if (utils.evalWithContextData(key[0], data)){
-                                data[key[1]] = this.generateField(field, data)
-                            }
-                        } else {
-                            var key = k.split(',')
-                            if (utils.evalWithContextData(key[0], data)){
-                                data[key[1]] = this.generateArrayField(field[0], field[1], data)
-                            }
-                        }
+                utils.eachSeries(
+                    possibleValues,
+                    (k, nxt) => {
+                        this.initialData[f] = k
+                        (this.generateEntity as any)(this.config[entity], (data) => {
+                            this.data[entity + 's'].push(data)
+                            nxt()
+                        }).bind(this)
+                    },
+                    () => {
+                        resolve(this.data)
                     }
-                }
-            })
+                )
+            }
+        })
+    }
+
+    generateEntity(entityConfig: Object, cb) {
+        this.entity = (Object as any).assign(entityConfig)
+
+        if (this.initialData){
+            this.entity = (Object as any).assign(entityConfig, this.initialData)
         }
 
-        return data
+        this.iterator (this.entity, function (object){
+            cb(object)
+        })
     }
 
-    generateArrayField(fieldConfig, arrayConfig, data?) {
+    iterator(object, cb) {
+        utils.overObject(
+            object,
+            (k, obj, nxt) => {
+                let fieldCalculated
+                let lvl = obj[k]
+                if (utils.iamLastChild(lvl)){
+                    this.generateField(lvl, function(fieldCalculated){
+                        if (!utils.isConditional(k)){
+                            obj[k] = fieldCalculated
+                        } else {
+                            var key = k.split(',')
+                            if (utils.evalWithContextData(key[0], this.entity)){
+                                obj[key[1]] = fieldCalculated
+                            }
+                        }
+                        nxt()
+                    })
+
+                } else {
+                    this.iterator(lvl, function (){
+                        nxt()
+                    })
+                }
+            },
+            () => {
+                cb(object)
+            }
+        )
+    }
+
+    generateField(field, cb) {
+        if ( utils.isArray(field) ){
+            cb(this.generateArrayField(field[0], field[1]))
+        } else {
+            cb(this.generateNormalField(field))
+        }
+    }
+
+    generateArrayField(fieldConfig, arrayConfig) {
         let array = []
         let length = utils.fieldArrayCalcLength(arrayConfig)
         for (let i = 0; i < length; i++) {
-            array.push(this.generateField(fieldConfig, data))
+            array.push(this.generateNormalField(fieldConfig))
         }
         return array
     }
 
-    generateField(config, object?) {
+    generateNormalField(config) {
+        let object = this.entity
+        let db = this.data
+
         if (config.faker){
             let split = config.faker.split('.')
             return (faker as any)[split[0]][split[1]].call()
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {
-            let db = this.data
             return config.function.call({object, faker, db})
         } else if (config.static) {
             return config.static
