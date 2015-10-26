@@ -1,5 +1,5 @@
 export const each = function(arr, fn) {
-  for (var i = 0; i < arr.length; ++i) {
+  for (let i = 0; i < arr.length; ++i) {
     fn(arr[i]);
   }
 }
@@ -8,16 +8,14 @@ export const iamLastChild = function (obj){
     if (!this.isArray(obj)) {
         let ks = Object.keys(obj)
         let last = null
-
-        for (let i = 0; i < ks.length; i++) {
-            let key = ks[i]
-            if (this.isObject(obj[key])){
+        ks.map((k) => {
+            if (this.isObject(obj[k])){
                 last = false
-                break
+                return
             } else {
                 last = true
             }
-        }
+        })
         return last
     } else {
         return true
@@ -30,8 +28,9 @@ export const iamLastParent = function (obj){
 
     for (let i = 0; i < ks.length; i++) {
         let key = ks[i]
-        if (this.iamLastChild(obj[key])){
+        if (obj[key] && this.iamLastChild(obj[key])){
             last = true
+            break
         } else {
             last = false
             break
@@ -41,7 +40,7 @@ export const iamLastParent = function (obj){
 }
 
 export const isConditional = function (str: String){
-    var arr = str.split(',')
+    let arr = str.split(',')
     if (arr.length > 1){
         return true
     } else {
@@ -75,3 +74,80 @@ export const isObject = function (x){
     }
     return false
 }
+
+export const syncForFN = function (times, iterator, callback) {
+    callback = callback || function () {};
+
+    let completed = 0;
+    let iterate = function () {
+        iterator(function (err) {
+            if (err) {
+                callback(err);
+                callback = function () {};
+            }
+            else {
+                completed += 1;
+                if (completed >= times) {
+                    callback();
+                }
+                else {
+                    iterate();
+                }
+            }
+        });
+    };
+    iterate();
+};
+
+export const eachSeries = function (arr, iterator, callback) {
+    callback = callback || function () {};
+    if (!arr.length) {
+        return callback();
+    }
+    let completed = 0;
+    let iterate = function () {
+        iterator(arr[completed], function (err) {
+            if (err) {
+                callback(err);
+                callback = function () {};
+            }
+            else {
+                completed += 1;
+                if (completed >= arr.length) {
+                    callback();
+                }
+                else {
+                    iterate();
+                }
+            }
+        });
+    };
+    iterate();
+};
+
+export const overObject = function (obj, iterator, callback) {
+    callback = callback || function () {};
+    let arr = Object.keys(obj)
+    if (!arr.length) {
+        return callback();
+    }
+    let completed = 0;
+    let iterate = function () {
+        let k = arr[completed]
+        iterator(k, obj, function (err) {
+            if (err) {
+                callback(err);
+                callback = function () {};
+            } else {
+                completed += 1;
+                if (completed >= arr.length) {
+                    callback();
+                }
+                else {
+                    iterate();
+                }
+            }
+        });
+    };
+    iterate();
+};
