@@ -2,10 +2,7 @@ var webpack = require('webpack')
 var path = require('path')
 var fs = require('fs')
 
-var plugins = [
-  new webpack.IgnorePlugin(/\.(css|less)$/),
-  new webpack.BannerPlugin('require("source-map-support").install();', { raw: true, entryOnly: false })
-]
+var plugins = []
 
 if (process.env.COMPRESS) {
     plugins.push(
@@ -29,18 +26,16 @@ fs.readdirSync('node_modules')
 module.exports = {
     module: {
         preLoaders: [
-          { test: /\.(js|jsx)$/, loaders: ['jscs'], exclude: /node_modules/ }
+          { test: /\.js$/, loaders: ['jscs'], exclude: /node_modules/ }
         ],
         loaders: [
-          { test: /\.(js|jsx)$/, loaders: ['babel?stage=0'], exclude: /node_modules/ },
-          { test: /\.ts(x?)$/, loaders: ['ts-loader'], exclude: /node_modules/ },
-          { test: /\.json$/, loader: 'json-loader' }
+          { test: /\.js$/, loaders: ['babel?stage=0'], exclude: /node_modules/ },
+          { test: /\.ts$/, loaders: ['ts-loader'], exclude: /node_modules/ }
         ],
         noParse: []
     },
     externals: nodeModules,
     plugins: plugins,
-    devtool: process.env.COMPRESS ? null : 'inline-source-map',
     ts: {
         compiler: 'typescript'
     }
