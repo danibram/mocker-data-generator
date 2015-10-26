@@ -26,7 +26,9 @@
     "build:development": "NODE_ENV=development webpack --config webpack.config.base.js lib/main.js --target node --output-library-target umd --output-library MockerData build/mocker.js  && echo \"gzipped, the global build is `gzip -c build/mocker.js | wc -c` bytes\"",
     "dev": "rm -rf build && npm run dev:watch",
     "dev:watch": "webpack --watch --config webpack.config.base.js lib/main.js --target node --output-library-target umd --output-library MockerData build/mocker.js",
-    "test": "./node_modules/.bin/mocha ./test/mocker.test.js"
+    "test": "./node_modules/.bin/mocha ./test/mocker.test.js",
+    "precommit": "npm test",
+    "prepush": "npm test"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.0",
