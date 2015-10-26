@@ -2,6 +2,7 @@ var mocker    = require('../build/mocker.js')
 var expect    = require('chai').expect
 var assert    = require('chai').assert
 var faker     = require('faker')
+var util     = require('util')
 
 var config = {
     user:{
@@ -14,7 +15,7 @@ var m = mocker(config)
 
 describe('Mocker: Basic', function() {
     it('Should load config correctly', function() {
-        conf = m.config
+        conf = m.config.toJS()
         expect(conf).to.deep.equal(config)
     })
 
@@ -286,20 +287,16 @@ describe('Mocker: Generators (Fields)', function() {
 
     describe('Generators: Entities', function() {
         it('Should generate prefixed valued data', function(done) {
+
             var length = 10
 
             var scheemas = {
-                request: {
-                    type: {
-                        values: []
-                    }
-                },
-                request2: {
-                    type:{
-                        static: 'staticValue'
+                    request: {
+                        type: {
+                            values: []
+                        }
                     }
                 }
-            }
             var expectedResult = []
 
             for (var i = 0; i < length; i++) {
@@ -310,20 +307,19 @@ describe('Mocker: Generators (Fields)', function() {
 
             var m = mocker(scheemas)
             m.generate('request', {uniqueField: 'type'})
-                .then(m.generate('request2', 1))
-                .then(function(data) {
-                    try {
-                        expect(data.requests).to.deep.equal(expectedResult)
-                        expect(data.requests.length).to.equal(length)
-                        done()
-                    } catch (x) {
-                        done(x)
-                    }
-                })
+                    .then(function(data) {
+                        try {
+                            expect(data.requests).to.deep.equal(expectedResult)
+                            expect(data.requests.length).to.equal(length)
+                            done()
+                        } catch (x) {
+                            done(x)
+                        }
+                    })
+
         })
 
         it('Should not affect init values to next entity', function(done) {
-            this.timeout(15000)
             var length = 10
 
             var scheemas = {
@@ -369,6 +365,39 @@ describe('Mocker: Generators (Fields)', function() {
                     }
 
                 })
+        })
+
+        it('Should generate more entities', function(done) {
+            var length = 10
+            var model = {
+                request:{
+                    id: {
+                        faker: 'random.number'
+                    },
+                    title: {
+                        faker: 'lorem.sentence'
+                    },
+                    number: {
+                        faker: 'random.number'
+                    }
+                }
+            }
+
+            var m = mocker({ act: model})
+            m.generate('act', length)
+            .then(function(data) {
+                //expect(data.requests).to.deep.equal(expectedResult)
+                expect(data.acts.length).to.equal(length)
+                for (var i = 0; i < length; i++) {
+                    var a = data.acts[i]
+                    expect(a).to.have.property('request')
+                    expect(a.request).to.have.property('id').not.to.be.null
+                    expect(a.request).to.have.property('title').not.to.be.null
+                    expect(a.request).to.have.property('number').not.to.be.null
+                }
+
+                done()
+            })
         })
 
         it('Should be awesome', function(done) {

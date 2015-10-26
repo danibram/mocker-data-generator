@@ -1,15 +1,19 @@
 import faker = require('faker')
-import * as utils from './utils.ts'
+import Immutable = require('immutable');
 
-///MAKE the config object the final object!!!!
+import * as utils from './utils.ts'
 
 export default class Mocker {
 
+    public config: Immutable.Map<string, number>
     public data = {}
     public entity = {}
     public initialData = null
     public path = []
-    constructor(private config: any) {}
+
+    constructor(config: any) {
+        this.config = Immutable.fromJS(config)
+    }
 
     generate(entity: string, options: any) {
         let d = []
@@ -17,11 +21,12 @@ export default class Mocker {
         this.initialData = {}
 
         return new Promise((resolve, reject) => {
-
             if ((Number as any).isInteger(options)){
+
                 utils.repeatFN( options,
                     (nxt) => {
-                        this.generateEntity(this.config[entity], function (data) {
+                        let cfg = this.config.toJS()
+                        this.generateEntity(cfg[entity], function (data) {
                             d.push(data)
                             nxt()
                         })
@@ -32,9 +37,9 @@ export default class Mocker {
                     }
                 )
             } else {
-                let cfg = this.config[entity]
+                let cfg = this.config.toJS()
                 let f = options.uniqueField
-                let possibleValues = cfg[f].values
+                let possibleValues = cfg[entity][f].values
                 let length = possibleValues.length
 
                 utils.eachSeries(
@@ -56,6 +61,7 @@ export default class Mocker {
     }
 
     generateEntity(entityConfig: Object, cb) {
+
         this.entity = (Object as any).assign({}, entityConfig)
 
         if (this.initialData){
@@ -90,7 +96,7 @@ export default class Mocker {
                         nxt()
                     })
                 } else {
-                    this.iterator(lvl, function (){
+                    this.iterator(lvl, () => {
                         nxt()
                     })
                 }

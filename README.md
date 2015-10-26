@@ -113,9 +113,10 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.1.2)
+####(0.1.5)
 - Fix an error: (Clean initial data field)
-- Add a test to check it
+- Fix some memory errors adding inmutableJS for the model
+- Add new tests
 
 ####(0.1.1)
 - Real Refractor of the code

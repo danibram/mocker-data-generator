@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("faker"));
+		module.exports = factory(require("faker"), require("immutable"));
 	else if(typeof define === 'function' && define.amd)
-		define(["faker"], factory);
+		define(["faker", "immutable"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("faker"));
+		exports["MockerData"] = factory(require("faker"), require("immutable"));
 	else
-		root["MockerData"] = factory(root["faker"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
+		root["MockerData"] = factory(root["faker"], root["immutable"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -78,14 +78,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var faker = __webpack_require__(2);
-	var utils = __webpack_require__(3);
+	var Immutable = __webpack_require__(3);
+	var utils = __webpack_require__(4);
 	var Mocker = (function () {
 	    function Mocker(config) {
-	        this.config = config;
 	        this.data = {};
 	        this.entity = {};
 	        this.initialData = null;
 	        this.path = [];
+	        this.config = Immutable.fromJS(config);
 	    }
 	    Mocker.prototype.generate = function (entity, options) {
 	        var _this = this;
@@ -95,7 +96,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new Promise(function (resolve, reject) {
 	            if (Number.isInteger(options)) {
 	                utils.repeatFN(options, function (nxt) {
-	                    _this.generateEntity(_this.config[entity], function (data) {
+	                    var cfg = _this.config.toJS();
+	                    _this.generateEntity(cfg[entity], function (data) {
 	                        d.push(data);
 	                        nxt();
 	                    });
@@ -105,9 +107,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	            else {
-	                var cfg = _this.config[entity];
+	                var cfg = _this.config.toJS();
 	                var f = options.uniqueField;
-	                var possibleValues = cfg[f].values;
+	                var possibleValues = cfg[entity][f].values;
 	                var length_1 = possibleValues.length;
 	                utils.eachSeries(possibleValues, function (k, nxt) {
 	                    _this.initialData[f] = { static: k };
@@ -213,6 +215,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	module.exports = require("immutable");
+
+/***/ },
+/* 4 */
 /***/ function(module, exports) {
 
 	exports.each = function (arr, fn) {
