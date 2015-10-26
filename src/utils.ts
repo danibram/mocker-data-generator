@@ -5,7 +5,7 @@ export const each = function(arr, fn) {
 }
 
 export const iamLastChild = function (obj){
-    if (!this.isArray(obj)) {
+    if (this.isObject(obj)) {
         let ks = Object.keys(obj)
         let last = null
         ks.map((k) => {
@@ -49,7 +49,7 @@ export const isConditional = function (str: String){
 }
 
 export const evalWithContextData =  function (key, object){
-    // In this way, we can pass object and use inside the eval string
+    // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }
 
@@ -75,28 +75,19 @@ export const isObject = function (x){
     return false
 }
 
-export const syncForFN = function (times, iterator, callback) {
-    callback = callback || function () {};
-
+export const repeatFN = function (times, fn, callback) {
     let completed = 0;
     let iterate = function () {
-        iterator(function (err) {
-            if (err) {
-                callback(err);
-                callback = function () {};
+        fn(function () {
+            completed += 1;
+            if (completed >= times) {
+                callback();
+            } else {
+                iterate();
             }
-            else {
-                completed += 1;
-                if (completed >= times) {
-                    callback();
-                }
-                else {
-                    iterate();
-                }
-            }
-        });
-    };
-    iterate();
+        })
+    }
+    iterate()
 };
 
 export const eachSeries = function (arr, iterator, callback) {

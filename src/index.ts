@@ -12,37 +12,24 @@ export default class Mocker {
     constructor(private config: any) {}
 
     generate(entity: string, options: any) {
-        return new Promise((resolve, reject) => {
-            let d = []
-            if ((Number as any).isInteger(options)){
-                for (let i = 0; i < options; i++) {
-                    this.generateEntity(this.config[entity], function(data){
-                        d.push(data)
-                    })
-                }
-                this.data[entity + 's'] = d
-                resolve(this.data)
+        let d = []
+        this.data[entity + 's'] = []
 
-                /*this.data[entity + 's'] = []
-                utils.syncForFN(
-                    options,
+        return new Promise((resolve, reject) => {
+
+            if ((Number as any).isInteger(options)){
+                utils.repeatFN( options,
                     (nxt) => {
-                        this.generateEntity(this.config[entity], (data) => {
-                            this.data[entity + 's'].push(data)
-                            console.log(d)
+                        this.generateEntity(this.config[entity], function (data) {
+                            d.push(data)
                             nxt()
                         })
                     },
                     () => {
-                        console.log(this)
-                        console.log(this.data[entity + 's'] )
-
                         this.data[entity + 's'] = d
-                        console.log(this.data[entity + 's'] )
-                        d = []
                         resolve(this.data)
                     }
-                )*/
+                )
             } else {
                 let cfg = this.config[entity]
                 let f = options.uniqueField
@@ -53,13 +40,14 @@ export default class Mocker {
                 utils.eachSeries(
                     possibleValues,
                     (k, nxt) => {
-                        this.initialData[f] = k
-                        (this.generateEntity as any)(this.config[entity], (data) => {
-                            this.data[entity + 's'].push(data)
+                        this.initialData[f] = {static: k}
+                        this.generateEntity(this.config[entity], (data) => {
+                            d.push(data)
                             nxt()
-                        }).bind(this)
+                        })
                     },
                     () => {
+                        this.data[entity + 's'] = d
                         resolve(this.data)
                     }
                 )
@@ -68,10 +56,10 @@ export default class Mocker {
     }
 
     generateEntity(entityConfig: Object, cb) {
-        this.entity = (Object as any).assign(entityConfig)
+        this.entity = (Object as any).assign({}, entityConfig)
 
         if (this.initialData){
-            this.entity = (Object as any).assign(entityConfig, this.initialData)
+            this.entity = (Object as any).assign({}, entityConfig, this.initialData)
         }
 
         this.iterator (this.entity, function (object){
@@ -85,19 +73,22 @@ export default class Mocker {
             (k, obj, nxt) => {
                 let fieldCalculated
                 let lvl = obj[k]
+
                 if (utils.iamLastChild(lvl)){
-                    this.generateField(lvl, function(fieldCalculated){
+                    this.generateField(lvl, (fieldCalculated) => {
                         if (!utils.isConditional(k)){
                             obj[k] = fieldCalculated
                         } else {
                             var key = k.split(',')
                             if (utils.evalWithContextData(key[0], this.entity)){
                                 obj[key[1]] = fieldCalculated
+                                delete this.entity[key]
+                            } else {
+                                delete this.entity[key]
                             }
                         }
                         nxt()
                     })
-
                 } else {
                     this.iterator(lvl, function (){
                         nxt()
