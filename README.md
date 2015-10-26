@@ -1,6 +1,6 @@
 # mocker-data-generator
 
-A simplified way to generate masive mock data. This proyect is also to learn how to use webpack with ES6 syntax and typescript.
+A simplified way to generate masive mock data based on a schema.
 
 ## Getting started
 
@@ -69,10 +69,10 @@ Data generation goes with model based composed by generators, the generators can
 
 #### Model definition
 
-Every model should contains the specified fields, ***right now not support more levels***. Every key should be the final key:
+Every model should contains the specified fields. Key can be 2 types:
 
-- ***Normal string***: indicates the key.
-- ***Comaseparated string***: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
+- ***Normal string*** key: indicates the key.
+- ***Comaseparated string*** key: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
 
 Inside every value you can put:
 
@@ -95,7 +95,7 @@ m.generate('user', 2)
         })
 ```
 
-You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the alues of the field you will specify. See the ouput of this example:
+You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the alues of the field you will specify. See the output of this example:
 
 ```javascript
 var m = mocker(config)
@@ -110,6 +110,11 @@ m.generate('user', 2)
 #### More, Comming soon
 
 ## Release History
+
+####(0.1.0)
+- Real Refractor of the code
+- Add support multi-level schemas
+- Add tests
 
 ####(0.0.1)
 - First release i will update soon with tests and more examples, stay tuned!
