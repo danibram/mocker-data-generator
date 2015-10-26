@@ -1,5 +1,7 @@
 # mocker-data-generator
 
+[![Dependency Status](https://david-dm.org/danibram/mocker-data-generator.svg)](https://david-dm.org/danibram/mocker-data-generator) [![Build Status](https://travis-ci.org/danibram/mocker-data-generator.svg)](https://travis-ci.org/danibram/mocker-data-generator)
+
 A simplified way to generate masive mock data based on a schema.
 
 ## Getting started
@@ -111,10 +113,11 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.1.0)
+####(0.1.1)
 - Real Refractor of the code
 - Add support multi-level schemas
 - Add tests
+- Add travis support
 
 ####(0.0.1)
 - First release i will update soon with tests and more examples, stay tuned!
