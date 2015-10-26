@@ -106,6 +106,30 @@ describe('Mocker: Generators (Fields)', function() {
 
     describe('Generators: Levels', function() {
 
+        it('Should work with conditional keys', function(done) {
+            var conditional = {
+                condition: {
+                    static: 'a'
+                },
+                'object.condition==="a",a':{
+                    static: 'conditionLinkedToConditionField'
+                },
+                'object.condition==="b",b':{
+                    static: 'conditionLinkedToConditionField'
+                }
+            }
+            var expectedResult = {
+                condition: 'a',
+                a: 'conditionLinkedToConditionField'
+            }
+
+            var m = mocker({user: conditional})
+            m.generateEntity(conditional, function(data) {
+                expect(data).to.deep.equal(expectedResult)
+                done()
+            })
+        })
+
         it('Should iterate over more levels', function(done) {
             var userMoreLvl = {
                 name: {
@@ -220,6 +244,32 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({user: userMoreLvl})
             m.generateEntity(userMoreLvl, function(data) {
                     expect(data).to.deep.equal(expectedResult)
+                    done()
+                })
+        })
+    })
+
+    describe('Generators: Entities', function() {
+        it('Should generate prefixed valued data', function(done) {
+            var length = 10
+            var request = {
+                type: {
+                    values: []
+                }
+            }
+            var expectedResult = []
+
+            for (var i = 0; i < length; i++) {
+                var w = faker.lorem.words(1)[0]
+                request.type.values.push(w)
+                expectedResult.push({type: w})
+            }
+
+            var m = mocker({request: request})
+            m.generate('request', {uniqueField: 'type'})
+                .then(function(data) {
+                    expect(data.requests).to.deep.equal(expectedResult)
+                    expect(data.requests.length).to.equal(length)
                     done()
                 })
         })
