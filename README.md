@@ -113,7 +113,7 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.1.5)
+####(0.1.6)
 - Fix an error: (Clean initial data field)
 - Fix some memory errors adding inmutableJS for the model
 - Add new tests
