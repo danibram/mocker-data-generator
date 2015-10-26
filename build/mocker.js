@@ -112,8 +112,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var possibleValues = cfg[entity][f].values;
 	                var length_1 = possibleValues.length;
 	                utils.eachSeries(possibleValues, function (k, nxt) {
+	                    var cfg = _this.config.toJS();
 	                    _this.initialData[f] = { static: k };
-	                    _this.generateEntity(_this.config[entity], function (data) {
+	                    _this.generateEntity(cfg[entity], function (data) {
 	                        d.push(data);
 	                        nxt();
 	                    });
@@ -127,7 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Mocker.prototype.generateEntity = function (entityConfig, cb) {
 	        this.entity = Object.assign({}, entityConfig);
 	        if (this.initialData) {
-	            this.entity = Object.assign({}, entityConfig, this.initialData);
+	            this.entity = Object.assign({}, this.initialData, entityConfig);
 	        }
 	        this.iterator(this.entity, function (object) {
 	            cb(object);
