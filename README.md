@@ -124,7 +124,7 @@ m.generate('user', 2)
 - Add tests
 - Add travis support
 
-####(0.0.1)
+####(0.0.4)
 - First release i will update soon with tests and more examples, stay tuned!
 
 ## Development
