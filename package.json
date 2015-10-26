@@ -13,8 +13,8 @@
     ],
     "author": {
         "name": "Daniel Biedma Ramos",
-        "email": "info@danibram.es",
-        "url": "dbram.co"
+        "email": "info@dbr.io",
+        "url": "dbr.io"
     },
     "license": "MIT",
     "bugs": {
@@ -44,7 +44,6 @@
         "webpack-dev-server": "^1.10.1"
     },
     "dependencies": {
-        "faker": "^3.0.1",
-        "source-map-support": "^0.3.2"
+        "faker": "^3.0.1"
     }
 }
