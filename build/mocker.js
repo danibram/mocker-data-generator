@@ -91,6 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        var d = [];
 	        this.data[entity + 's'] = [];
+	        this.initialData = {};
 	        return new Promise(function (resolve, reject) {
 	            if (Number.isInteger(options)) {
 	                utils.repeatFN(options, function (nxt) {
@@ -108,7 +109,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var f = options.uniqueField;
 	                var possibleValues = cfg[f].values;
 	                var length_1 = possibleValues.length;
-	                _this.initialData = {};
 	                utils.eachSeries(possibleValues, function (k, nxt) {
 	                    _this.initialData[f] = { static: k };
 	                    _this.generateEntity(_this.config[entity], function (data) {
