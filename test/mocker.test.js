@@ -39,22 +39,30 @@ describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
         describe('Options: Faker', function() {
             it('Should have faker opts (have access to faker api)', function(done) {
-                m.generateField({faker: 'name.findName'}, function(str) {
-                    expect(str).to.be.a('string')
-                    m.generateField({faker: 'random.number'}, function(number) {
-                        expect(number).to.be.a('number')
-                        done()
+                try {
+                    m.generateField({faker: 'name.findName'}, function(str) {
+                        expect(str).to.be.a('string')
+                        m.generateField({faker: 'random.number'}, function(number) {
+                            expect(number).to.be.a('number')
+                            done()
+                        })
                     })
-                })
+                } catch (x) {
+                    done(x)
+                }
             })
         })
 
         describe('Options: Static', function() {
             it('Should have static opts', function(done) {
                 m.generateField({static: 'test'}, function(str) {
-                    expect(str).to.be.a('string')
-                    expect(str).to.deep.equal('test')
-                    done()
+                    try {
+                        expect(str).to.be.a('string')
+                        expect(str).to.deep.equal('test')
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
                 })
             })
         })
@@ -66,9 +74,14 @@ describe('Mocker: Generators (Fields)', function() {
                         return 'test'
                     }
                 }, function(str) {
-                    expect(str).to.be.a('string')
-                    expect(str).to.deep.equal('test')
-                    done()
+
+                    try {
+                        expect(str).to.be.a('string')
+                        expect(str).to.deep.equal('test')
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
                 })
             })
 
@@ -78,12 +91,17 @@ describe('Mocker: Generators (Fields)', function() {
                         return this
                     }
                 }, function(_this) {
-                    expect(_this).to.be.an('object')
-                    expect(_this.faker).to.deep.equal(faker)
-                    assert.property(_this, 'db')
-                    assert.property(_this, 'object')
-                    assert.property(_this, 'faker')
-                    done()
+
+                    try {
+                        expect(_this).to.be.an('object')
+                        expect(_this.faker).to.deep.equal(faker)
+                        assert.property(_this, 'db')
+                        assert.property(_this, 'object')
+                        assert.property(_this, 'faker')
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
                 })
 
             })
@@ -95,9 +113,14 @@ describe('Mocker: Generators (Fields)', function() {
                 m.generateField({
                     values: values
                 }, function(str) {
-                    expect(str).to.be.a('string')
-                    assert.ok(values.indexOf(str) > -1)
-                    done()
+
+                    try {
+                        expect(str).to.be.a('string')
+                        assert.ok(values.indexOf(str) > -1)
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
                 })
 
             })
@@ -125,8 +148,12 @@ describe('Mocker: Generators (Fields)', function() {
 
             var m = mocker({user: conditional})
             m.generateEntity(conditional, function(data) {
-                expect(data).to.deep.equal(expectedResult)
-                done()
+                try {
+                    expect(data).to.deep.equal(expectedResult)
+                    done()
+                } catch (x) {
+                    done(x)
+                }
             })
         })
 
@@ -171,8 +198,12 @@ describe('Mocker: Generators (Fields)', function() {
 
             var m = mocker({user: userMoreLvl})
             m.generateEntity(userMoreLvl, function(data) {
-                expect(data).to.deep.equal(expectedResult)
-                done()
+                try {
+                    expect(data).to.deep.equal(expectedResult)
+                    done()
+                } catch (x) {
+                    done(x)
+                }
             })
         })
 
@@ -243,35 +274,105 @@ describe('Mocker: Generators (Fields)', function() {
 
             var m = mocker({user: userMoreLvl})
             m.generateEntity(userMoreLvl, function(data) {
+                try {
                     expect(data).to.deep.equal(expectedResult)
                     done()
-                })
+                } catch (x) {
+                    done(x)
+                }
+            })
         })
     })
 
     describe('Generators: Entities', function() {
         it('Should generate prefixed valued data', function(done) {
             var length = 10
-            var request = {
-                type: {
-                    values: []
+
+            var scheemas = {
+                request: {
+                    type: {
+                        values: []
+                    }
+                },
+                request2: {
+                    type:{
+                        static: 'staticValue'
+                    }
                 }
             }
             var expectedResult = []
 
             for (var i = 0; i < length; i++) {
                 var w = faker.lorem.words(1)[0]
-                request.type.values.push(w)
+                scheemas.request.type.values.push(w)
                 expectedResult.push({type: w})
             }
 
-            var m = mocker({request: request})
+            var m = mocker(scheemas)
             m.generate('request', {uniqueField: 'type'})
+                .then(m.generate('request2', 1))
                 .then(function(data) {
-                    expect(data.requests).to.deep.equal(expectedResult)
-                    expect(data.requests.length).to.equal(length)
-                    done()
+                    try {
+                        expect(data.requests).to.deep.equal(expectedResult)
+                        expect(data.requests.length).to.equal(length)
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
                 })
+        })
+
+        it('Should not affect init values to next entity', function(done) {
+            this.timeout(15000)
+            var length = 10
+
+            var scheemas = {
+                request: {
+                    type: {
+                        values: []
+                    }
+                },
+                request2: {
+                    type:{
+                        static: 'staticValue'
+                    }
+                }
+            }
+            var expectedResult = []
+
+            for (var i = 0; i < length; i++) {
+                var w = faker.lorem.words(1)[0]
+                scheemas.request.type.values.push(w)
+                expectedResult.push({type: w})
+            }
+
+            var m = mocker(scheemas)
+            m.generate('request', {uniqueField: 'type'})
+                .then(m.generate('request2', 10))
+                .then(function(data) {
+
+                    try { // boilerplate to be able to get the assert failures
+                        expect(data.requests).to.deep.equal(expectedResult)
+                        expect(data.requests.length).to.equal(length)
+
+                        var b = data.requests[data.requests.length - 1]
+
+                        //expect(a).to.not.equal(b)
+                        for (var i = 0; i < data.request2s.length; i++) {
+                            var a = data.request2s[i]
+                            expect(a).to.not.deep.equal(b)
+                        }
+
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
+
+                })
+        })
+
+        it('Should be awesome', function(done) {
+            done()
         })
     })
 })

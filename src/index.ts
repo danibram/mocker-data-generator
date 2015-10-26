@@ -14,6 +14,7 @@ export default class Mocker {
     generate(entity: string, options: any) {
         let d = []
         this.data[entity + 's'] = []
+        this.initialData = {}
 
         return new Promise((resolve, reject) => {
 
@@ -35,7 +36,6 @@ export default class Mocker {
                 let f = options.uniqueField
                 let possibleValues = cfg[f].values
                 let length = possibleValues.length
-                this.initialData = {}
 
                 utils.eachSeries(
                     possibleValues,

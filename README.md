@@ -113,6 +113,10 @@ m.generate('user', 2)
 
 ## Release History
 
+####(0.1.2)
+- Fix an error: (Clean initial data field)
+- Add a test to check it
+
 ####(0.1.1)
 - Real Refractor of the code
 - Add support multi-level schemas
