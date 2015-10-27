@@ -175,7 +175,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	            else {
-	                _this.iterator(child, nxt);
+	                _this.iterator(child, function () {
+	                    nxt();
+	                });
 	            }
 	        }, function () {
 	            cb(object);

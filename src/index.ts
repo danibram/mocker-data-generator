@@ -118,7 +118,9 @@ export default class Mocker {
                         nxt()
                     })
                 } else {
-                    this.iterator(child, nxt)
+                    this.iterator(child, ()=>{
+                        nxt()
+                    })
                 }
             },
             () => {
