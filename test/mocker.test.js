@@ -286,9 +286,9 @@ describe('Mocker: Generators (Fields)', function() {
     })
 
     describe('Generators: Entities', function() {
-        it('Should generate prefixed valued data', function(done) {
+        it('Should generate correctly with uniqueField', function(done) {
 
-            var length = 3
+            var length = 10
 
             var scheemas = {
                     request: {
@@ -300,10 +300,11 @@ describe('Mocker: Generators (Fields)', function() {
                         }
                     }
                 }
-
+            var expectedResult = []
             for (var i = 0; i < length; i++) {
                 var w = faker.lorem.words(1)[0]
                 scheemas.request.type.values[i] = w
+                expectedResult.push({type: w, number: 23})
             }
 
             var m = mocker(scheemas)
@@ -317,6 +318,7 @@ describe('Mocker: Generators (Fields)', function() {
                                 expect(r).to.have.property('number').not.to.be.null
                             }
 
+                            expect(data.requests).to.deep.equal(expectedResult)
                             expect(data.requests.length).to.equal(length)
                             done()
                         } catch (x) {

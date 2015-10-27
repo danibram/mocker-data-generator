@@ -70,7 +70,8 @@ export default class Mocker {
                             return nxt()
                         }
 
-                        this.initialData[f] = k
+                        cfg[entity][f] = {static: k}
+
 
                         this.generateEntity(cfg[entity], (data) => {
                             d.push(data)
@@ -86,10 +87,6 @@ export default class Mocker {
     generateEntity(entityConfig: Object, cb) {
 
         this.entity = (Object as any).assign({}, entityConfig)
-
-        if (this.initialData){
-            this.entity = (Object as any).assign({}, this.initialData, entityConfig)
-        }
 
         this.iterator (this.entity, function (object){
             cb(object)

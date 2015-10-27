@@ -113,9 +113,10 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.2.1)
+####(0.2.2)
 - Added a pluralization function
 - Fixed a little issue with the roots schemas (now you can do really crazy things, see test/mocker.example.js)
+- Fix errors introduced in 0.2.0
 
 ####(0.1.6)
 - Fix an error: (Clean initial data field)

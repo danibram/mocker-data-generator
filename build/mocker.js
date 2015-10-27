@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        d.push(k);
 	                        return nxt();
 	                    }
-	                    _this.initialData[f] = k;
+	                    cfg[entity][f] = { static: k };
 	                    _this.generateEntity(cfg[entity], function (data) {
 	                        d.push(data);
 	                        nxt();
@@ -144,9 +144,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Mocker.prototype.generateEntity = function (entityConfig, cb) {
 	        this.entity = Object.assign({}, entityConfig);
-	        if (this.initialData) {
-	            this.entity = Object.assign({}, this.initialData, entityConfig);
-	        }
 	        this.iterator(this.entity, function (object) {
 	            cb(object);
 	        });
