@@ -2,53 +2,28 @@ var mocker = require('../build/mocker.js')
 var util = require('util')
 
 var config = {
-    user: {
-        firstName: {
-            faker: 'name.firstName'
-        },
-        lastName: {
-            faker: 'name.lastName'
-        },
-        country: {
-            faker: 'address.country'
-        },
-        createdAt: {
-            faker: 'date.past'
-        },
-        username:{
-            function: function() {
-                return this.object.lastName.substring(0, 5) + this.object.firstName.substring(0, 3) + Math.floor(Math.random() * 10)
-            }
-        }
+    situation: {
+        values: ['HOUSE', 'CAR', 'MOTORBIKE']
     },
-    group: {
-        description: {
-            faker: 'lorem.paragraph'
-        },
-        users: [{
-            function: function() {
-                return this.faker.random.arrayElement(this.db.users).username
-            }
-        }, {length: 10, fixedLength: false}],
+    cat: {
+        static: 'kitty'
     },
-    conditionalField: {
-        type:{
-            values: ['HOUSE', 'CAR', 'MOTORBIKE']
-        },
-        'object.type=="HOUSE",location':{
-            faker: 'address.city'
-        },
-        'object.type=="CAR"||object.type=="MOTORBIKE",speed':{
-            faker: 'random.number'
+    catSituation: {
+        function: function() {
+            return this.db.cats[0] + ' in ' + this.faker.random.arrayElement(this.db.categories)
         }
     }
 }
 
 var m = mocker(config)
 
-m.generate('user', 4)
-    .then(m.generate('group', 2))
+// m.generate('user', 4)
+// .then(m.generate('group', 2))
+// .then(m.generate('conditionalField', 2))
+m.generate('situation', {uniqueField: '.'})
     .then(m.generate('conditionalField', 2))
+    .then(m.generate('cat', 2))
+    .then(m.generate('catSituation', 2))
     .then(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
     })

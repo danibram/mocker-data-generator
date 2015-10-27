@@ -410,6 +410,28 @@ describe('Mocker: Generators (Fields)', function() {
             })
         })
 
+        it('Should iterate root level too', function(done) {
+            var length = 1
+            var userMoreLvl = {
+                static: 'firstName'
+            }
+
+            var expectedResult = {
+                users: ['firstName']
+            }
+
+            var m = mocker({user: userMoreLvl})
+            m.generate('user', length)
+            .then(function(data) {
+                try {
+                    expect(data).to.deep.equal(expectedResult)
+                    done()
+                } catch (x) {
+                    done(x)
+                }
+            })
+        })
+
         it('Should be awesome', function(done) {
             done()
         })
