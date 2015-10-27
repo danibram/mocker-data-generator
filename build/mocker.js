@@ -91,37 +91,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Mocker.prototype.generate = function (entity, options) {
 	        var _this = this;
 	        var d = [];
-	        this.data[entity + 's'] = [];
+	        var entityPlural = utils.pluralize(entity);
+	        this.data[entityPlural] = [];
 	        this.initialData = {};
 	        return new Promise(function (resolve, reject) {
+	            var finalCb = function () {
+	                _this.data[entityPlural] = d;
+	                resolve(_this.data);
+	            };
 	            if (Number.isInteger(options)) {
 	                utils.repeatFN(options, function (nxt) {
 	                    var cfg = _this.config.toJS();
-	                    _this.generateEntity(cfg[entity], function (data) {
-	                        d.push(data);
-	                        nxt();
-	                    });
-	                }, function () {
-	                    _this.data[entity + 's'] = d;
-	                    resolve(_this.data);
-	                });
+	                    if (utils.iamLastParent(cfg[entity])) {
+	                        _this.generateField(cfg[entity], function (data) {
+	                            d.push(data);
+	                            nxt();
+	                        });
+	                    }
+	                    else {
+	                        _this.generateEntity(cfg[entity], function (data) {
+	                            d.push(data);
+	                            nxt();
+	                        });
+	                    }
+	                }, finalCb);
 	            }
 	            else {
 	                var cfg = _this.config.toJS();
 	                var f = options.uniqueField;
-	                var possibleValues = cfg[entity][f].values;
+	                var possibleValues;
+	                if (f === '.') {
+	                    possibleValues = cfg[entity].values;
+	                }
+	                else {
+	                    possibleValues = cfg[entity][f].values;
+	                }
 	                var length_1 = possibleValues.length;
 	                utils.eachSeries(possibleValues, function (k, nxt) {
 	                    var cfg = _this.config.toJS();
-	                    _this.initialData[f] = { static: k };
+	                    if (f === '.') {
+	                        d.push(k);
+	                        return nxt();
+	                    }
+	                    _this.initialData[f] = k;
 	                    _this.generateEntity(cfg[entity], function (data) {
 	                        d.push(data);
 	                        nxt();
 	                    });
-	                }, function () {
-	                    _this.data[entity + 's'] = d;
-	                    resolve(_this.data);
-	                });
+	                }, finalCb);
 	            }
 	        });
 	    };
@@ -136,31 +153,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Mocker.prototype.iterator = function (object, cb) {
 	        var _this = this;
-	        utils.overObject(object, function (k, obj, nxt) {
+	        utils.overObject(object, function (k, parent, nxt) {
 	            var fieldCalculated;
-	            var lvl = obj[k];
-	            if (utils.iamLastChild(lvl)) {
-	                _this.generateField(lvl, function (fieldCalculated) {
+	            var child = parent[k];
+	            if (utils.iamLastParent(child)) {
+	                _this.generateField(child, function (fieldCalculated) {
 	                    if (!utils.isConditional(k)) {
-	                        obj[k] = fieldCalculated;
+	                        parent[k] = fieldCalculated;
 	                    }
 	                    else {
 	                        var key = k.split(',');
 	                        if (utils.evalWithContextData(key[0], _this.entity)) {
-	                            obj[key[1]] = fieldCalculated;
-	                            delete _this.entity[key];
+	                            parent[key[1]] = fieldCalculated;
+	                            delete parent[key];
 	                        }
 	                        else {
-	                            delete _this.entity[key];
+	                            delete parent[key];
 	                        }
 	                    }
 	                    nxt();
 	                });
 	            }
 	            else {
-	                _this.iterator(lvl, function () {
-	                    nxt();
-	                });
+	                _this.iterator(child, nxt);
 	            }
 	        }, function () {
 	            cb(object);
@@ -229,18 +244,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        fn(arr[i]);
 	    }
 	};
-	exports.iamLastChild = function (obj) {
+	exports.iamLastParent = function (obj) {
 	    var _this = this;
 	    if (this.isObject(obj)) {
 	        var ks = Object.keys(obj);
 	        var last = null;
 	        ks.map(function (k) {
-	            if (_this.isObject(obj[k])) {
-	                last = false;
+	            last = _this.iamLastChild(obj, k);
+	            if (!last) {
 	                return;
-	            }
-	            else {
-	                last = true;
 	            }
 	        });
 	        return last;
@@ -249,21 +261,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return true;
 	    }
 	};
-	exports.iamLastParent = function (obj) {
-	    var ks = Object.keys(obj);
-	    var last = null;
-	    for (var i = 0; i < ks.length; i++) {
-	        var key = ks[i];
-	        if (obj[key] && this.iamLastChild(obj[key])) {
-	            last = true;
-	            break;
-	        }
-	        else {
-	            last = false;
-	            break;
-	        }
+	exports.iamLastChild = function (parent, k) {
+	    if (this.isObject(parent[k])) {
+	        return false;
 	    }
-	    return last;
+	    else {
+	        return true;
+	    }
 	};
 	exports.isConditional = function (str) {
 	    var arr = str.split(',');
@@ -363,6 +367,94 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    };
 	    iterate();
+	};
+	exports.pluralize = function (str) {
+	    var plural = {
+	        '(quiz)$': "$1zes",
+	        '^(ox)$': "$1en",
+	        '([m|l])ouse$': "$1ice",
+	        '(matr|vert|ind)ix|ex$': "$1ices",
+	        '(x|ch|ss|sh)$': "$1es",
+	        '([^aeiouy]|qu)y$': "$1ies",
+	        '(hive)$': "$1s",
+	        '(?:([^f])fe|([lr])f)$': "$1$2ves",
+	        '(shea|lea|loa|thie)f$': "$1ves",
+	        'sis$': "ses",
+	        '([ti])um$': "$1a",
+	        '(tomat|potat|ech|her|vet)o$': "$1oes",
+	        '(bu)s$': "$1ses",
+	        '(alias)$': "$1es",
+	        '(octop)us$': "$1i",
+	        '(ax|test)is$': "$1es",
+	        '(us)$': "$1es",
+	        's$': "s"
+	    };
+	    var singular = {
+	        '(quiz)zes$': "$1",
+	        '(matr)ices$': "$1ix",
+	        '(vert|ind)ices$': "$1ex",
+	        '^(ox)en$': "$1",
+	        '(alias)es$': "$1",
+	        '(octop|vir)i$': "$1us",
+	        '(cris|ax|test)es$': "$1is",
+	        '(shoe)s$': "$1",
+	        '(o)es$': "$1",
+	        '(bus)es$': "$1",
+	        '([m|l])ice$': "$1ouse",
+	        '(x|ch|ss|sh)es$': "$1",
+	        '(m)ovies$': "$1ovie",
+	        '(s)eries$': "$1eries",
+	        '([^aeiouy]|qu)ies$': "$1y",
+	        '([lr])ves$': "$1f",
+	        '(tive)s$': "$1",
+	        '(hive)s$': "$1",
+	        '(li|wi|kni)ves$': "$1fe",
+	        '(shea|loa|lea|thie)ves$': "$1f",
+	        '(^analy)ses$': "$1sis",
+	        '((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$': "$1$2sis",
+	        '([ti])a$': "$1um",
+	        '(n)ews$': "$1ews",
+	        '(h|bl)ouses$': "$1ouse",
+	        '(corpse)s$': "$1",
+	        '(us)es$': "$1",
+	        's$': ""
+	    };
+	    var irregular = {
+	        'move': 'moves',
+	        'foot': 'feet',
+	        'goose': 'geese',
+	        'sex': 'sexes',
+	        'child': 'children',
+	        'man': 'men',
+	        'tooth': 'teeth',
+	        'person': 'people'
+	    };
+	    var uncountable = [
+	        'sheep',
+	        'fish',
+	        'deer',
+	        'series',
+	        'species',
+	        'money',
+	        'rice',
+	        'information',
+	        'equipment'
+	    ];
+	    if (uncountable.indexOf(str.toLowerCase()) >= 0)
+	        return str;
+	    for (var word in irregular) {
+	        var pattern = new RegExp(word + '$', 'i');
+	        var replace = irregular[word];
+	        if (pattern.test(str))
+	            return str.replace(pattern, replace);
+	    }
+	    var array = plural;
+	    for (var reg in array) {
+	        var pattern = new RegExp(reg, 'i');
+	        if (pattern.test(str))
+	            return str.replace(pattern, array[reg]);
+	    }
+	    return str + 's';
 	};
 
 
