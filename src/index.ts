@@ -1,5 +1,5 @@
 import faker = require('faker')
-import Immutable = require('immutable');
+import Immutable = require('immutable')
 
 import * as utils from './utils.ts'
 
@@ -17,45 +17,67 @@ export default class Mocker {
 
     generate(entity: string, options: any) {
         let d = []
-        this.data[entity + 's'] = []
+        const entityPlural = utils.pluralize(entity)
+        this.data[entityPlural] = []
         this.initialData = {}
 
         return new Promise((resolve, reject) => {
+            let finalCb = () => {
+                this.data[entityPlural] = d
+                resolve(this.data)
+            }
+
             if ((Number as any).isInteger(options)){
 
                 utils.repeatFN( options,
                     (nxt) => {
                         let cfg = this.config.toJS()
-                        this.generateEntity(cfg[entity], function (data) {
-                            d.push(data)
-                            nxt()
-                        })
+
+                        if (utils.iamLastParent(cfg[entity])) {
+                            this.generateField(cfg[entity], function(data){
+                                d.push(data)
+                                nxt()
+                            })
+                        } else {
+                            this.generateEntity(cfg[entity], function (data) {
+                                d.push(data)
+                                nxt()
+                            })
+                        }
                     },
-                    () => {
-                        this.data[entity + 's'] = d
-                        resolve(this.data)
-                    }
+                    finalCb
                 )
             } else {
+
                 let cfg = this.config.toJS()
                 let f = options.uniqueField
-                let possibleValues = cfg[entity][f].values
+                let possibleValues
+                if (f === '.') {
+                    possibleValues = cfg[entity].values
+                } else {
+                    possibleValues = cfg[entity][f].values
+                }
+
                 let length = possibleValues.length
 
                 utils.eachSeries(
                     possibleValues,
                     (k, nxt) => {
                         let cfg = this.config.toJS()
-                        this.initialData[f] = {static: k}
+
+                        if (f === '.') {
+                            d.push(k)
+                            return nxt()
+                        }
+
+                        this.initialData[f] = k
+
                         this.generateEntity(cfg[entity], (data) => {
                             d.push(data)
                             nxt()
                         })
                     },
-                    () => {
-                        this.data[entity + 's'] = d
-                        resolve(this.data)
-                    }
+                    finalCb
                 )
             }
         })
@@ -77,29 +99,26 @@ export default class Mocker {
     iterator(object, cb) {
         utils.overObject(
             object,
-            (k, obj, nxt) => {
+            (k, parent, nxt) => {
                 let fieldCalculated
-                let lvl = obj[k]
-
-                if (utils.iamLastChild(lvl)){
-                    this.generateField(lvl, (fieldCalculated) => {
+                let child = parent[k]
+                if (utils.iamLastParent(child)) {
+                    this.generateField(child, (fieldCalculated) => {
                         if (!utils.isConditional(k)){
-                            obj[k] = fieldCalculated
+                            parent[k] = fieldCalculated
                         } else {
                             var key = k.split(',')
                             if (utils.evalWithContextData(key[0], this.entity)){
-                                obj[key[1]] = fieldCalculated
-                                delete this.entity[key]
+                                parent[key[1]] = fieldCalculated
+                                delete parent[key]
                             } else {
-                                delete this.entity[key]
+                                delete parent[key]
                             }
                         }
                         nxt()
                     })
                 } else {
-                    this.iterator(lvl, () => {
-                        nxt()
-                    })
+                    this.iterator(child, nxt)
                 }
             },
             () => {
