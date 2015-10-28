@@ -38,15 +38,82 @@ describe('Mocker: Methods', function() {
 
 describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
-        describe('Options: Faker', function() {
-            it('Should have faker opts (have access to faker api)', function(done) {
+        describe('Generator: Faker', function() {
+            it('Should be resolver lvl 1', function(done) {
                 try {
-                    m.generateField({faker: 'name.findName'}, function(str) {
+                    m.generateField({faker: 'lorem.words'}, function(str) {
+                        expect(str)
+                            .to.be.an('array')
+                            .not.to.be.null
+                        expect(str.length)
+                            .to.be.a('number')
+                            .to.be.equal(3)
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be resolve faker element as function', function(done) {
+                try {
+                    m.generateField({faker: 'lorem.words()'}, function(str) {
+                        expect(str)
+                            .to.be.an('array')
+                            .not.to.be.null
+                        expect(str.length)
+                            .to.be.a('number')
+                            .to.be.equal(3)
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be resolve faker element as function with args(1)', function(done) {
+                try {
+                    m.generateField({faker: 'lorem.words(1)'}, function(str) {
+                        expect(str).to.be.an('array')
+                        expect(str.length)
+                            .to.be.a('number')
+                            .to.be.equal(1)
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be resolve faker element as function with args(Object)', function(done) {
+                try {
+                    m.generateField({faker: 'random.number({"max": 1})'}, function(str) {
+                        expect(str).to.be.a('number').to.not.be.null
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be resolve faker element as function with args', function(done) {
+                try {
+                    m.generateField({faker: 'random.number({"min": 1, "max": 2})'}, function(str) {
+                        console.log(str)
+                        expect(str).to.be.a('number').to.not.be.null
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be resolve faker element as function with args and element selection', function(done) {
+                try {
+                    m.generateField({faker: 'lorem.words()[0]'}, function(str) {
+                        console.log(str)
                         expect(str).to.be.a('string')
-                        m.generateField({faker: 'random.number'}, function(number) {
-                            expect(number).to.be.a('number')
-                            done()
-                        })
+                        done()
                     })
                 } catch (x) {
                     done(x)
@@ -209,41 +276,42 @@ describe('Mocker: Generators (Fields)', function() {
         })
 
         it('Should iterate over more complex levels (deeper & function used...)', function(done) {
-            var userMoreLvl = {
-                name: {
-                    firstName: {
-                        static: 'firstName'
-                    },
-                    lastName: {
-                        static: 'lastName'
-                    },
-                    much:{
-                        deeper: {
-                            function: function() {
-                                return this.object.name.firstName + ' ' + this.object.name.lastName
-                            }
+                var userMoreLvl = {
+                    name: {
+                        firstName: {
+                            static: 'firstName'
                         },
-                        more: {
+                        lastName: {
+                            static: 'lastName'
+                        },
+                        much:{
                             deeper: {
                                 function: function() {
                                     return this.object.name.firstName + ' ' + this.object.name.lastName
                                 }
                             },
-                            level:{
+                            more: {
                                 deeper: {
                                     function: function() {
                                         return this.object.name.firstName + ' ' + this.object.name.lastName
                                     }
                                 },
-                                awesome:{
+                                level:{
                                     deeper: {
                                         function: function() {
                                             return this.object.name.firstName + ' ' + this.object.name.lastName
                                         }
                                     },
-                                    deeper: {
-                                        function: function() {
-                                            return this.object.name.firstName + ' ' + this.object.name.lastName
+                                    awesome:{
+                                        deeper: {
+                                            function: function() {
+                                                return this.object.name.firstName + ' ' + this.object.name.lastName
+                                            }
+                                        },
+                                        deeper: {
+                                            function: function() {
+                                                return this.object.name.firstName + ' ' + this.object.name.lastName
+                                            }
                                         }
                                     }
                                 }
@@ -251,191 +319,190 @@ describe('Mocker: Generators (Fields)', function() {
                         }
                     }
                 }
-            }
 
-            var expectedResult = {
-                name: {
-                    firstName: 'firstName',
-                    lastName: 'lastName',
-                    much:{
-                        deeper: 'firstName lastName',
-                        more: {
+                var expectedResult = {
+                    name: {
+                        firstName: 'firstName',
+                        lastName: 'lastName',
+                        much:{
                             deeper: 'firstName lastName',
-                            level:{
+                            more: {
                                 deeper: 'firstName lastName',
-                                awesome:{
+                                level:{
                                     deeper: 'firstName lastName',
-                                    deeper: 'firstName lastName'
+                                    awesome:{
+                                        deeper: 'firstName lastName',
+                                        deeper: 'firstName lastName'
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            var m = mocker({user: userMoreLvl})
-            m.generateEntity(userMoreLvl, function(data) {
-                try {
-                    expect(data).to.deep.equal(expectedResult)
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
-    })
-
-    describe('Generators: Entities', function() {
-        it('Should generate correctly with uniqueField', function(done) {
-
-            var length = 10
-
-            var scheemas = {
-                    request: {
-                        type: {
-                            values: []
-                        },
-                        number:{
-                            static: 23
-                        }
-                    }
-                }
-            var expectedResult = []
-            for (var i = 0; i < length; i++) {
-                var w = faker.lorem.words(1)[0]
-                scheemas.request.type.values[i] = w
-                expectedResult.push({type: w, number: 23})
-            }
-
-            var m = mocker(scheemas)
-            m.generate('request', {uniqueField: 'type'})
-                    .then(function(data) {
-                        try {
-                            expect(data).to.have.property('requests')
-                            for (var i = 0; i < length; i++) {
-                                var r = data.requests[i]
-                                expect(r).to.have.property('type').not.to.be.null
-                                expect(r).to.have.property('number').not.to.be.null
-                            }
-
-                            expect(data.requests).to.deep.equal(expectedResult)
-                            expect(data.requests.length).to.equal(length)
-                            done()
-                        } catch (x) {
-                            done(x)
-                        }
-                    })
-
-        })
-
-        it('Should not affect init values to next entity', function(done) {
-            var length = 10
-
-            var scheemas = {
-                request: {
-                    type: {
-                        values: []
-                    }
-                },
-                request2: {
-                    type:{
-                        static: 'staticValue'
-                    }
-                }
-            }
-
-            for (var i = 0; i < length; i++) {
-                var w = faker.lorem.words(1)[0]
-                scheemas.request.type.values.push(w)
-            }
-
-            var m = mocker(scheemas)
-            m.generate('request', {uniqueField: 'type'})
-                .then(m.generate('request2', 10))
-                .then(function(data) {
-
-                    try { // boilerplate to be able to get the assert failures
-                        expect(data).to.have.property('requests')
-                        for (var i = 0; i < length; i++) {
-                            var r = data.requests[i]
-                            expect(r).to.have.property('type').not.to.be.null
-                        }
-
-                        expect(data.requests.length).to.equal(length)
-
-                        var b = data.requests[data.requests.length - 1]
-
-                        //expect(a).to.not.equal(b)
-                        for (var i = 0; i < data.request2s.length; i++) {
-                            var a = data.request2s[i]
-                            expect(a).to.not.deep.equal(b)
-                        }
-
+                var m = mocker({user: userMoreLvl})
+                m.generateEntity(userMoreLvl, function(data) {
+                    try {
+                        expect(data).to.deep.equal(expectedResult)
                         done()
                     } catch (x) {
                         done(x)
                     }
-
                 })
-        })
+            })
+    })
 
-        it('Should generate more entities', function(done) {
-            var length = 10
-            var model = {
-                request:{
-                    id: {
-                        faker: 'random.number'
+    describe('Generators: Entities', function() {
+            it('Should generate correctly with uniqueField', function(done) {
+
+                var length = 10
+
+                var scheemas = {
+                        request: {
+                            type: {
+                                values: []
+                            },
+                            number:{
+                                static: 23
+                            }
+                        }
+                    }
+                var expectedResult = []
+                for (var i = 0; i < length; i++) {
+                    var w = faker.lorem.words(1)[0]
+                    scheemas.request.type.values[i] = w
+                    expectedResult.push({type: w, number: 23})
+                }
+
+                var m = mocker(scheemas)
+                m.generate('request', {uniqueField: 'type'})
+                        .then(function(data) {
+                            try {
+                                expect(data).to.have.property('requests')
+                                for (var i = 0; i < length; i++) {
+                                    var r = data.requests[i]
+                                    expect(r).to.have.property('type').not.to.be.null
+                                    expect(r).to.have.property('number').not.to.be.null
+                                }
+
+                                expect(data.requests).to.deep.equal(expectedResult)
+                                expect(data.requests.length).to.equal(length)
+                                done()
+                            } catch (x) {
+                                done(x)
+                            }
+                        })
+
+            })
+
+            it('Should not affect init values to next entity', function(done) {
+                var length = 10
+
+                var scheemas = {
+                    request: {
+                        type: {
+                            values: []
+                        }
                     },
-                    title: {
-                        faker: 'lorem.sentence'
-                    },
-                    number: {
-                        faker: 'random.number'
+                    request2: {
+                        type:{
+                            static: 'staticValue'
+                        }
                     }
                 }
-            }
 
-            var m = mocker({ act: model})
-            m.generate('act', length)
-            .then(function(data) {
-                //expect(data.requests).to.deep.equal(expectedResult)
-                expect(data.acts.length).to.equal(length)
                 for (var i = 0; i < length; i++) {
-                    var a = data.acts[i]
-                    expect(a).to.have.property('request')
-                    expect(a.request).to.have.property('id').not.to.be.null
-                    expect(a.request).to.have.property('title').not.to.be.null
-                    expect(a.request).to.have.property('number').not.to.be.null
+                    var w = faker.lorem.words(1)[0]
+                    scheemas.request.type.values.push(w)
                 }
 
+                var m = mocker(scheemas)
+                m.generate('request', {uniqueField: 'type'})
+                    .then(m.generate('request2', 10))
+                    .then(function(data) {
+
+                        try { // boilerplate to be able to get the assert failures
+                            expect(data).to.have.property('requests')
+                            for (var i = 0; i < length; i++) {
+                                var r = data.requests[i]
+                                expect(r).to.have.property('type').not.to.be.null
+                            }
+
+                            expect(data.requests.length).to.equal(length)
+
+                            var b = data.requests[data.requests.length - 1]
+
+                            //expect(a).to.not.equal(b)
+                            for (var i = 0; i < data.request2s.length; i++) {
+                                var a = data.request2s[i]
+                                expect(a).to.not.deep.equal(b)
+                            }
+
+                            done()
+                        } catch (x) {
+                            done(x)
+                        }
+
+                    })
+            })
+
+            it('Should generate more entities', function(done) {
+                var length = 10
+                var model = {
+                    request:{
+                        id: {
+                            faker: 'random.number'
+                        },
+                        title: {
+                            faker: 'lorem.sentence'
+                        },
+                        number: {
+                            faker: 'random.number'
+                        }
+                    }
+                }
+
+                var m = mocker({ act: model})
+                m.generate('act', length)
+                .then(function(data) {
+                    //expect(data.requests).to.deep.equal(expectedResult)
+                    expect(data.acts.length).to.equal(length)
+                    for (var i = 0; i < length; i++) {
+                        var a = data.acts[i]
+                        expect(a).to.have.property('request')
+                        expect(a.request).to.have.property('id').not.to.be.null
+                        expect(a.request).to.have.property('title').not.to.be.null
+                        expect(a.request).to.have.property('number').not.to.be.null
+                    }
+
+                    done()
+                })
+            })
+
+            it('Should iterate root level too', function(done) {
+                var length = 1
+                var userMoreLvl = {
+                    static: 'firstName'
+                }
+
+                var expectedResult = {
+                    users: ['firstName']
+                }
+
+                var m = mocker({user: userMoreLvl})
+                m.generate('user', length)
+                .then(function(data) {
+                    try {
+                        expect(data).to.deep.equal(expectedResult)
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
+                })
+            })
+
+            it('Should be awesome', function(done) {
                 done()
             })
         })
-
-        it('Should iterate root level too', function(done) {
-            var length = 1
-            var userMoreLvl = {
-                static: 'firstName'
-            }
-
-            var expectedResult = {
-                users: ['firstName']
-            }
-
-            var m = mocker({user: userMoreLvl})
-            m.generate('user', length)
-            .then(function(data) {
-                try {
-                    expect(data).to.deep.equal(expectedResult)
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
-
-        it('Should be awesome', function(done) {
-            done()
-        })
-    })
 })
