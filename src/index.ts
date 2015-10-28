@@ -1,7 +1,11 @@
+declare function require(name:string);
+
 import faker = require('faker')
 import Immutable = require('immutable')
 
-import * as utils from './utils.ts'
+import * as utils from './utils/index.ts'
+import pluralize from './utils/pluralizator.ts'
+import * as iterator from './utils/iterator.ts'
 
 export default class Mocker {
 
@@ -17,7 +21,7 @@ export default class Mocker {
 
     generate(entity: string, options: any) {
         let d = []
-        const entityPlural = utils.pluralize(entity)
+        const entityPlural = pluralize(entity)
         this.data[entityPlural] = []
         this.initialData = {}
 
@@ -32,7 +36,6 @@ export default class Mocker {
                 utils.repeatFN( options,
                     (nxt) => {
                         let cfg = this.config.toJS()
-
                         if (utils.iamLastParent(cfg[entity])) {
                             this.generateField(cfg[entity], function(data){
                                 d.push(data)
@@ -88,42 +91,23 @@ export default class Mocker {
 
         this.entity = (Object as any).assign({}, entityConfig)
 
-        this.iterator (this.entity, function (object){
-            cb(object)
-        })
-    }
-
-    iterator(object, cb) {
-        utils.overObject(
-            object,
-            (k, parent, nxt) => {
-                let fieldCalculated
-                let child = parent[k]
-                if (utils.iamLastParent(child)) {
-                    this.generateField(child, (fieldCalculated) => {
-                        if (!utils.isConditional(k)){
-                            parent[k] = fieldCalculated
-                        } else {
-                            var key = k.split(',')
-                            if (utils.evalWithContextData(key[0], this.entity)){
-                                parent[key[1]] = fieldCalculated
-                                delete parent[key]
-                            } else {
-                                delete parent[key]
-                            }
-                        }
-                        nxt()
-                    })
+        iterator.eachLvl(this.entity, (obj, k, value) => {
+            this.generateField(value, (fieldCalculated) => {
+                if (!utils.isConditional(k)){
+                    obj[k] = fieldCalculated
                 } else {
-                    this.iterator(child, ()=>{
-                        nxt()
-                    })
+                    let key = k.split(',')
+                    if (utils.evalWithContextData(key[0], this.entity)){
+                        obj[key[1]] = fieldCalculated
+                        delete obj[k]
+                    } else {
+                        delete obj[k]
+                    }
                 }
-            },
-            () => {
-                cb(object)
-            }
-        )
+            })
+        });
+
+        cb(this.entity)
     }
 
     generateField(field, cb) {
