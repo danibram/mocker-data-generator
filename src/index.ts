@@ -1,4 +1,4 @@
-declare function require(name:string);
+declare function require(name:string)
 
 import faker = require('faker')
 import Immutable = require('immutable')
@@ -132,48 +132,7 @@ export default class Mocker {
         let db = this.data
 
         if (config.faker){
-            let re = /([^(]+)\(([^)]+)\)\[(.*?)\]/
-            let matches = re.exec(config.faker)
-            let fn
-
-            if (matches && matches.length === 4){
-                let path = matches[1].split('.')
-                fn = (faker as any)[path[0]][path[1]]
-                let arg
-                if (eval(matches[2])){
-                    arg = eval(matches[2])
-                } else if (JSON.parse(matches[2])) {
-                    arg = JSON.parse(matches[2])
-                } else {
-                    arg = matches[2]
-                }
-                return fn.call(this, arg)[matches[3]]
-            }
-
-            re = /([^(]+)\(([^)]+)\)/
-            if (matches && matches.length === 3){
-                let path = matches[1].split('.')
-                fn = (faker as any)[path[0]][path[1]]
-
-                let arg
-                if (eval(matches[2])){
-                    arg = eval(matches[2])
-                } else if (JSON.parse(matches[2])) {
-                    arg = JSON.parse(matches[2])
-                } else {
-                    arg = matches[2]
-                }
-
-                return fn.call(this, arg)
-            }
-
-            re = /([^(]+)/
-            matches = re.exec(config.faker)
-            if (matches && matches.length <= 2){
-                let path = matches[1].split('.')
-                fn = (faker as any)[path[0]][path[1]]
-                return fn.call()
-            }
+            return utils.stringToFn (faker, config.faker)
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {

@@ -1,6 +1,6 @@
 import * as utils from './index.ts'
 
-export const eachLvl = function (obj, processor, currentPath?) {
+export const eachLvl = function (obj: {}, processor: Function, currentPath?: string[]) {
 
    if (!currentPath) { currentPath = []; }
    if (obj) {

@@ -20,12 +20,14 @@
         "!./lib"
     ],
     "files": [
-        "src/index.ts",
-        "src/interfaces/index.ts",
-        "src/utils.ts",
-        "typings/es6-promise/es6-promise.d.ts",
-        "typings/globals.d.ts",
-        "typings/tsd.d.ts"
+        "./src/index.ts",
+        "./src/interfaces/index.ts",
+        "./src/utils/index.ts",
+        "./src/utils/iterator.ts",
+        "./src/utils/pluralizator.ts",
+        "./typings/es6-promise/es6-promise.d.ts",
+        "./typings/globals.d.ts",
+        "./typings/tsd.d.ts"
     ],
     "compileOnSave": false,
     "formatCodeOptions": {
