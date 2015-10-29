@@ -81,13 +81,14 @@ Inside every value you can put:
 - ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker}```, and you can use faker functions, object (the specified model), db (actual data generated)
 - ***faker***: you can use directly faker functions without params, if you need to pass params, use function and inside use ```this.faker``` and the normal function
 
-    Also, you can do: (note that: db, object are injected)
+    Also, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected)
     ```javascript
-        lorem.words
-        lorem.words()
-        lorem.words(1)[0]
-        random.arrayElement(db.users)
-        random.arrayElement(db.users)[userId]
+        lorem.words                             //Run faker.lorem.words
+        lorem.words()                           //Run faker.lorem.words
+        lorem.words(1)                          //Run faker.lorem.words(1)
+        lorem.words(1)[0]                       //Run faker.lorem.words(1) and take the first
+        random.arrayElement(db.users)           //Run faker.arrayElement over a generated user entity
+        random.arrayElement(db.users)[userId]   //Run faker.arrayElement over a generated user entity and take the userId only
     ```
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
