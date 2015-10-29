@@ -6,6 +6,7 @@ export const eachLvl = function (obj: {}, processor: Function, currentPath?: str
    if (obj) {
        Object.keys(obj).forEach((k) => {
            let value = obj[k]
+
            if (utils.iamLastParent(value)) {
                processor(obj, k, value)
            } else {

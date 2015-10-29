@@ -11,7 +11,7 @@ export const evalWithContextData =  function (key: string, object: {}) {
 export const fieldArrayCalcLength = function (config: ArrayConfig) {
     let length
     if (config.fixedLength) {
-        length = config.fixedLength
+        length = config.length
     } else {
         length = Math.floor((Math.random() * config.length) + 1)
     }
@@ -20,7 +20,7 @@ export const fieldArrayCalcLength = function (config: ArrayConfig) {
 
 //General utils
 
-export const stringToFn = function (module: {}, string: string) {
+export const stringToFn = function (module: {}, string: string, db: {}, object:{}) {
 
     let re = /(^[a-zA-Z.]*)/   //aZ.aZ
     let matches = re.exec(string)
@@ -33,15 +33,15 @@ export const stringToFn = function (module: {}, string: string) {
         fn = module[path[0]][path[1]]
     }
 
-    re = /\((\w+)(\w+)?\)/ //Match ()
+    re = /(\{[a-zA-Z0-9_:,'"\s]*\})/ //Match ({'wew':weqw})
     matches = re.exec(string)
     if (matches && matches[1]){
-        arg = matches[1]
+        arg = JSON.parse(matches[1])
     } else {
-        re = /(\{[a-zA-Z0-9_:,'"\s]*\})/ //Match ({'wew':weqw})
+        re = /\((.*?)\)/ //Match ()
         matches = re.exec(string)
         if (matches && matches[1]){
-            arg = JSON.parse(matches[1])
+            arg = eval(matches[1])
         }
     }
 
@@ -66,19 +66,21 @@ export const stringToFn = function (module: {}, string: string) {
 }
 
 export const iamLastParent = function(obj: {}) {
+    let last = false
     if (this.isObject(obj)) {
         let ks = Object.keys(obj)
-        let last = null
-        ks.map((k) => {
+
+        for (let i = 0; i < ks.length; i++) {
+            let k = ks[i]
             last = this.iamLastChild(obj, k)
             if (!last){
-                return
+                break
             }
-        })
-        return last
+        }
     } else {
-        return true
+        last = true
     }
+    return last
 }
 
 export const iamLastChild = function (parent: {}, k: string) {
@@ -141,9 +143,14 @@ export const eachSeries = function (arr: Object[], iterator: Function, callback:
     iterate()
 }
 
-export const isArray = Array.isArray
+export const isArray = function (x: any) {
+    if (Object.prototype.toString.call(x) === '[object Array]'){
+        return true
+    }
+    return false
+}
 
-export const isObject = function (x: {}) {
+export const isObject = function (x: any) {
     if (Object.prototype.toString.call(x) === '[object Object]'){
         return true
     }

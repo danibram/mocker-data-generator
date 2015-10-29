@@ -37,7 +37,7 @@ export default class Mocker {
                     (nxt) => {
                         let cfg = this.config.toJS()
                         if (utils.iamLastParent(cfg[entity])) {
-                            this.generateField(cfg[entity], function(data){
+                            this.generator(cfg[entity], function(data){
                                 d.push(data)
                                 nxt()
                             })
@@ -92,7 +92,7 @@ export default class Mocker {
         this.entity = (Object as any).assign({}, entityConfig)
 
         iterator.eachLvl(this.entity, (obj, k, value) => {
-            this.generateField(value, (fieldCalculated) => {
+            this.generator(value, (fieldCalculated) => {
                 if (!utils.isConditional(k)){
                     obj[k] = fieldCalculated
                 } else {
@@ -110,7 +110,7 @@ export default class Mocker {
         cb(this.entity)
     }
 
-    generateField(field, cb) {
+    generator(field, cb) {
         if ( utils.isArray(field) ){
             cb(this.generateArrayField(field[0], field[1]))
         } else {
@@ -132,7 +132,7 @@ export default class Mocker {
         let db = this.data
 
         if (config.faker){
-            return utils.stringToFn (faker, config.faker)
+            return utils.stringToFn (faker, config.faker, db, object)
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {

@@ -16,22 +16,29 @@ var m = mocker(config)
 describe('Mocker: Basic', function() {
     it('Should load config correctly', function() {
         conf = m.config.toJS()
-        expect(conf).to.deep.equal(config)
+        expect(conf)
+            .to.deep.equal(config)
+            .to.not.be.undefined
     })
 
     it('Should not have init data', function() {
         data = m.data
-        expect(data).to.deep.equal({})
+        expect(data)
+            .to.deep.equal({})
+            .to.not.be.undefined
     })
 })
 
 describe('Mocker: Methods', function() {
 
-    var methods = ['generate','generateEntity','generateArrayField','generateField']
+    var methods = ['generate','generateEntity','generateArrayField','generator']
     for (var i = 0; i < methods.length; i++) {
         var method = methods[i]
         it('Should have ' + method, function() {
-            expect(m[method]).to.be.a('function')
+            expect(m[method])
+                .to.be.a('function')
+                .to.not.be.null
+                .to.not.be.undefined
         })
     }
 })
@@ -39,15 +46,18 @@ describe('Mocker: Methods', function() {
 describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
         describe('Generator: Faker', function() {
-            it('Should be resolver lvl 1', function(done) {
+            it('Should be "lorem.words"', function(done) {
                 try {
-                    m.generateField({faker: 'lorem.words'}, function(str) {
+                    m.generator({faker: 'lorem.words'}, function(str) {
                         expect(str)
                             .to.be.an('array')
                             .not.to.be.null
+                            .to.not.be.undefined
                         expect(str.length)
                             .to.be.a('number')
                             .to.be.equal(3)
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -55,15 +65,18 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
-            it('Should be resolve faker element as function', function(done) {
+            it('Should be "lorem.words()"', function(done) {
                 try {
-                    m.generateField({faker: 'lorem.words()'}, function(str) {
+                    m.generator({faker: 'lorem.words()'}, function(str) {
                         expect(str)
                             .to.be.an('array')
                             .not.to.be.null
+                            .to.not.be.undefined
                         expect(str.length)
                             .to.be.a('number')
                             .to.be.equal(3)
+                            .not.to.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -71,13 +84,15 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
-            it('Should be resolve faker element as function with args(1)', function(done) {
+            it('Should be "lorem.words(1)"', function(done) {
                 try {
-                    m.generateField({faker: 'lorem.words(1)'}, function(str) {
+                    m.generator({faker: 'lorem.words(1)'}, function(str) {
                         expect(str).to.be.an('array')
                         expect(str.length)
                             .to.be.a('number')
                             .to.be.equal(1)
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -85,10 +100,13 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
-            it('Should be resolve faker element as function with args(Object)', function(done) {
+            it('Should be "random.number({"max": 1})"', function(done) {
                 try {
-                    m.generateField({faker: 'random.number({"max": 1})'}, function(str) {
-                        expect(str).to.be.a('number').to.not.be.null
+                    m.generator({faker: 'random.number({"max": 1})'}, function(str) {
+                        expect(str)
+                            .to.be.a('number')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -96,11 +114,13 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
-            it('Should be resolve faker element as function with args', function(done) {
+            it('Should be "random.number({"min": 1, "max": 2})"', function(done) {
                 try {
-                    m.generateField({faker: 'random.number({"min": 1, "max": 2})'}, function(str) {
-                        console.log(str)
-                        expect(str).to.be.a('number').to.not.be.null
+                    m.generator({faker: 'random.number({"min": 1, "max": 2})'}, function(str) {
+                        expect(str)
+                            .to.be.a('number')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -108,11 +128,27 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
-            it('Should be resolve faker element as function with args and element selection', function(done) {
+            it('Should be "lorem.words()[0]"', function(done) {
                 try {
-                    m.generateField({faker: 'lorem.words()[0]'}, function(str) {
-                        console.log(str)
-                        expect(str).to.be.a('string')
+                    m.generator({faker: 'lorem.words()[0]'}, function(str) {
+                        expect(str)
+                            .to.be.a('string')
+                            .to.not.be.null
+                            .to.not.be.undefined
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be "lorem.words(1)[0]"', function(done) {
+                try {
+                    m.generator({faker: 'lorem.words(1)[0]'}, function(str) {
+                        expect(str)
+                            .to.be.a('string')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     })
                 } catch (x) {
@@ -123,10 +159,13 @@ describe('Mocker: Generators (Fields)', function() {
 
         describe('Options: Static', function() {
             it('Should have static opts', function(done) {
-                m.generateField({static: 'test'}, function(str) {
+                m.generator({static: 'test'}, function(str) {
                     try {
-                        expect(str).to.be.a('string')
-                        expect(str).to.deep.equal('test')
+                        expect(str)
+                            .to.be.a('string')
+                            .to.deep.equal('test')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     } catch (x) {
                         done(x)
@@ -137,15 +176,18 @@ describe('Mocker: Generators (Fields)', function() {
 
         describe('Options: Function', function() {
             it('Should have funtion opts', function(done) {
-                m.generateField({
+                m.generator({
                     function: function() {
                         return 'test'
                     }
                 }, function(str) {
 
                     try {
-                        expect(str).to.be.a('string')
-                        expect(str).to.deep.equal('test')
+                        expect(str)
+                            .to.be.a('string')
+                            .to.deep.equal('test')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         done()
                     } catch (x) {
                         done(x)
@@ -154,7 +196,7 @@ describe('Mocker: Generators (Fields)', function() {
             })
 
             it('Should call function and have {db, object, faker} injected', function(done) {
-                m.generateField({
+                m.generator({
                     function: function() {
                         return this
                     }
@@ -178,12 +220,15 @@ describe('Mocker: Generators (Fields)', function() {
         describe('Options: Values', function() {
             it('Should have values opts', function(done) {
                 var values = ['test', 'this', 'awesome', 'module']
-                m.generateField({
+                m.generator({
                     values: values
                 }, function(str) {
 
                     try {
-                        expect(str).to.be.a('string')
+                        expect(str)
+                            .to.be.a('string')
+                            .to.not.be.null
+                            .to.not.be.undefined
                         assert.ok(values.indexOf(str) > -1)
                         done()
                     } catch (x) {
@@ -217,7 +262,11 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({user: conditional})
             m.generateEntity(conditional, function(data) {
                 try {
-                    expect(data).to.deep.equal(expectedResult)
+                    expect(data)
+                        .to.deep.equal(expectedResult)
+                        .to.not.be.undefined
+                        .to.not.be.null
+
                     done()
                 } catch (x) {
                     done(x)
@@ -267,7 +316,10 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({user: userMoreLvl})
             m.generateEntity(userMoreLvl, function(data) {
                 try {
-                    expect(data).to.deep.equal(expectedResult)
+                    expect(data)
+                        .to.deep.equal(expectedResult)
+                        .to.not.be.undefined
+                        .to.not.be.null
                     done()
                 } catch (x) {
                     done(x)
@@ -343,7 +395,10 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({user: userMoreLvl})
                 m.generateEntity(userMoreLvl, function(data) {
                     try {
-                        expect(data).to.deep.equal(expectedResult)
+                        expect(data)
+                            .to.deep.equal(expectedResult)
+                            .to.not.be.undefined
+                            .to.not.be.null
                         done()
                     } catch (x) {
                         done(x)
@@ -385,8 +440,14 @@ describe('Mocker: Generators (Fields)', function() {
                                     expect(r).to.have.property('number').not.to.be.null
                                 }
 
-                                expect(data.requests).to.deep.equal(expectedResult)
-                                expect(data.requests.length).to.equal(length)
+                                expect(data.requests)
+                                    .to.deep.equal(expectedResult)
+                                    .to.not.be.undefined
+                                    .to.not.be.null
+                                expect(data.requests.length)
+                                    .to.equal(length)
+                                    .to.not.be.undefined
+                                    .to.not.be.null
                                 done()
                             } catch (x) {
                                 done(x)
@@ -479,7 +540,7 @@ describe('Mocker: Generators (Fields)', function() {
                 })
             })
 
-            it('Should iterate root level too', function(done) {
+            it('Should iterate root level too (static)', function(done) {
                 var length = 1
                 var userMoreLvl = {
                     static: 'firstName'
