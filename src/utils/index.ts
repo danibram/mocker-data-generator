@@ -1,5 +1,3 @@
-declare function require(name:string)
-
 import {ArrayConfig} from '../interfaces.d.ts'
 
 const {floor} = Math
@@ -36,6 +34,7 @@ export const stringToFn = function (moduleName: string, string: string, db: {}, 
     if (!matches){
         strFn = moduleName + '.' + string + '()'
     }
+
     return eval(strFn)
 }
 

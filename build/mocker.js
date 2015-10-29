@@ -77,7 +77,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var chance = __webpack_require__(2);
+	var Chance = __webpack_require__(2);
+	var chance = new Chance();
 	var faker = __webpack_require__(3);
 	var Immutable = __webpack_require__(4);
 	var utils = __webpack_require__(5);

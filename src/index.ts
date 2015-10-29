@@ -1,7 +1,9 @@
 declare function require(name:string)
 
-import chance = require('chance')
-import faker = require('faker')
+import * as Chance from 'chance'
+const chance = new Chance()
+
+import * as faker from 'faker'
 import Immutable = require('immutable')
 
 import * as utils from './utils/index.ts'
@@ -133,9 +135,9 @@ export default class Mocker {
         let db = this.data
 
         if (config.faker){
-            return utils.stringToFn ('faker', config.faker, db, object, faker, chance)
+            return utils.stringToFn('faker', config.faker, db, object, faker, chance)
         } else if (config.chance) {
-            return utils.stringToFn ('chance', config.chance, db, object, faker, chance)
+            return utils.stringToFn('chance', config.chance, db, object, faker, chance)
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {

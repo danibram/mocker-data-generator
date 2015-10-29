@@ -78,22 +78,54 @@ Every model should contains the specified fields. Key can be 2 types:
 
 Inside every value you can put:
 
-- ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker}```, and you can use faker functions, object (the specified model), db (actual data generated)
-- ***faker***: you can use directly faker functions without params, if you need to pass params, use function and inside use ```this.faker``` and the normal function
+- ***static***: For fixed fields
+```javascript
+    { static: 'hello im fixed field' }     
+```
 
-    Also, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected)
+- ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker, chance}```, and you can use faker or chance functions, object (the specified model), db (actual data generated)
+```javascript
+    { function: function(){
+        //this.db
+        //this.object
+        //this.faker
+        //this.chance
+        return yourValue
+    } }     
+```
+- ***faker***: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
     ```javascript
-        lorem.words                             //Run faker.lorem.words
-        lorem.words()                           //Run faker.lorem.words
-        lorem.words(1)                          //Run faker.lorem.words(1)
-        lorem.words(1)[0]                       //Run faker.lorem.words(1) and take the first
-        random.arrayElement(db.users)           //Run faker.arrayElement over a generated user entity
-        random.arrayElement(db.users)[userId]   //Run faker.arrayElement over a generated user entity and take the userId only
+        { faker: 'lorem.words' }                            //Run faker.lorem.words()
+        { faker: 'lorem.words()' }                          //Run faker.lorem.words()
+        { faker: 'lorem.words(1)' }                         //Run faker.lorem.words(1)
+        { faker: 'integer({"min": 1, "max": 10})' }         //Run faker.lorem.words(1) and take the first
+        { faker: 'random.arrayElement(db.users)' }          //Run faker.arrayElement over a generated user entity
+        { faker: 'random.arrayElement(db.users)[userId]' }  //Run faker.arrayElement over a generated user entity and take the userId only
+    ```
+
+- ***chance***: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
+    ```javascript
+        { chance: 'integer' }                                //Run chance.integer()
+        { chance: 'integer()' }                              //Run chance.integer()
+        { chance: 'integer({"min": 1, "max": 10})' }         //Run chance.integer({"min": 1, "max": 10})
+        { chance: 'street_suffixes()[0]["name"]' }           //Run chance.street_suffixes() takes first result and the name inside
     ```
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
    - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
+    ```javascript
+        [{
+            //Any generator
+                //Faker  
+            faker: 'random.arrayElement(db.users)[userId]'
+                //Chance  
+            chance: 'integer'
+                //Function  
+            function: function (){ return /**/ }
+
+        }, {length: 10, fixedLength: false}]     
+    ```
 
 #### Data generation
 Initialize mocker with the config, and then generate any entity with promises style, use generate funciton that accepts the name of the model and the amount of data to generate. Like the example:
@@ -124,9 +156,12 @@ m.generate('user', 2)
 
 ## Release History
 
+####(0.4.0)
+- Add support to chanceJs, exactly like FakerJs (see "Model definition" ***Chance***)
+
 ####(0.3.0)
 - Fix errors on iteration over nested structures (new improved interator)
-- Added support to call more naturally to fackerJs fields (see "Model definition" ***Faker***)
+- Added support to call more naturally to FackerJs fields (see "Model definition" ***Faker***)
 
 ####(0.2.2)
 - Added a pluralization function
