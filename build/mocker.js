@@ -80,6 +80,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var faker = __webpack_require__(2);
 	var Immutable = __webpack_require__(3);
 	var utils = __webpack_require__(4);
+	var pluralizator_ts_1 = __webpack_require__(5);
+	var iterator = __webpack_require__(6);
 	var Mocker = (function () {
 	    function Mocker(config) {
 	        this.data = {};
@@ -91,7 +93,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Mocker.prototype.generate = function (entity, options) {
 	        var _this = this;
 	        var d = [];
-	        var entityPlural = utils.pluralize(entity);
+	        var entityPlural = pluralizator_ts_1.default(entity);
 	        this.data[entityPlural] = [];
 	        this.initialData = {};
 	        return new Promise(function (resolve, reject) {
@@ -103,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                utils.repeatFN(options, function (nxt) {
 	                    var cfg = _this.config.toJS();
 	                    if (utils.iamLastParent(cfg[entity])) {
-	                        _this.generateField(cfg[entity], function (data) {
+	                        _this.generator(cfg[entity], function (data) {
 	                            d.push(data);
 	                            nxt();
 	                        });
@@ -143,44 +145,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    };
 	    Mocker.prototype.generateEntity = function (entityConfig, cb) {
-	        this.entity = Object.assign({}, entityConfig);
-	        this.iterator(this.entity, function (object) {
-	            cb(object);
-	        });
-	    };
-	    Mocker.prototype.iterator = function (object, cb) {
 	        var _this = this;
-	        utils.overObject(object, function (k, parent, nxt) {
-	            var fieldCalculated;
-	            var child = parent[k];
-	            if (utils.iamLastParent(child)) {
-	                _this.generateField(child, function (fieldCalculated) {
-	                    if (!utils.isConditional(k)) {
-	                        parent[k] = fieldCalculated;
+	        this.entity = Object.assign({}, entityConfig);
+	        iterator.eachLvl(this.entity, function (obj, k, value) {
+	            _this.generator(value, function (fieldCalculated) {
+	                if (!utils.isConditional(k)) {
+	                    obj[k] = fieldCalculated;
+	                }
+	                else {
+	                    var key = k.split(',');
+	                    if (utils.evalWithContextData(key[0], _this.entity)) {
+	                        obj[key[1]] = fieldCalculated;
+	                        delete obj[k];
 	                    }
 	                    else {
-	                        var key = k.split(',');
-	                        if (utils.evalWithContextData(key[0], _this.entity)) {
-	                            parent[key[1]] = fieldCalculated;
-	                            delete parent[key];
-	                        }
-	                        else {
-	                            delete parent[key];
-	                        }
+	                        delete obj[k];
 	                    }
-	                    nxt();
-	                });
-	            }
-	            else {
-	                _this.iterator(child, function () {
-	                    nxt();
-	                });
-	            }
-	        }, function () {
-	            cb(object);
+	                }
+	            });
 	        });
+	        cb(this.entity);
 	    };
-	    Mocker.prototype.generateField = function (field, cb) {
+	    Mocker.prototype.generator = function (field, cb) {
 	        if (utils.isArray(field)) {
 	            cb(this.generateArrayField(field[0], field[1]));
 	        }
@@ -200,8 +186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var object = this.entity;
 	        var db = this.data;
 	        if (config.faker) {
-	            var split = config.faker.split('.');
-	            return faker[split[0]][split[1]].call();
+	            return utils.stringToFn(faker, config.faker, db, object);
 	        }
 	        else if (config.values) {
 	            return faker.random.arrayElement(config.values);
@@ -238,27 +223,77 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports) {
 
-	exports.each = function (arr, fn) {
-	    for (var i = 0; i < arr.length; ++i) {
-	        fn(arr[i]);
-	    }
+	var floor = Math.floor;
+	var keys = Object.keys;
+	exports.evalWithContextData = function (key, object) {
+	    return eval(key);
 	};
-	exports.iamLastParent = function (obj) {
-	    var _this = this;
-	    if (this.isObject(obj)) {
-	        var ks = Object.keys(obj);
-	        var last = null;
-	        ks.map(function (k) {
-	            last = _this.iamLastChild(obj, k);
-	            if (!last) {
-	                return;
-	            }
-	        });
-	        return last;
+	exports.fieldArrayCalcLength = function (config) {
+	    var length;
+	    if (config.fixedLength) {
+	        length = config.length;
 	    }
 	    else {
-	        return true;
+	        length = Math.floor((Math.random() * config.length) + 1);
 	    }
+	    return length;
+	};
+	exports.stringToFn = function (module, string, db, object) {
+	    var re = /(^[a-zA-Z.]*)/;
+	    var matches = re.exec(string);
+	    var fn;
+	    var arg;
+	    var arraySelect;
+	    var value;
+	    if (matches && matches.length === 2) {
+	        var path = matches[1].split('.');
+	        fn = module[path[0]][path[1]];
+	    }
+	    re = /(\{[a-zA-Z0-9_:,'"\s]*\})/;
+	    matches = re.exec(string);
+	    if (matches && matches[1]) {
+	        arg = JSON.parse(matches[1]);
+	    }
+	    else {
+	        re = /\((.*?)\)/;
+	        matches = re.exec(string);
+	        if (matches && matches[1]) {
+	            arg = eval(matches[1]);
+	        }
+	    }
+	    re = /\[(\w+)(\w+)?\]/;
+	    matches = re.exec(string);
+	    if (matches && matches[1]) {
+	        arraySelect = matches[1];
+	    }
+	    if (!arg) {
+	        value = fn.call();
+	    }
+	    else {
+	        value = fn.call(this, arg);
+	    }
+	    var val = value;
+	    if (arraySelect) {
+	        val = value[arraySelect];
+	    }
+	    return val;
+	};
+	exports.iamLastParent = function (obj) {
+	    var last = false;
+	    if (this.isObject(obj)) {
+	        var ks = Object.keys(obj);
+	        for (var i = 0; i < ks.length; i++) {
+	            var k = ks[i];
+	            last = this.iamLastChild(obj, k);
+	            if (!last) {
+	                break;
+	            }
+	        }
+	    }
+	    else {
+	        last = true;
+	    }
+	    return last;
 	};
 	exports.iamLastChild = function (parent, k) {
 	    if (this.isObject(parent[k])) {
@@ -276,29 +311,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    else {
 	        return false;
 	    }
-	};
-	exports.evalWithContextData = function (key, object) {
-	    return eval(key);
-	};
-	exports.fieldArrayCalcLength = function (config) {
-	    if (config.fixedLength) {
-	        return config.length;
-	    }
-	    else {
-	        return Math.floor((Math.random() * config.length) + 1);
-	    }
-	};
-	exports.isArray = function (x) {
-	    if (Object.prototype.toString.call(x) === '[object Array]') {
-	        return true;
-	    }
-	    return false;
-	};
-	exports.isObject = function (x) {
-	    if (Object.prototype.toString.call(x) === '[object Object]') {
-	        return true;
-	    }
-	    return false;
 	};
 	exports.repeatFN = function (times, fn, callback) {
 	    var completed = 0;
@@ -340,34 +352,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    iterate();
 	};
-	exports.overObject = function (obj, iterator, callback) {
-	    callback = callback || function () { };
-	    var arr = Object.keys(obj);
-	    if (!arr.length) {
-	        return callback();
+	exports.isArray = function (x) {
+	    if (Object.prototype.toString.call(x) === '[object Array]') {
+	        return true;
 	    }
-	    var completed = 0;
-	    var iterate = function () {
-	        var k = arr[completed];
-	        iterator(k, obj, function (err) {
-	            if (err) {
-	                callback(err);
-	                callback = function () { };
-	            }
-	            else {
-	                completed += 1;
-	                if (completed >= arr.length) {
-	                    callback();
-	                }
-	                else {
-	                    iterate();
-	                }
-	            }
-	        });
-	    };
-	    iterate();
+	    return false;
 	};
-	exports.pluralize = function (str) {
+	exports.isObject = function (x) {
+	    if (Object.prototype.toString.call(x) === '[object Object]') {
+	        return true;
+	    }
+	    return false;
+	};
+	exports.getKeys = function (object) {
+	    var keys_ = keys(object);
+	    if (this.isArray(object)) {
+	    }
+	    else if (this.isArrayLike(object)) {
+	        keys_ = keys_.filter(function (key) { return floor(Number(key)) == key; });
+	    }
+	    else {
+	        keys_ = keys_.sort();
+	    }
+	    return keys_;
+	};
+	exports.isArrayLike = function (any) {
+	    if (!this.isObject(any))
+	        return false;
+	    if (this.isGlobalObject(any))
+	        return false;
+	    if (!('length' in any))
+	        return false;
+	    var length = any.length;
+	    if (length === 0)
+	        return true;
+	    return (length - 1) in any;
+	};
+	var GLOBAL_OBJECT = new Function('return this')();
+	exports.isGlobalObject = function (any) {
+	    return any === GLOBAL_OBJECT;
+	};
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	function default_1(str) {
 	    var plural = {
 	        '(quiz)$': "$1zes",
 	        '^(ox)$': "$1en",
@@ -454,6 +485,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return str.replace(pattern, array[reg]);
 	    }
 	    return str + 's';
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = default_1;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var utils = __webpack_require__(4);
+	exports.eachLvl = function (obj, processor, currentPath) {
+	    if (!currentPath) {
+	        currentPath = [];
+	    }
+	    if (obj) {
+	        Object.keys(obj).forEach(function (k) {
+	            var value = obj[k];
+	            if (utils.iamLastParent(value)) {
+	                processor(obj, k, value);
+	            }
+	            else {
+	                var path = currentPath.slice(0);
+	                path.push(k);
+	                exports.eachLvl(value, processor, path);
+	            }
+	        });
+	    }
+	    return;
 	};
 
 
