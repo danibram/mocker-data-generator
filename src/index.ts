@@ -1,5 +1,6 @@
 declare function require(name:string)
 
+import chance = require('chance')
 import faker = require('faker')
 import Immutable = require('immutable')
 
@@ -132,11 +133,13 @@ export default class Mocker {
         let db = this.data
 
         if (config.faker){
-            return utils.stringToFn (faker, config.faker, db, object)
+            return utils.stringToFn ('faker', config.faker, db, object, faker, chance)
+        } else if (config.chance) {
+            return utils.stringToFn ('chance', config.chance, db, object, faker, chance)
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {
-            return config.function.call({object, faker, db})
+            return config.function.call({object, faker, chance, db})
         } else if (config.static) {
             return config.static
         } else {

@@ -1,7 +1,7 @@
 {
   "name": "mocker-data-generator",
   "version": "0.3.0",
-  "description": "A simplified way to generate mock data, build over Faker",
+  "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
   "main": "./build/mocker.min.js",
   "repository": {
     "type": "git",
@@ -9,7 +9,11 @@
   },
   "keywords": [
     "mock",
-    "generator"
+    "faker",
+    "fakerjs",
+    "json",
+    "fake",
+    "mocks"
   ],
   "author": {
     "name": "Daniel Biedma Ramos",
@@ -49,6 +53,7 @@
     "chai": "^3.4.0"
   },
   "dependencies": {
+    "chance": "^0.8.0",
     "faker": "^3.0.1",
     "immutable": "^3.7.5"
   }

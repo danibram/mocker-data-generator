@@ -1,4 +1,6 @@
-import {ArrayConfig} from '../interfaces'
+declare function require(name:string)
+
+import {ArrayConfig} from '../interfaces.d.ts'
 
 const {floor} = Math
 const {keys} = Object
@@ -20,49 +22,21 @@ export const fieldArrayCalcLength = function (config: ArrayConfig) {
 
 //General utils
 
-export const stringToFn = function (module: {}, string: string, db: {}, object:{}) {
+export const stringToFn = function (moduleName: string, string: string, db: {}, object:{}, faker, chance) {
 
     let re = /(^[a-zA-Z.]*)/   //aZ.aZ
     let matches = re.exec(string)
-    let fn
-    let arg
-    let arraySelect
-    let value
+    let strFn
     if (matches && matches.length === 2){
-        let path = matches[1].split('.')
-        fn = module[path[0]][path[1]]
+        strFn = moduleName + '.' + string
     }
 
-    re = /(\{[a-zA-Z0-9_:,'"\s]*\})/ //Match ({'wew':weqw})
+    re = /\((.*?)\)/ //Match ()
     matches = re.exec(string)
-    if (matches && matches[1]){
-        arg = JSON.parse(matches[1])
-    } else {
-        re = /\((.*?)\)/ //Match ()
-        matches = re.exec(string)
-        if (matches && matches[1]){
-            arg = eval(matches[1])
-        }
+    if (!matches){
+        strFn = moduleName + '.' + string + '()'
     }
-
-    re = /\[(\w+)(\w+)?\]/ //Match []
-    matches = re.exec(string)
-    if (matches && matches[1]){
-        arraySelect = matches[1]
-    }
-
-    if (!arg) {
-        value = fn.call()
-    } else {
-        value = fn.call(this, arg)
-    }
-
-    let val = value
-    if (arraySelect){
-        val = value[arraySelect]
-    }
-
-    return val
+    return eval(strFn)
 }
 
 export const iamLastParent = function(obj: {}) {

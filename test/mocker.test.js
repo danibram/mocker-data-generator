@@ -45,7 +45,65 @@ describe('Mocker: Methods', function() {
 
 describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
-        describe('Generator: Faker', function() {
+        describe('Generator: ChanceJs', function() {
+            it('Should be "integer"', function(done) {
+                try {
+                    m.generator({chance: 'integer'}, function(str) {
+                        expect(str)
+                            .to.be.a('number')
+                            .not.to.be.null
+                            .to.not.be.undefined
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be "integer()"', function(done) {
+                try {
+                    m.generator({chance: 'integer()'}, function(str) {
+                        expect(str)
+                            .to.be.a('number')
+                            .not.to.be.null
+                            .to.not.be.undefined
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be "integer({"min": 1, "max": 10})"', function(done) {
+                try {
+                    m.generator({chance: 'integer()'}, function(str) {
+                        expect(str)
+                            .to.be.a('number')
+                            .not.to.be.null
+                            .to.not.be.undefined
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+
+            it('Should be "street_suffixes()[0]["name"]"', function(done) {
+                try {
+                    m.generator({chance: 'street_suffixes()[0]["name"]'}, function(str) {
+                        expect(str)
+                            .to.be.a('string')
+                            .not.to.be.null
+                            .to.not.be.undefined
+                        done()
+                    })
+                } catch (x) {
+                    done(x)
+                }
+            })
+        })
+
+        describe('Generator: FakerJs', function() {
             it('Should be "lorem.words"', function(done) {
                 try {
                     m.generator({faker: 'lorem.words'}, function(str) {

@@ -21,7 +21,7 @@
     ],
     "files": [
         "./src/index.ts",
-        "./src/interfaces/index.ts",
+        "./src/interfaces.d.ts",
         "./src/utils/index.ts",
         "./src/utils/iterator.ts",
         "./src/utils/pluralizator.ts",

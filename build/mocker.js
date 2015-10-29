@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("faker"), require("immutable"));
+		module.exports = factory(require("chance"), require("faker"), require("immutable"));
 	else if(typeof define === 'function' && define.amd)
-		define(["faker", "immutable"], factory);
+		define(["chance", "faker", "immutable"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("faker"), require("immutable"));
+		exports["MockerData"] = factory(require("chance"), require("faker"), require("immutable"));
 	else
-		root["MockerData"] = factory(root["faker"], root["immutable"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
+		root["MockerData"] = factory(root["chance"], root["faker"], root["immutable"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -77,11 +77,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var faker = __webpack_require__(2);
-	var Immutable = __webpack_require__(3);
-	var utils = __webpack_require__(4);
-	var pluralizator_ts_1 = __webpack_require__(5);
-	var iterator = __webpack_require__(6);
+	var chance = __webpack_require__(2);
+	var faker = __webpack_require__(3);
+	var Immutable = __webpack_require__(4);
+	var utils = __webpack_require__(5);
+	var pluralizator_ts_1 = __webpack_require__(6);
+	var iterator = __webpack_require__(7);
 	var Mocker = (function () {
 	    function Mocker(config) {
 	        this.data = {};
@@ -186,13 +187,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var object = this.entity;
 	        var db = this.data;
 	        if (config.faker) {
-	            return utils.stringToFn(faker, config.faker, db, object);
+	            return utils.stringToFn('faker', config.faker, db, object, faker, chance);
+	        }
+	        else if (config.chance) {
+	            return utils.stringToFn('chance', config.chance, db, object, faker, chance);
 	        }
 	        else if (config.values) {
 	            return faker.random.arrayElement(config.values);
 	        }
 	        else if (config.function) {
-	            return config.function.call({ object: object, faker: faker, db: db });
+	            return config.function.call({ object: object, faker: faker, chance: chance, db: db });
 	        }
 	        else if (config.static) {
 	            return config.static;
@@ -211,16 +215,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("faker");
+	module.exports = require("chance");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("immutable");
+	module.exports = require("faker");
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	module.exports = require("immutable");
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	var floor = Math.floor;
@@ -238,45 +248,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return length;
 	};
-	exports.stringToFn = function (module, string, db, object) {
+	exports.stringToFn = function (moduleName, string, db, object, faker, chance) {
 	    var re = /(^[a-zA-Z.]*)/;
 	    var matches = re.exec(string);
-	    var fn;
-	    var arg;
-	    var arraySelect;
-	    var value;
+	    var strFn;
 	    if (matches && matches.length === 2) {
-	        var path = matches[1].split('.');
-	        fn = module[path[0]][path[1]];
+	        strFn = moduleName + '.' + string;
 	    }
-	    re = /(\{[a-zA-Z0-9_:,'"\s]*\})/;
+	    re = /\((.*?)\)/;
 	    matches = re.exec(string);
-	    if (matches && matches[1]) {
-	        arg = JSON.parse(matches[1]);
+	    if (!matches) {
+	        strFn = moduleName + '.' + string + '()';
 	    }
-	    else {
-	        re = /\((.*?)\)/;
-	        matches = re.exec(string);
-	        if (matches && matches[1]) {
-	            arg = eval(matches[1]);
-	        }
-	    }
-	    re = /\[(\w+)(\w+)?\]/;
-	    matches = re.exec(string);
-	    if (matches && matches[1]) {
-	        arraySelect = matches[1];
-	    }
-	    if (!arg) {
-	        value = fn.call();
-	    }
-	    else {
-	        value = fn.call(this, arg);
-	    }
-	    var val = value;
-	    if (arraySelect) {
-	        val = value[arraySelect];
-	    }
-	    return val;
+	    return eval(strFn);
 	};
 	exports.iamLastParent = function (obj) {
 	    var last = false;
@@ -395,7 +379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	function default_1(str) {
@@ -491,10 +475,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(4);
+	var utils = __webpack_require__(5);
 	exports.eachLvl = function (obj, processor, currentPath) {
 	    if (!currentPath) {
 	        currentPath = [];
