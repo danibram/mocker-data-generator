@@ -82,12 +82,13 @@ Inside every value you can put:
 - ***faker***: you can use directly faker functions without params, if you need to pass params, use function and inside use ```this.faker``` and the normal function
 
     Also, you can do: (note that: db, object are injected)
-
-        - ```'lorem.words'```
-        - ```'lorem.words()'```
-        - ```'lorem.words(1)[0]'```
-        - ```'random.arrayElement(db.users)'```
-        - ```'random.arrayElement(db.users)[userId]'```
+    ```javascript
+        lorem.words
+        lorem.words()
+        lorem.words(1)[0]
+        random.arrayElement(db.users)
+        random.arrayElement(db.users)[userId]
+    ```
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
