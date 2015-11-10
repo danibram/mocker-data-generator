@@ -19,7 +19,7 @@ var m = mocker(config)
 // m.generate('user', 4)
 // .then(m.generate('group', 2))
 // .then(m.generate('conditionalField', 2))
-m.generate('situation', 4)
+m.generate('situation', 10)
 
     .then(function(data) {
         console.log(util.inspect(data, { depth: 10 }))

@@ -33,59 +33,64 @@ export default class Mocker {
                 this.data[entityPlural] = d
                 resolve(this.data)
             }
+            try {
+                if ((Number as any).isInteger(options)){
 
-            if ((Number as any).isInteger(options)){
-
-                utils.repeatFN( options,
-                    (nxt) => {
-                        let cfg = this.config.toJS()
-                        if (utils.iamLastParent(cfg[entity])) {
-                            this.generator(cfg[entity], function(data){
-                                d.push(data)
-                                nxt()
-                            })
-                        } else {
-                            this.generateEntity(cfg[entity], function (data) {
-                                d.push(data)
-                                nxt()
-                            })
-                        }
-                    },
-                    finalCb
-                )
-            } else {
-
-                let cfg = this.config.toJS()
-                let f = options.uniqueField
-                let possibleValues
-                if (f === '.') {
-                    possibleValues = cfg[entity].values
+                    utils.repeatFN( options,
+                        (nxt) => {
+                            let cfg = this.config.toJS()
+                            if (utils.iamLastParent(cfg[entity])) {
+                                this.generator(cfg[entity], function(data){
+                                    d.push(data)
+                                    nxt()
+                                })
+                            } else {
+                                this.generateEntity(cfg[entity], function (data) {
+                                    d.push(data)
+                                    nxt()
+                                })
+                            }
+                        },
+                        finalCb
+                    )
                 } else {
-                    possibleValues = cfg[entity][f].values
+
+                    let cfg = this.config.toJS()
+                    let f = options.uniqueField
+                    let possibleValues
+                    if (f === '.') {
+                        possibleValues = cfg[entity].values
+                    } else {
+                        possibleValues = cfg[entity][f].values
+                    }
+
+                    let length = possibleValues.length
+
+                    utils.eachSeries(
+                        possibleValues,
+                        (k, nxt) => {
+                            let cfg = this.config.toJS()
+
+                            if (f === '.') {
+                                d.push(k)
+                                return nxt()
+                            }
+
+                            cfg[entity][f] = {static: k}
+
+
+                            this.generateEntity(cfg[entity], (data) => {
+                                d.push(data)
+                                nxt()
+                            })
+                        },
+                        finalCb
+                    )
                 }
-
-                let length = possibleValues.length
-
-                utils.eachSeries(
-                    possibleValues,
-                    (k, nxt) => {
-                        let cfg = this.config.toJS()
-
-                        if (f === '.') {
-                            d.push(k)
-                            return nxt()
-                        }
-
-                        cfg[entity][f] = {static: k}
-
-
-                        this.generateEntity(cfg[entity], (data) => {
-                            d.push(data)
-                            nxt()
-                        })
-                    },
-                    finalCb
-                )
+            } catch (e){
+                console.log('Exception: mocker-data-generator')
+                console.log('Error generating ' + entityPlural + ' : ' + e)
+                reject(e)
             }
         })
     }

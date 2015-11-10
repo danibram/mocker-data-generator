@@ -103,46 +103,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _this.data[entityPlural] = d;
 	                resolve(_this.data);
 	            };
-	            if (Number.isInteger(options)) {
-	                utils.repeatFN(options, function (nxt) {
+	            try {
+	                if (Number.isInteger(options)) {
+	                    utils.repeatFN(options, function (nxt) {
+	                        var cfg = _this.config.toJS();
+	                        if (utils.iamLastParent(cfg[entity])) {
+	                            _this.generator(cfg[entity], function (data) {
+	                                d.push(data);
+	                                nxt();
+	                            });
+	                        }
+	                        else {
+	                            _this.generateEntity(cfg[entity], function (data) {
+	                                d.push(data);
+	                                nxt();
+	                            });
+	                        }
+	                    }, finalCb);
+	                }
+	                else {
 	                    var cfg = _this.config.toJS();
-	                    if (utils.iamLastParent(cfg[entity])) {
-	                        _this.generator(cfg[entity], function (data) {
-	                            d.push(data);
-	                            nxt();
-	                        });
+	                    var f = options.uniqueField;
+	                    var possibleValues;
+	                    if (f === '.') {
+	                        possibleValues = cfg[entity].values;
 	                    }
 	                    else {
+	                        possibleValues = cfg[entity][f].values;
+	                    }
+	                    var length_1 = possibleValues.length;
+	                    utils.eachSeries(possibleValues, function (k, nxt) {
+	                        var cfg = _this.config.toJS();
+	                        if (f === '.') {
+	                            d.push(k);
+	                            return nxt();
+	                        }
+	                        cfg[entity][f] = { static: k };
 	                        _this.generateEntity(cfg[entity], function (data) {
 	                            d.push(data);
 	                            nxt();
 	                        });
-	                    }
-	                }, finalCb);
+	                    }, finalCb);
+	                }
 	            }
-	            else {
-	                var cfg = _this.config.toJS();
-	                var f = options.uniqueField;
-	                var possibleValues;
-	                if (f === '.') {
-	                    possibleValues = cfg[entity].values;
-	                }
-	                else {
-	                    possibleValues = cfg[entity][f].values;
-	                }
-	                var length_1 = possibleValues.length;
-	                utils.eachSeries(possibleValues, function (k, nxt) {
-	                    var cfg = _this.config.toJS();
-	                    if (f === '.') {
-	                        d.push(k);
-	                        return nxt();
-	                    }
-	                    cfg[entity][f] = { static: k };
-	                    _this.generateEntity(cfg[entity], function (data) {
-	                        d.push(data);
-	                        nxt();
-	                    });
-	                }, finalCb);
+	            catch (e) {
+	                console.log('Exception: mocker-data-generator');
+	                console.log('Error generating ' + entityPlural + ' : ' + e);
+	                reject(e);
 	            }
 	        });
 	    };

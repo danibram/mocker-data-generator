@@ -156,7 +156,8 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.4.0)
+####(0.4.1)
+- Show in console the errors. (I will improve this)
 - Add support to chanceJs, exactly like FakerJs (see "Model definition" ***Chance***)
 
 ####(0.3.0)
