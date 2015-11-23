@@ -160,7 +160,7 @@ m.generate('user', 2)
 
 ## Release History
 
-#### (0.4.2)
+#### (0.4.3)
 - Add incrementalId config
 - Some tweaks on dev config to start to use generators on typescript
 

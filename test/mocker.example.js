@@ -16,7 +16,7 @@ var config = {
         }
     }
 }
-var m = mocker.default(config)
+var m = mocker(config)
 
 // m.generate('user', 4)
 // .then(m.generate('group', 2))

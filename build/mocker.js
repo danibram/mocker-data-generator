@@ -56,10 +56,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
 	var _index = __webpack_require__(1);
 
 	var _index2 = _interopRequireDefault(_index);
@@ -72,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new _index2.default(config);
 	};
 
-	exports.default = mocker;
+	module.exports = mocker;
 
 /***/ },
 /* 1 */

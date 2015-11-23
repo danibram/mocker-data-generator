@@ -232,6 +232,68 @@ describe('Mocker: Generators (Fields)', function() {
             })
         })
 
+        describe('Options: IncrementalId', function() {
+            var len = 10
+            var solution = []
+            var config = {
+                user:{
+                    id:{
+                        incrementalId: 0
+                    }
+                }
+            }
+            for (var i = 0; i < len; i++) {
+                solution.push({id: i})
+            }
+
+            var m = mocker(config)
+            it('Should create incrementalIds', function(done) {
+                m.generate('user', len)
+                    .then(function(str) {
+                        try {
+                            expect(str.users)
+                                .to.be.an('array')
+                                .to.deep.equal(solution)
+                                .to.not.be.null
+                                .to.not.be.undefined
+                            done()
+                        } catch (x) {
+                            done(x)
+                        }
+                    })
+            })
+
+            var len = 10
+            var solution = []
+            var config = {
+                user:{
+                    id:{
+                        incrementalId: 10
+                    }
+                }
+            }
+            for (var i = 0; i < len; i++) {
+                solution.push({id: i + 10})
+            }
+
+            var m = mocker(config)
+            it('Should create incrementalIds with an offset', function(done) {
+                m.generate('user', len)
+                    .then(function(str) {
+                        try {
+                            expect(str.users)
+                                .to.be.an('array')
+                                .to.deep.equal(solution)
+                                .to.not.be.null
+                                .to.not.be.undefined
+                            done()
+                        } catch (x) {
+                            done(x)
+                        }
+                    })
+            })
+        })
+
         describe('Options: Function', function() {
             it('Should have funtion opts', function(done) {
                 m.generator({
