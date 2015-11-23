@@ -1,10 +1,10 @@
 declare function require(name:string)
 
-import * as Chance from 'chance'
+//import * as Chance from 'chance'
+let Immutable = require('immutable')
+let faker = require('faker')
+let Chance = require('chance')
 const chance = new Chance()
-
-import * as faker from 'faker'
-import Immutable = require('immutable')
 
 import * as utils from './utils/index.ts'
 import pluralize from './utils/pluralizator.ts'
@@ -17,22 +17,25 @@ export default class Mocker {
     public entity = {}
     public initialData = null
     public path = []
+    private entityOutputName = ''
+    private entityName = ''
 
     constructor(config: any) {
         this.config = Immutable.fromJS(config)
     }
 
     generate(entity: string, options: any) {
-        let d = []
-        const entityPlural = pluralize(entity)
+        let entityPlural = pluralize(entity)
+        this.entityOutputName = entityPlural
+        this.entityName = entity
         this.data[entityPlural] = []
         this.initialData = {}
 
         return new Promise((resolve, reject) => {
             let finalCb = () => {
-                this.data[entityPlural] = d
                 resolve(this.data)
             }
+
             try {
                 if ((Number as any).isInteger(options)){
 
@@ -40,13 +43,13 @@ export default class Mocker {
                         (nxt) => {
                             let cfg = this.config.toJS()
                             if (utils.iamLastParent(cfg[entity])) {
-                                this.generator(cfg[entity], function(data){
-                                    d.push(data)
+                                this.generator(cfg[entity], (data) => {
+                                    this.data[this.entityOutputName].push(data)
                                     nxt()
                                 })
                             } else {
-                                this.generateEntity(cfg[entity], function (data) {
-                                    d.push(data)
+                                this.generateEntity(cfg[entity], (data) => {
+                                    this.data[this.entityOutputName].push(data)
                                     nxt()
                                 })
                             }
@@ -72,7 +75,7 @@ export default class Mocker {
                             let cfg = this.config.toJS()
 
                             if (f === '.') {
-                                d.push(k)
+                                this.data[this.entityOutputName].push(k)
                                 return nxt()
                             }
 
@@ -80,7 +83,7 @@ export default class Mocker {
 
 
                             this.generateEntity(cfg[entity], (data) => {
-                                d.push(data)
+                                this.data[this.entityOutputName].push(data)
                                 nxt()
                             })
                         },
@@ -90,6 +93,7 @@ export default class Mocker {
             } catch (e){
                 console.log('Exception: mocker-data-generator')
                 console.log('Error generating ' + entityPlural + ' : ' + e)
+                console.log(e.stack)
                 reject(e)
             }
         })
@@ -149,6 +153,8 @@ export default class Mocker {
             return config.function.call({object, faker, chance, db})
         } else if (config.static) {
             return config.static
+        } else if (config.hasOwnProperty('incrementalId')) {
+            return parseInt(db[this.entityOutputName].length) + parseInt(config.incrementalId)
         } else {
             return null
         }

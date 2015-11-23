@@ -25,12 +25,10 @@ fs.readdirSync('node_modules')
 
 module.exports = {
     module: {
-        preLoaders: [
-          { test: /\.js$/, loaders: ['jscs'], exclude: /node_modules/ }
-        ],
+        preLoaders: [],
         loaders: [
-          { test: /\.js$/, loaders: ['babel?stage=0'], exclude: /node_modules/ },
-          { test: /\.ts$/, loaders: ['ts-loader'], exclude: /node_modules/ }
+          { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+          { test: /\.ts$/, loaders: ['babel-loader','ts-loader'], exclude: /node_modules/ }
         ],
         noParse: []
     },

@@ -1,13 +1,12 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "jsx": "react",
+        "target": "es6",
         "module": "commonjs",
         "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
-        "sourceMap": true,
+        "sourceMap": false,
         "outDir": ".tmp",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true
@@ -15,8 +14,6 @@
     "filesGlob": [
         "./**/*.ts",
         "!./node_modules/**/*.ts",
-        "./**/*.tsx",
-        "!./node_modules/**/*.tsx",
         "!./lib"
     ],
     "files": [
@@ -26,7 +23,6 @@
         "./src/utils/iterator.ts",
         "./src/utils/pluralizator.ts",
         "./typings/chance/chance.d.ts",
-        "./typings/es6-promise/es6-promise.d.ts",
         "./typings/faker/faker.d.ts",
         "./typings/globals.d.ts",
         "./typings/tsd.d.ts"
@@ -46,5 +42,8 @@
         "placeOpenBraceOnNewLineForFunctions": false,
         "placeOpenBraceOnNewLineForControlBlocks": false
     },
-    "exclude": []
+    "exclude": [],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }

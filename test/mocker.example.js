@@ -3,6 +3,9 @@ var util = require('util')
 
 var config = {
     situation: {
+        id: {
+            incrementalId: 0
+        },
         places: {
             values: ['HOUSE', 'CAR', 'MOTORBIKE']
         }
@@ -13,8 +16,7 @@ var config = {
         }
     }
 }
-
-var m = mocker(config)
+var m = mocker.default(config)
 
 // m.generate('user', 4)
 // .then(m.generate('group', 2))

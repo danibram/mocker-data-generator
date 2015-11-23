@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("chance"), require("faker"), require("immutable"));
+		module.exports = factory(require("immutable"), require("faker"), require("chance"), require("babel-polyfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["chance", "faker", "immutable"], factory);
+		define(["immutable", "faker", "chance", "babel-polyfill"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("chance"), require("faker"), require("immutable"));
+		exports["MockerData"] = factory(require("immutable"), require("faker"), require("chance"), require("babel-polyfill"));
 	else
-		root["MockerData"] = factory(root["chance"], root["faker"], root["immutable"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
+		root["MockerData"] = factory(root["immutable"], root["faker"], root["chance"], root["babel-polyfill"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,210 +56,234 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _index = __webpack_require__(1);
 
-	var _srcIndexTs = __webpack_require__(1);
+	var _index2 = _interopRequireDefault(_index);
 
-	var _srcIndexTs2 = _interopRequireDefault(_srcIndexTs);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	__webpack_require__(8);
 
 	var mocker = function mocker(config) {
-	    return new _srcIndexTs2['default'](config);
+	    return new _index2.default(config);
 	};
 
-	exports['default'] = mocker;
-	module.exports = exports['default'];
+	exports.default = mocker;
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Chance = __webpack_require__(2);
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _index = __webpack_require__(2);
+
+	var utils = _interopRequireWildcard(_index);
+
+	var _pluralizator = __webpack_require__(3);
+
+	var _pluralizator2 = _interopRequireDefault(_pluralizator);
+
+	var _iterator = __webpack_require__(4);
+
+	var iterator = _interopRequireWildcard(_iterator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Immutable = __webpack_require__(5);
+	var faker = __webpack_require__(6);
+	var Chance = __webpack_require__(7);
 	var chance = new Chance();
-	var faker = __webpack_require__(3);
-	var Immutable = __webpack_require__(4);
-	var utils = __webpack_require__(5);
-	var pluralizator_ts_1 = __webpack_require__(6);
-	var iterator = __webpack_require__(7);
+
 	var Mocker = (function () {
 	    function Mocker(config) {
+	        _classCallCheck(this, Mocker);
+
 	        this.data = {};
 	        this.entity = {};
 	        this.initialData = null;
 	        this.path = [];
+	        this.entityOutputName = '';
+	        this.entityName = '';
 	        this.config = Immutable.fromJS(config);
 	    }
-	    Mocker.prototype.generate = function (entity, options) {
-	        var _this = this;
-	        var d = [];
-	        var entityPlural = pluralizator_ts_1.default(entity);
-	        this.data[entityPlural] = [];
-	        this.initialData = {};
-	        return new Promise(function (resolve, reject) {
-	            var finalCb = function () {
-	                _this.data[entityPlural] = d;
-	                resolve(_this.data);
-	            };
-	            try {
-	                if (Number.isInteger(options)) {
-	                    utils.repeatFN(options, function (nxt) {
-	                        var cfg = _this.config.toJS();
-	                        if (utils.iamLastParent(cfg[entity])) {
-	                            _this.generator(cfg[entity], function (data) {
-	                                d.push(data);
-	                                nxt();
-	                            });
-	                        }
-	                        else {
-	                            _this.generateEntity(cfg[entity], function (data) {
-	                                d.push(data);
-	                                nxt();
-	                            });
-	                        }
-	                    }, finalCb);
-	                }
-	                else {
-	                    var cfg = _this.config.toJS();
-	                    var f = options.uniqueField;
-	                    var possibleValues;
-	                    if (f === '.') {
-	                        possibleValues = cfg[entity].values;
+
+	    _createClass(Mocker, [{
+	        key: 'generate',
+	        value: function generate(entity, options) {
+	            var _this = this;
+
+	            var entityPlural = (0, _pluralizator2.default)(entity);
+	            this.entityOutputName = entityPlural;
+	            this.entityName = entity;
+	            this.data[entityPlural] = [];
+	            this.initialData = {};
+	            return new Promise(function (resolve, reject) {
+	                var finalCb = function finalCb() {
+	                    resolve(_this.data);
+	                };
+	                try {
+	                    if (Number.isInteger(options)) {
+	                        utils.repeatFN(options, function (nxt) {
+	                            var cfg = _this.config.toJS();
+	                            if (utils.iamLastParent(cfg[entity])) {
+	                                _this.generator(cfg[entity], function (data) {
+	                                    _this.data[_this.entityOutputName].push(data);
+	                                    nxt();
+	                                });
+	                            } else {
+	                                _this.generateEntity(cfg[entity], function (data) {
+	                                    _this.data[_this.entityOutputName].push(data);
+	                                    nxt();
+	                                });
+	                            }
+	                        }, finalCb);
+	                    } else {
+	                        (function () {
+	                            var cfg = _this.config.toJS();
+	                            var f = options.uniqueField;
+	                            var possibleValues = undefined;
+	                            if (f === '.') {
+	                                possibleValues = cfg[entity].values;
+	                            } else {
+	                                possibleValues = cfg[entity][f].values;
+	                            }
+	                            var length = possibleValues.length;
+	                            utils.eachSeries(possibleValues, function (k, nxt) {
+	                                var cfg = _this.config.toJS();
+	                                if (f === '.') {
+	                                    _this.data[_this.entityOutputName].push(k);
+	                                    return nxt();
+	                                }
+	                                cfg[entity][f] = { static: k };
+	                                _this.generateEntity(cfg[entity], function (data) {
+	                                    _this.data[_this.entityOutputName].push(data);
+	                                    nxt();
+	                                });
+	                            }, finalCb);
+	                        })();
 	                    }
-	                    else {
-	                        possibleValues = cfg[entity][f].values;
-	                    }
-	                    var length_1 = possibleValues.length;
-	                    utils.eachSeries(possibleValues, function (k, nxt) {
-	                        var cfg = _this.config.toJS();
-	                        if (f === '.') {
-	                            d.push(k);
-	                            return nxt();
-	                        }
-	                        cfg[entity][f] = { static: k };
-	                        _this.generateEntity(cfg[entity], function (data) {
-	                            d.push(data);
-	                            nxt();
-	                        });
-	                    }, finalCb);
-	                }
-	            }
-	            catch (e) {
-	                console.log('Exception: mocker-data-generator');
-	                console.log('Error generating ' + entityPlural + ' : ' + e);
-	                reject(e);
-	            }
-	        });
-	    };
-	    Mocker.prototype.generateEntity = function (entityConfig, cb) {
-	        var _this = this;
-	        this.entity = Object.assign({}, entityConfig);
-	        iterator.eachLvl(this.entity, function (obj, k, value) {
-	            _this.generator(value, function (fieldCalculated) {
-	                if (!utils.isConditional(k)) {
-	                    obj[k] = fieldCalculated;
-	                }
-	                else {
-	                    var key = k.split(',');
-	                    if (utils.evalWithContextData(key[0], _this.entity)) {
-	                        obj[key[1]] = fieldCalculated;
-	                        delete obj[k];
-	                    }
-	                    else {
-	                        delete obj[k];
-	                    }
+	                } catch (e) {
+	                    console.log('Exception: mocker-data-generator');
+	                    console.log('Error generating ' + entityPlural + ' : ' + e);
+	                    console.log(e.stack);
+	                    reject(e);
 	                }
 	            });
-	        });
-	        cb(this.entity);
-	    };
-	    Mocker.prototype.generator = function (field, cb) {
-	        if (utils.isArray(field)) {
-	            cb(this.generateArrayField(field[0], field[1]));
 	        }
-	        else {
-	            cb(this.generateNormalField(field));
+	    }, {
+	        key: 'generateEntity',
+	        value: function generateEntity(entityConfig, cb) {
+	            var _this2 = this;
+
+	            this.entity = Object.assign({}, entityConfig);
+	            iterator.eachLvl(this.entity, function (obj, k, value) {
+	                _this2.generator(value, function (fieldCalculated) {
+	                    if (!utils.isConditional(k)) {
+	                        obj[k] = fieldCalculated;
+	                    } else {
+	                        var key = k.split(',');
+	                        if (utils.evalWithContextData(key[0], _this2.entity)) {
+	                            obj[key[1]] = fieldCalculated;
+	                            delete obj[k];
+	                        } else {
+	                            delete obj[k];
+	                        }
+	                    }
+	                });
+	            });
+	            cb(this.entity);
 	        }
-	    };
-	    Mocker.prototype.generateArrayField = function (fieldConfig, arrayConfig) {
-	        var array = [];
-	        var length = utils.fieldArrayCalcLength(arrayConfig);
-	        for (var i = 0; i < length; i++) {
-	            array.push(this.generateNormalField(fieldConfig));
+	    }, {
+	        key: 'generator',
+	        value: function generator(field, cb) {
+	            if (utils.isArray(field)) {
+	                cb(this.generateArrayField(field[0], field[1]));
+	            } else {
+	                cb(this.generateNormalField(field));
+	            }
 	        }
-	        return array;
-	    };
-	    Mocker.prototype.generateNormalField = function (config) {
-	        var object = this.entity;
-	        var db = this.data;
-	        if (config.faker) {
-	            return utils.stringToFn('faker', config.faker, db, object, faker, chance);
+	    }, {
+	        key: 'generateArrayField',
+	        value: function generateArrayField(fieldConfig, arrayConfig) {
+	            var array = [];
+	            var length = utils.fieldArrayCalcLength(arrayConfig);
+	            for (var i = 0; i < length; i++) {
+	                array.push(this.generateNormalField(fieldConfig));
+	            }
+	            return array;
 	        }
-	        else if (config.chance) {
-	            return utils.stringToFn('chance', config.chance, db, object, faker, chance);
+	    }, {
+	        key: 'generateNormalField',
+	        value: function generateNormalField(config) {
+	            var object = this.entity;
+	            var db = this.data;
+	            if (config.faker) {
+	                return utils.stringToFn('faker', config.faker, db, object, faker, chance);
+	            } else if (config.chance) {
+	                return utils.stringToFn('chance', config.chance, db, object, faker, chance);
+	            } else if (config.values) {
+	                return faker.random.arrayElement(config.values);
+	            } else if (config.function) {
+	                return config.function.call({ object: object, faker: faker, chance: chance, db: db });
+	            } else if (config.static) {
+	                return config.static;
+	            } else if (config.hasOwnProperty('incrementalId')) {
+	                return parseInt(db[this.entityOutputName].length) + parseInt(config.incrementalId);
+	            } else {
+	                return null;
+	            }
 	        }
-	        else if (config.values) {
-	            return faker.random.arrayElement(config.values);
-	        }
-	        else if (config.function) {
-	            return config.function.call({ object: object, faker: faker, chance: chance, db: db });
-	        }
-	        else if (config.static) {
-	            return config.static;
-	        }
-	        else {
-	            return null;
-	        }
-	    };
+	    }]);
+
 	    return Mocker;
 	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = Mocker;
 
+	exports.default = Mocker;
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("chance");
+	'use strict';
 
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	module.exports = require("faker");
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	module.exports = require("immutable");
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	var floor = Math.floor;
-	var keys = Object.keys;
-	exports.evalWithContextData = function (key, object) {
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var _Math = Math;
+	var floor = _Math.floor;
+	var _Object = Object;
+	var keys = _Object.keys;
+	var evalWithContextData = exports.evalWithContextData = function evalWithContextData(key, object) {
 	    return eval(key);
 	};
-	exports.fieldArrayCalcLength = function (config) {
-	    var length;
+	var fieldArrayCalcLength = exports.fieldArrayCalcLength = function fieldArrayCalcLength(config) {
+	    var length = undefined;
 	    if (config.fixedLength) {
 	        length = config.length;
-	    }
-	    else {
-	        length = Math.floor((Math.random() * config.length) + 1);
+	    } else {
+	        length = Math.floor(Math.random() * config.length + 1);
 	    }
 	    return length;
 	};
-	exports.stringToFn = function (moduleName, string, db, object, faker, chance) {
+	var stringToFn = exports.stringToFn = function stringToFn(moduleName, string, db, object, faker, chance) {
 	    var re = /(^[a-zA-Z.]*)/;
 	    var matches = re.exec(string);
-	    var strFn;
+	    var strFn = undefined;
 	    if (matches && matches.length === 2) {
 	        strFn = moduleName + '.' + string;
 	    }
@@ -270,7 +294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return eval(strFn);
 	};
-	exports.iamLastParent = function (obj) {
+	var iamLastParent = exports.iamLastParent = function iamLastParent(obj) {
 	    var last = false;
 	    if (this.isObject(obj)) {
 	        var ks = Object.keys(obj);
@@ -281,62 +305,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	                break;
 	            }
 	        }
-	    }
-	    else {
+	    } else {
 	        last = true;
 	    }
 	    return last;
 	};
-	exports.iamLastChild = function (parent, k) {
+	var iamLastChild = exports.iamLastChild = function iamLastChild(parent, k) {
 	    if (this.isObject(parent[k])) {
 	        return false;
-	    }
-	    else {
+	    } else {
 	        return true;
 	    }
 	};
-	exports.isConditional = function (str) {
+	var isConditional = exports.isConditional = function isConditional(str) {
 	    var arr = str.split(',');
 	    if (arr.length > 1) {
 	        return true;
-	    }
-	    else {
+	    } else {
 	        return false;
 	    }
 	};
-	exports.repeatFN = function (times, fn, callback) {
+	var repeatFN = exports.repeatFN = function repeatFN(times, fn, callback) {
 	    var completed = 0;
-	    var iterate = function () {
+	    var iterate = function iterate() {
 	        fn(function () {
 	            completed += 1;
 	            if (completed >= times) {
 	                callback();
-	            }
-	            else {
-	                iterate();
-	            }
-	        });
-	    };
-	    iterate();
-	};
-	exports.eachSeries = function (arr, iterator, callback) {
-	    callback = callback || function () { };
-	    if (!arr.length) {
-	        return callback();
-	    }
-	    var completed = 0;
-	    var iterate = function () {
-	        iterator(arr[completed], function (err) {
-	            if (err) {
-	                callback(err);
-	                callback = function () { };
-	            }
-	            else {
-	                completed += 1;
-	                if (completed >= arr.length) {
-	                    callback();
-	                }
-	                else {
+	            } else {
+	                if (completed % 2000 == 0) {
+	                    setTimeout(iterate, 0);
+	                } else {
 	                    iterate();
 	                }
 	            }
@@ -344,53 +343,76 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    iterate();
 	};
-	exports.isArray = function (x) {
+	var eachSeries = exports.eachSeries = function eachSeries(arr, iterator, callback) {
+	    callback = callback || function () {};
+	    if (!arr.length) {
+	        return callback();
+	    }
+	    var completed = 0;
+	    var iterate = function iterate() {
+	        iterator(arr[completed], function (err) {
+	            if (err) {
+	                callback(err);
+	                callback = function () {};
+	            } else {
+	                completed += 1;
+	                if (completed >= arr.length) {
+	                    callback();
+	                } else {
+	                    iterate();
+	                }
+	            }
+	        });
+	    };
+	    iterate();
+	};
+	var isArray = exports.isArray = function isArray(x) {
 	    if (Object.prototype.toString.call(x) === '[object Array]') {
 	        return true;
 	    }
 	    return false;
 	};
-	exports.isObject = function (x) {
+	var isObject = exports.isObject = function isObject(x) {
 	    if (Object.prototype.toString.call(x) === '[object Object]') {
 	        return true;
 	    }
 	    return false;
 	};
-	exports.getKeys = function (object) {
+	var getKeys = exports.getKeys = function getKeys(object) {
 	    var keys_ = keys(object);
-	    if (this.isArray(object)) {
-	    }
-	    else if (this.isArrayLike(object)) {
-	        keys_ = keys_.filter(function (key) { return floor(Number(key)) == key; });
-	    }
-	    else {
+	    if (this.isArray(object)) {} else if (this.isArrayLike(object)) {
+	        keys_ = keys_.filter(function (key) {
+	            return floor(Number(key)) == key;
+	        });
+	    } else {
 	        keys_ = keys_.sort();
 	    }
 	    return keys_;
 	};
-	exports.isArrayLike = function (any) {
-	    if (!this.isObject(any))
-	        return false;
-	    if (this.isGlobalObject(any))
-	        return false;
-	    if (!('length' in any))
-	        return false;
+	var isArrayLike = exports.isArrayLike = function isArrayLike(any) {
+	    if (!this.isObject(any)) return false;
+	    if (this.isGlobalObject(any)) return false;
+	    if (!('length' in any)) return false;
 	    var length = any.length;
-	    if (length === 0)
-	        return true;
-	    return (length - 1) in any;
+	    if (length === 0) return true;
+	    return length - 1 in any;
 	};
 	var GLOBAL_OBJECT = new Function('return this')();
-	exports.isGlobalObject = function (any) {
+	var isGlobalObject = exports.isGlobalObject = function isGlobalObject(any) {
 	    return any === GLOBAL_OBJECT;
 	};
 
-
 /***/ },
-/* 6 */
+/* 3 */
 /***/ function(module, exports) {
 
-	function default_1(str) {
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function (str) {
 	    var plural = {
 	        '(quiz)$': "$1zes",
 	        '^(ox)$': "$1en",
@@ -451,43 +473,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'tooth': 'teeth',
 	        'person': 'people'
 	    };
-	    var uncountable = [
-	        'sheep',
-	        'fish',
-	        'deer',
-	        'series',
-	        'species',
-	        'money',
-	        'rice',
-	        'information',
-	        'equipment'
-	    ];
-	    if (uncountable.indexOf(str.toLowerCase()) >= 0)
-	        return str;
+	    var uncountable = ['sheep', 'fish', 'deer', 'series', 'species', 'money', 'rice', 'information', 'equipment'];
+	    if (uncountable.indexOf(str.toLowerCase()) >= 0) return str;
 	    for (var word in irregular) {
 	        var pattern = new RegExp(word + '$', 'i');
 	        var replace = irregular[word];
-	        if (pattern.test(str))
-	            return str.replace(pattern, replace);
+	        if (pattern.test(str)) return str.replace(pattern, replace);
 	    }
 	    var array = plural;
 	    for (var reg in array) {
 	        var pattern = new RegExp(reg, 'i');
-	        if (pattern.test(str))
-	            return str.replace(pattern, array[reg]);
+	        if (pattern.test(str)) return str.replace(pattern, array[reg]);
 	    }
 	    return str + 's';
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = default_1;
-
+	};
 
 /***/ },
-/* 7 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(5);
-	exports.eachLvl = function (obj, processor, currentPath) {
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.eachLvl = undefined;
+
+	var _index = __webpack_require__(2);
+
+	var utils = _interopRequireWildcard(_index);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var eachLvl = exports.eachLvl = function eachLvl(obj, processor, currentPath) {
 	    if (!currentPath) {
 	        currentPath = [];
 	    }
@@ -496,17 +514,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var value = obj[k];
 	            if (utils.iamLastParent(value)) {
 	                processor(obj, k, value);
-	            }
-	            else {
+	            } else {
 	                var path = currentPath.slice(0);
 	                path.push(k);
-	                exports.eachLvl(value, processor, path);
+	                eachLvl(value, processor, path);
 	            }
 	        });
 	    }
 	    return;
 	};
 
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = require("immutable");
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = require("faker");
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = require("chance");
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-polyfill");
 
 /***/ }
 /******/ ])

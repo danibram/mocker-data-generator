@@ -82,6 +82,10 @@ Inside every value you can put:
 ```javascript
     { static: 'hello im fixed field' }     
 ```
+- ***incrementalId***: For incremental numeric ids, pass the start number to increment
+```javascript
+    { incrementalId: 0 }     
+```
 
 - ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker, chance}```, and you can use faker or chance functions, object (the specified model), db (actual data generated)
 ```javascript
@@ -156,31 +160,35 @@ m.generate('user', 2)
 
 ## Release History
 
-####(0.4.1)
+#### (0.4.2)
+- Add incrementalId config
+- Some tweaks on dev config to start to use generators on typescript
+
+#### (0.4.1)
 - Show in console the errors. (I will improve this)
 - Add support to chanceJs, exactly like FakerJs (see "Model definition" ***Chance***)
 
-####(0.3.0)
+#### (0.3.0)
 - Fix errors on iteration over nested structures (new improved interator)
 - Added support to call more naturally to FackerJs fields (see "Model definition" ***Faker***)
 
-####(0.2.2)
+#### (0.2.2)
 - Added a pluralization function
 - Fixed a little issue with the roots schemas (now you can do really crazy things, see test/mocker.example.js)
 - Fix errors introduced in 0.2.0
 
-####(0.1.6)
+#### (0.1.6)
 - Fix an error: (Clean initial data field)
 - Fix some memory errors adding inmutableJS for the model
 - Add new tests
 
-####(0.1.1)
+#### (0.1.1)
 - Real Refractor of the code
 - Add support multi-level schemas
 - Add tests
 - Add travis support
 
-####(0.0.4)
+#### (0.0.4)
 - First release i will update soon with tests and more examples, stay tuned!
 
 ## Development

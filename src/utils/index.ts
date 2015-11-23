@@ -77,13 +77,18 @@ export const isConditional = function (str: string) {
 
 export const repeatFN = function (times: number, fn: Function, callback: Function) {
     let completed = 0;
+
     let iterate = function () {
         fn(function () {
             completed += 1;
             if (completed >= times) {
-                callback();
+                callback()
             } else {
-                iterate();
+                if(completed % 2000 == 0){
+                    setTimeout(iterate, 0)
+                } else {
+                    iterate()
+                }
             }
         })
     }
