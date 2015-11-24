@@ -2,7 +2,9 @@
 
 [![Dependency Status](https://david-dm.org/danibram/mocker-data-generator.svg)](https://david-dm.org/danibram/mocker-data-generator) [![Build Status](https://travis-ci.org/danibram/mocker-data-generator.svg)](https://travis-ci.org/danibram/mocker-data-generator)
 
-A simplified way to generate masive mock data based on a schema, build on the top of FakerJs.
+A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data. 
+
+This is a ligth alternative to use [Faker + JSON schema](http://json-schema-faker.js.org/).
 
 ## Getting started
 
@@ -194,7 +196,12 @@ m.generate('user', 2)
 
 ## Development
 
-Run ```npm run dev``` to watch the proyect, webpack compile the code automatically.
+Run ```npm install;npm run dev``` to watch the proyect, webpack compile the code automatically.
+Run ```npm build``` to build the normal and minified version.
+
+## Why not use json-schema-faker?
+
+json-schema-faker is awesome and works really nice, but i need a simplified and fast way to generate mock data for my proyects, so i created this.
 
 ## License
 Licensed under the MIT license. 2015
