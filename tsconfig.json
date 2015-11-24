@@ -25,6 +25,7 @@
         "./typings/chance/chance.d.ts",
         "./typings/faker/faker.d.ts",
         "./typings/globals.d.ts",
+        "./typings/q/Q.d.ts",
         "./typings/tsd.d.ts"
     ],
     "compileOnSave": false,
