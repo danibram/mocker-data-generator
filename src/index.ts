@@ -1,7 +1,8 @@
-declare function require(name:string)
-
 //import * as Chance from 'chance'
+
+
 let Immutable = require('immutable')
+
 let faker = require('faker')
 let Chance = require('chance')
 const chance = new Chance()
@@ -17,6 +18,8 @@ export default class Mocker {
     public entity = {}
     public initialData = null
     public path = []
+    public virtual = false
+    public virtualPaths = []
     private entityOutputName = ''
     private entityName = ''
 
@@ -102,41 +105,60 @@ export default class Mocker {
     generateEntity(entityConfig: Object, cb) {
 
         this.entity = (Object as any).assign({}, entityConfig)
-
-        iterator.eachLvl(this.entity, (obj, k, value) => {
-            this.generator(value, (fieldCalculated) => {
-                if (!utils.isConditional(k)){
-                    obj[k] = fieldCalculated
-                } else {
-                    let key = k.split(',')
-                    if (utils.evalWithContextData(key[0], this.entity)){
-                        obj[key[1]] = fieldCalculated
-                        delete obj[k]
+        let proccessNode = (obj, k, value) => {
+            return new Promise((resolve, reject) => {
+                this.generator(value, (fieldCalculated) => {
+                    if (!utils.isConditional(k)){
+                        obj[k] = fieldCalculated
                     } else {
-                        delete obj[k]
+                        let key = k.split(',')
+                        if (utils.evalWithContextData(key[0], this.entity)){
+                            obj[key[1]] = fieldCalculated
+                            delete obj[k]
+                        } else {
+                            delete obj[k]
+                        }
                     }
-                }
+                    resolve(fieldCalculated)
+                })
             })
-        });
+        }
+
+        let it = iterator.it(this.entity);
+
+
+        let res = {
+            done: false,
+            value:{
+                obj: {},
+                k:'',
+                value: '',
+                path: []
+            }
+        }
+        while(res.value){
+            res = it.next();
+            if (!res.value) break
+            let {obj, k, value} = res.value;
+            proccessNode(obj, k, value);
+        }
 
         cb(this.entity)
     }
 
     generator(field, cb) {
         if ( utils.isArray(field) ){
-            cb(this.generateArrayField(field[0], field[1]))
+            let fieldConfig = field[0]
+            let arrayConfig = field[1]
+            let array = []
+            let length = utils.fieldArrayCalcLength(arrayConfig)
+            for (let i = 0; i < length; i++) {
+                array.push(this.generateNormalField(fieldConfig))
+            }
+            cb(array)
         } else {
             cb(this.generateNormalField(field))
         }
-    }
-
-    generateArrayField(fieldConfig, arrayConfig) {
-        let array = []
-        let length = utils.fieldArrayCalcLength(arrayConfig)
-        for (let i = 0; i < length; i++) {
-            array.push(this.generateNormalField(fieldConfig))
-        }
-        return array
     }
 
     generateNormalField(config) {
@@ -144,9 +166,9 @@ export default class Mocker {
         let db = this.data
 
         if (config.faker){
-            return utils.stringToFn('faker', config.faker, db, object, faker, chance)
+            return utils.stringToFn('faker', config.faker, db, object)
         } else if (config.chance) {
-            return utils.stringToFn('chance', config.chance, db, object, faker, chance)
+            return utils.stringToFn('chance', config.chance, db, object)
         } else if (config.values) {
             return (faker as any).random.arrayElement(config.values)
         } else if (config.function) {

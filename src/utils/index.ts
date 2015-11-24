@@ -1,5 +1,9 @@
 import {ArrayConfig} from '../interfaces.d.ts'
 
+let faker = require('faker')
+let Chance = require('chance')
+const chance = new Chance()
+
 const {floor} = Math
 const {keys} = Object
 
@@ -20,7 +24,7 @@ export const fieldArrayCalcLength = function (config: ArrayConfig) {
 
 //General utils
 
-export const stringToFn = function (moduleName: string, string: string, db: {}, object:{}, faker, chance) {
+export const stringToFn = function (moduleName: string, string: string, db: {}, object:{}) {
 
     let re = /(^[a-zA-Z.]*)/   //aZ.aZ
     let matches = re.exec(string)

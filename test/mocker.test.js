@@ -45,7 +45,7 @@ describe('Mocker: Methods', function() {
 
 describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
-        describe('Generator: ChanceJs', function() {
+        describe('Options: ChanceJs', function() {
             it('Should be "integer"', function(done) {
                 try {
                     m.generator({chance: 'integer'}, function(str) {
@@ -103,7 +103,7 @@ describe('Mocker: Generators (Fields)', function() {
             })
         })
 
-        describe('Generator: FakerJs', function() {
+        describe('Options: FakerJs', function() {
             it('Should be "lorem.words"', function(done) {
                 try {
                     m.generator({faker: 'lorem.words'}, function(str) {
