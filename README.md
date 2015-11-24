@@ -160,9 +160,10 @@ m.generate('user', 2)
 
 ## Release History
 
-#### (0.4.4)
+#### (0.4.5)
 - Add incrementalId config
 - Some tweaks on dev config to start to use generators on typescript
+- Performance tweaks for large data generation
 
 #### (0.4.1)
 - Show in console the errors. (I will improve this)
