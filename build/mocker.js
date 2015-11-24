@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("faker"), require("chance"), require("babel-polyfill"));
+		module.exports = factory(require("faker"), require("chance"), require("immutable"), require("babel-polyfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "faker", "chance", "babel-polyfill"], factory);
+		define(["faker", "chance", "immutable", "babel-polyfill"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("immutable"), require("faker"), require("chance"), require("babel-polyfill"));
+		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("babel-polyfill"));
 	else
-		root["MockerData"] = factory(root["immutable"], root["faker"], root["chance"], root["babel-polyfill"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
+		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["babel-polyfill"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -86,11 +86,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var utils = _interopRequireWildcard(_index);
 
-	var _pluralizator = __webpack_require__(3);
+	var _pluralizator = __webpack_require__(5);
 
 	var _pluralizator2 = _interopRequireDefault(_pluralizator);
 
-	var _iterator = __webpack_require__(4);
+	var _iterator = __webpack_require__(6);
 
 	var iterator = _interopRequireWildcard(_iterator);
 
@@ -100,9 +100,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Immutable = __webpack_require__(5);
-	var faker = __webpack_require__(6);
-	var Chance = __webpack_require__(7);
+	//import * as Chance from 'chance'
+	var Immutable = __webpack_require__(7);
+	var faker = __webpack_require__(3);
+	var Chance = __webpack_require__(4);
 	var chance = new Chance();
 
 	var Mocker = (function () {
@@ -113,6 +114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.entity = {};
 	        this.initialData = null;
 	        this.path = [];
+	        this.virtual = false;
+	        this.virtualPaths = [];
 	        this.entityOutputName = '';
 	        this.entityName = '';
 	        this.config = Immutable.fromJS(config);
@@ -187,41 +190,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var _this2 = this;
 
 	            this.entity = Object.assign({}, entityConfig);
-	            iterator.eachLvl(this.entity, function (obj, k, value) {
-	                _this2.generator(value, function (fieldCalculated) {
-	                    if (!utils.isConditional(k)) {
-	                        obj[k] = fieldCalculated;
-	                    } else {
-	                        var key = k.split(',');
-	                        if (utils.evalWithContextData(key[0], _this2.entity)) {
-	                            obj[key[1]] = fieldCalculated;
-	                            delete obj[k];
+	            var proccessNode = function proccessNode(obj, k, value) {
+	                return new Promise(function (resolve, reject) {
+	                    _this2.generator(value, function (fieldCalculated) {
+	                        if (!utils.isConditional(k)) {
+	                            obj[k] = fieldCalculated;
 	                        } else {
-	                            delete obj[k];
+	                            var key = k.split(',');
+	                            if (utils.evalWithContextData(key[0], _this2.entity)) {
+	                                obj[key[1]] = fieldCalculated;
+	                                delete obj[k];
+	                            } else {
+	                                delete obj[k];
+	                            }
 	                        }
-	                    }
+	                        resolve(fieldCalculated);
+	                    });
 	                });
-	            });
+	            };
+	            var it = iterator.it(this.entity);
+	            var res = {
+	                done: false,
+	                value: {
+	                    obj: {},
+	                    k: '',
+	                    value: '',
+	                    path: []
+	                }
+	            };
+	            while (res.value) {
+	                res = it.next();
+	                if (!res.value) break;
+	                var _res$value = res.value;
+	                var obj = _res$value.obj;
+	                var k = _res$value.k;
+	                var value = _res$value.value;
+
+	                proccessNode(obj, k, value);
+	            }
 	            cb(this.entity);
 	        }
 	    }, {
 	        key: 'generator',
 	        value: function generator(field, cb) {
 	            if (utils.isArray(field)) {
-	                cb(this.generateArrayField(field[0], field[1]));
+	                var fieldConfig = field[0];
+	                var arrayConfig = field[1];
+	                var array = [];
+	                var length = utils.fieldArrayCalcLength(arrayConfig);
+	                for (var i = 0; i < length; i++) {
+	                    array.push(this.generateNormalField(fieldConfig));
+	                }
+	                cb(array);
 	            } else {
 	                cb(this.generateNormalField(field));
 	            }
-	        }
-	    }, {
-	        key: 'generateArrayField',
-	        value: function generateArrayField(fieldConfig, arrayConfig) {
-	            var array = [];
-	            var length = utils.fieldArrayCalcLength(arrayConfig);
-	            for (var i = 0; i < length; i++) {
-	                array.push(this.generateNormalField(fieldConfig));
-	            }
-	            return array;
 	        }
 	    }, {
 	        key: 'generateNormalField',
@@ -229,9 +252,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var object = this.entity;
 	            var db = this.data;
 	            if (config.faker) {
-	                return utils.stringToFn('faker', config.faker, db, object, faker, chance);
+	                return utils.stringToFn('faker', config.faker, db, object);
 	            } else if (config.chance) {
-	                return utils.stringToFn('chance', config.chance, db, object, faker, chance);
+	                return utils.stringToFn('chance', config.chance, db, object);
 	            } else if (config.values) {
 	                return faker.random.arrayElement(config.values);
 	            } else if (config.function) {
@@ -253,13 +276,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	var faker = __webpack_require__(3);
+	var Chance = __webpack_require__(4);
+	var chance = new Chance();
 	var _Math = Math;
 	var floor = _Math.floor;
 	var _Object = Object;
@@ -276,7 +302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return length;
 	};
-	var stringToFn = exports.stringToFn = function stringToFn(moduleName, string, db, object, faker, chance) {
+	var stringToFn = exports.stringToFn = function stringToFn(moduleName, string, db, object) {
 	    var re = /(^[a-zA-Z.]*)/;
 	    var matches = re.exec(string);
 	    var strFn = undefined;
@@ -402,6 +428,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports) {
 
+	module.exports = require("faker");
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = require("chance");
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -485,7 +523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -493,7 +531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.eachLvl = undefined;
+	exports.it = undefined;
 
 	var _index = __webpack_require__(2);
 
@@ -501,42 +539,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	var eachLvl = exports.eachLvl = function eachLvl(obj, processor, currentPath) {
-	    if (!currentPath) {
-	        currentPath = [];
-	    }
-	    if (obj) {
-	        Object.keys(obj).forEach(function (k) {
-	            var value = obj[k];
-	            if (utils.iamLastParent(value)) {
-	                processor(obj, k, value);
-	            } else {
-	                var path = currentPath.slice(0);
-	                path.push(k);
-	                eachLvl(value, processor, path);
+	var it = exports.it = regeneratorRuntime.mark(function it(obj, currentPath) {
+	    var fields, i, k, value, path;
+	    return regeneratorRuntime.wrap(function it$(_context) {
+	        while (1) {
+	            switch (_context.prev = _context.next) {
+	                case 0:
+	                    if (obj) {
+	                        _context.next = 2;
+	                        break;
+	                    }
+
+	                    return _context.abrupt('return');
+
+	                case 2:
+	                    if (!currentPath) {
+	                        currentPath = [];
+	                    }
+	                    fields = Object.keys(obj);
+	                    i = 0;
+
+	                case 5:
+	                    if (!(i < fields.length)) {
+	                        _context.next = 19;
+	                        break;
+	                    }
+
+	                    k = fields[i];
+	                    value = obj[k];
+
+	                    if (!utils.iamLastParent(value)) {
+	                        _context.next = 13;
+	                        break;
+	                    }
+
+	                    _context.next = 11;
+	                    return { obj: obj, k: k, value: value };
+
+	                case 11:
+	                    _context.next = 16;
+	                    break;
+
+	                case 13:
+	                    path = currentPath.slice(0);
+
+	                    path.push(k);
+	                    return _context.delegateYield(it(value, path), 't0', 16);
+
+	                case 16:
+	                    i++;
+	                    _context.next = 5;
+	                    break;
+
+	                case 19:
+	                case 'end':
+	                    return _context.stop();
 	            }
-	        });
-	    }
-	    return;
-	};
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = require("immutable");
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	module.exports = require("faker");
+	        }
+	    }, it, this);
+	});
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = require("chance");
+	module.exports = require("immutable");
 
 /***/ },
 /* 8 */

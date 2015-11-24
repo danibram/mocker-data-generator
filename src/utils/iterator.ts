@@ -1,21 +1,20 @@
 import * as utils from './index.ts'
 
-export const eachLvl = function (obj: {}, processor: Function, currentPath?: string[]) {
+export const it = function *(obj: {}, currentPath?: string[]) {
+    if (!obj) { return }
+    if (!currentPath) { currentPath = [] }
 
-   if (!currentPath) { currentPath = []; }
-   if (obj) {
-       Object.keys(obj).forEach((k) => {
-           let value = obj[k]
+    let fields = Object.keys(obj)
+    for (var i = 0; i< fields.length; i++) {
+        let k = fields[i]
+        let value = obj[k]
 
-           if (utils.iamLastParent(value)) {
-               processor(obj, k, value)
-           } else {
-               let path = currentPath.slice(0)
-               path.push(k)
-               eachLvl(value, processor, path)
-           }
-       });
-   }
-
-   return
+        if (utils.iamLastParent(value)) {
+            yield {obj, k, value}
+        } else {
+            let path = currentPath.slice(0)
+            path.push(k)
+            yield *it(value, path)
+        }
+    }
 }
