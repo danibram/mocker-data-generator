@@ -4,7 +4,7 @@ var util = require('util')
 var config = {
     situation: {
         exampleVirtual:{
-            incrementalId: 0,
+            static: 'hello',
             virtual: true
         },
         id: {

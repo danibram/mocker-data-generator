@@ -358,6 +358,58 @@ describe('Mocker: Generators (Fields)', function() {
 
             })
         })
+
+        describe('Options: Virtual Fields', function() {
+            var situation = {
+                exampleVirtual: {
+                    incrementalId: 0,
+                    virtual: true
+                },
+
+                id: {
+                    function() {
+                        return this.object.exampleVirtual
+                    }
+                },
+                deep:{
+                    more:{
+                        field:{
+                            static: 'im here',
+                            virtual: true
+                        }
+                    }
+                },
+                deep2:{
+                    more:{
+                        field:{
+                            static: 'im here'
+                        }
+                    }
+                }
+            }
+
+            var result = {
+                id: 0,
+                deep2:{
+                    more:{
+                        field:'im here'
+                    }
+                }
+            }
+
+            it('Virtual should be eliminated in the final object', function(done) {
+                var m = mocker({
+                    situation: situation
+                })
+                m.generateEntity(situation, function(data) {
+                        expect(data)
+                            .to.deep.equal(result)
+                            .to.not.be.undefined
+                            .to.not.be.null
+                        done()
+                    })
+            })
+        })
     })
 
     describe('Generators: Levels', function() {

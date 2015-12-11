@@ -9,6 +9,7 @@ const chance = new Chance()
 
 import * as utils from './utils/index.ts'
 import pluralize from './utils/pluralizator.ts'
+import cleanObject from './utils/cleanObject.ts'
 import * as iterator from './utils/iterator.ts'
 
 export default class Mocker {
@@ -105,7 +106,19 @@ export default class Mocker {
     generateEntity(entityConfig: Object, cb) {
 
         this.entity = (Object as any).assign({}, entityConfig)
-        let proccessNode = (obj, k, value) => {
+        let proccessNode = (obj, k, value, path?) => {
+            if (path){
+                if ( utils.isArray(value) ){
+                    if (value[1].virtual){
+                        this.virtualPaths.push(path.toString())
+                    }
+                } else {
+                    if (value.virtual){
+                        this.virtualPaths.push(path.toString())
+                    }
+                }
+            }
+
             return new Promise((resolve, reject) => {
                 this.generator(value, (fieldCalculated) => {
                     if (!utils.isConditional(k)){
@@ -139,11 +152,16 @@ export default class Mocker {
         while(res.value){
             res = it.next();
             if (!res.value) break
-            let {obj, k, value} = res.value;
-            proccessNode(obj, k, value);
+            let {obj, k, value, path} = res.value;
+            proccessNode(obj, k, value, path).then()
         }
 
-        cb(this.entity)
+        if (this.virtualPaths.length > 0){
+            cleanObject(this.virtualPaths, this.entity, {strict: true, symbol: ','})
+                .then(cb)
+        } else {
+            cb(this.entity)
+        }
     }
 
     generator(field, cb) {
@@ -176,7 +194,11 @@ export default class Mocker {
         } else if (config.static) {
             return config.static
         } else if (config.hasOwnProperty('incrementalId')) {
-            return parseInt(db[this.entityOutputName].length) + parseInt(config.incrementalId)
+            let n = 0
+            if (db[this.entityOutputName] && db[this.entityOutputName].length){
+                n = db[this.entityOutputName].length
+            }
+            return parseInt(n + parseInt(config.incrementalId))
         } else {
             return null
         }

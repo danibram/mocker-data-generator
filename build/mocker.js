@@ -7,7 +7,7 @@
 		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("babel-polyfill"));
 	else
 		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["babel-polyfill"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -62,7 +62,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(8);
+	__webpack_require__(9);
 
 	var mocker = function mocker(config) {
 	    return new _index2.default(config);
@@ -90,7 +90,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _pluralizator2 = _interopRequireDefault(_pluralizator);
 
-	var _iterator = __webpack_require__(6);
+	var _cleanObject = __webpack_require__(6);
+
+	var _cleanObject2 = _interopRequireDefault(_cleanObject);
+
+	var _iterator = __webpack_require__(7);
 
 	var iterator = _interopRequireWildcard(_iterator);
 
@@ -101,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	//import * as Chance from 'chance'
-	var Immutable = __webpack_require__(7);
+	var Immutable = __webpack_require__(8);
 	var faker = __webpack_require__(3);
 	var Chance = __webpack_require__(4);
 	var chance = new Chance();
@@ -190,7 +194,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var _this2 = this;
 
 	            this.entity = Object.assign({}, entityConfig);
-	            var proccessNode = function proccessNode(obj, k, value) {
+	            var proccessNode = function proccessNode(obj, k, value, path) {
+	                if (path) {
+	                    if (utils.isArray(value)) {
+	                        if (value[1].virtual) {
+	                            _this2.virtualPaths.push(path.toString());
+	                        }
+	                    } else {
+	                        if (value.virtual) {
+	                            _this2.virtualPaths.push(path.toString());
+	                        }
+	                    }
+	                }
 	                return new Promise(function (resolve, reject) {
 	                    _this2.generator(value, function (fieldCalculated) {
 	                        if (!utils.isConditional(k)) {
@@ -225,10 +240,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var obj = _res$value.obj;
 	                var k = _res$value.k;
 	                var value = _res$value.value;
+	                var path = _res$value.path;
 
-	                proccessNode(obj, k, value);
+	                proccessNode(obj, k, value, path).then();
 	            }
-	            cb(this.entity);
+	            if (this.virtualPaths.length > 0) {
+	                (0, _cleanObject2.default)(this.virtualPaths, this.entity, { strict: true, symbol: ',' }).then(cb);
+	            } else {
+	                cb(this.entity);
+	            }
 	        }
 	    }, {
 	        key: 'generator',
@@ -262,7 +282,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else if (config.static) {
 	                return config.static;
 	            } else if (config.hasOwnProperty('incrementalId')) {
-	                return parseInt(db[this.entityOutputName].length) + parseInt(config.incrementalId);
+	                var n = 0;
+	                if (db[this.entityOutputName] && db[this.entityOutputName].length) {
+	                    n = db[this.entityOutputName].length;
+	                }
+	                return parseInt(n + parseInt(config.incrementalId));
 	            } else {
 	                return null;
 	            }
@@ -524,6 +548,205 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function (paths, object, options) {
+	    return new Promise(function (resolve) {
+	        var objectCleaner = regeneratorRuntime.mark(function objectCleaner(path, obj, options) {
+	            var lvls, dest, i, field;
+	            return regeneratorRuntime.wrap(function objectCleaner$(_context) {
+	                while (1) {
+	                    switch (_context.prev = _context.next) {
+	                        case 0:
+	                            lvls = path.split(options.symbol);
+	                            dest = obj;
+
+	                            if (!(!lvls || lvls.length === 0)) {
+	                                _context.next = 4;
+	                                break;
+	                            }
+
+	                            return _context.abrupt("return");
+
+	                        case 4:
+	                            if (obj) {
+	                                _context.next = 6;
+	                                break;
+	                            }
+
+	                            return _context.abrupt("return");
+
+	                        case 6:
+	                            i = 0;
+
+	                        case 7:
+	                            if (!(i < lvls.length)) {
+	                                _context.next = 19;
+	                                break;
+	                            }
+
+	                            field = lvls[i];
+
+	                            if (!(i === lvls.length - 1 && dest[field])) {
+	                                _context.next = 15;
+	                                break;
+	                            }
+
+	                            if (!(Object.getOwnPropertyNames(dest[field]).length < 1)) {
+	                                _context.next = 13;
+	                                break;
+	                            }
+
+	                            delete dest[field];
+	                            return _context.abrupt("break", 19);
+
+	                        case 13:
+	                            _context.next = 16;
+	                            break;
+
+	                        case 15:
+	                            dest = dest[field];
+
+	                        case 16:
+	                            i++;
+	                            _context.next = 7;
+	                            break;
+
+	                        case 19:
+	                            lvls.pop();
+
+	                            if (!(lvls.length > 0)) {
+	                                _context.next = 24;
+	                                break;
+	                            }
+
+	                            return _context.delegateYield(objectCleaner(lvls.join(options.symbol), obj, options), "t0", 22);
+
+	                        case 22:
+	                            _context.next = 25;
+	                            break;
+
+	                        case 24:
+	                            return _context.abrupt("return");
+
+	                        case 25:
+	                        case "end":
+	                            return _context.stop();
+	                    }
+	                }
+	            }, objectCleaner, this);
+	        });
+	        var forEachPath = regeneratorRuntime.mark(function forEachPath(path, object, options) {
+	            var lvls, dest, i, _field;
+
+	            return regeneratorRuntime.wrap(function forEachPath$(_context2) {
+	                while (1) {
+	                    switch (_context2.prev = _context2.next) {
+	                        case 0:
+	                            lvls = path.split(options.symbol);
+	                            dest = object;
+	                            i = 0;
+
+	                        case 3:
+	                            if (!(i < lvls.length)) {
+	                                _context2.next = 14;
+	                                break;
+	                            }
+
+	                            _field = lvls[i];
+
+	                            if (!(i === lvls.length - 1)) {
+	                                _context2.next = 10;
+	                                break;
+	                            }
+
+	                            delete dest[_field];
+	                            return _context2.delegateYield(objectCleaner(path, object, options), "t0", 8);
+
+	                        case 8:
+	                            _context2.next = 11;
+	                            break;
+
+	                        case 10:
+	                            dest = dest[_field];
+
+	                        case 11:
+	                            i++;
+	                            _context2.next = 3;
+	                            break;
+
+	                        case 14:
+	                        case "end":
+	                            return _context2.stop();
+	                    }
+	                }
+	            }, forEachPath, this);
+	        });
+	        var forPaths = regeneratorRuntime.mark(function forPaths(paths, object, options) {
+	            var i, path;
+	            return regeneratorRuntime.wrap(function forPaths$(_context3) {
+	                while (1) {
+	                    switch (_context3.prev = _context3.next) {
+	                        case 0:
+	                            i = 0;
+
+	                        case 1:
+	                            if (!(i < paths.length)) {
+	                                _context3.next = 7;
+	                                break;
+	                            }
+
+	                            path = paths[i];
+	                            return _context3.delegateYield(forEachPath(path, object, options), "t0", 4);
+
+	                        case 4:
+	                            i++;
+	                            _context3.next = 1;
+	                            break;
+
+	                        case 7:
+	                        case "end":
+	                            return _context3.stop();
+	                    }
+	                }
+	            }, forPaths, this);
+	        });
+	        var it = forPaths(paths, object, options);
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	            for (var _iterator = it[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                var res = _step.value;
+	            }
+	        } catch (err) {
+	            _didIteratorError = true;
+	            _iteratorError = err;
+	        } finally {
+	            try {
+	                if (!_iteratorNormalCompletion && _iterator.return) {
+	                    _iterator.return();
+	                }
+	            } finally {
+	                if (_didIteratorError) {
+	                    throw _iteratorError;
+	                }
+	            }
+	        }
+
+	        resolve(object);
+	    });
+	};
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -540,7 +763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	var it = exports.it = regeneratorRuntime.mark(function it(obj, currentPath) {
-	    var fields, i, k, value, path;
+	    var fields, i, k, value, path, _path;
+
 	    return regeneratorRuntime.wrap(function it$(_context) {
 	        while (1) {
 	            switch (_context.prev = _context.next) {
@@ -561,37 +785,40 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                case 5:
 	                    if (!(i < fields.length)) {
-	                        _context.next = 19;
+	                        _context.next = 21;
 	                        break;
 	                    }
 
 	                    k = fields[i];
 	                    value = obj[k];
-
-	                    if (!utils.iamLastParent(value)) {
-	                        _context.next = 13;
-	                        break;
-	                    }
-
-	                    _context.next = 11;
-	                    return { obj: obj, k: k, value: value };
-
-	                case 11:
-	                    _context.next = 16;
-	                    break;
-
-	                case 13:
 	                    path = currentPath.slice(0);
 
 	                    path.push(k);
-	                    return _context.delegateYield(it(value, path), 't0', 16);
 
-	                case 16:
+	                    if (!utils.iamLastParent(value)) {
+	                        _context.next = 15;
+	                        break;
+	                    }
+
+	                    _context.next = 13;
+	                    return { obj: obj, k: k, value: value, path: path };
+
+	                case 13:
+	                    _context.next = 18;
+	                    break;
+
+	                case 15:
+	                    _path = currentPath.slice(0);
+
+	                    _path.push(k);
+	                    return _context.delegateYield(it(value, _path), 't0', 18);
+
+	                case 18:
 	                    i++;
 	                    _context.next = 5;
 	                    break;
 
-	                case 19:
+	                case 21:
 	                case 'end':
 	                    return _context.stop();
 	            }
@@ -600,13 +827,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("immutable");
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("babel-polyfill");

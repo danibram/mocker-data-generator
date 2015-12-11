@@ -2,7 +2,7 @@
 
 [![Dependency Status](https://david-dm.org/danibram/mocker-data-generator.svg)](https://david-dm.org/danibram/mocker-data-generator) [![Build Status](https://travis-ci.org/danibram/mocker-data-generator.svg)](https://travis-ci.org/danibram/mocker-data-generator)
 
-A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data. 
+A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
 
 This is a ligth alternative to use [Faker + JSON schema](http://json-schema-faker.js.org/).
 
@@ -132,9 +132,28 @@ Inside every value you can put:
 
         }, {length: 10, fixedLength: false}]     
     ```
+#### Optional fields
+- ***[virtual]***: Boolean, if you pass this option, this mean that this field will not appear at the output entity. But you can use during the generation.
+```javascript
+    {
+        //Any generator
+            //Faker  
+        faker: 'random.arrayElement(db.users)[userId]'
+            //Chance  
+        chance: 'integer'
+            //static
+        static: 'any static field'
+            //Function  
+        function: function (){ return /**/ }
+
+        //with the virtual option
+        virtual: true
+
+    }     
+```
 
 #### Data generation
-Initialize mocker with the config, and then generate any entity with promises style, use generate funciton that accepts the name of the model and the amount of data to generate. Like the example:
+Initialize mocker with the config, and then generate any entity with promises style, use generate function that accepts the name of the model and the amount of data to generate. Like the example:
 
 ```javascript
 var m = mocker(config)
@@ -161,6 +180,9 @@ m.generate('user', 2)
 #### More, Comming soon
 
 ## Release History
+
+#### (0.4.6)
+- Add virtual fields
 
 #### (0.4.5)
 - Add incrementalId config

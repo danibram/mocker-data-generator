@@ -9,8 +9,12 @@ export const it = function *(obj: {}, currentPath?: string[]) {
         let k = fields[i]
         let value = obj[k]
 
+        let path = currentPath.slice(0)
+        path.push(k)
+
+
         if (utils.iamLastParent(value)) {
-            yield {obj, k, value}
+            yield {obj, k, value, path}
         } else {
             let path = currentPath.slice(0)
             path.push(k)
