@@ -38,8 +38,10 @@ var config = {
         users: [{
             function: function() {
                 return this.faker.random.arrayElement(this.db.users).username
-            }
-        }, {length: 10, fixedLength: false}],
+            },
+            length: 10, 
+            fixedLength: false
+        }]
     },
     conditionalField: {
         type:{
@@ -81,25 +83,41 @@ Every model should contains the specified fields. Key can be 2 types:
 Inside every value you can put:
 
 - ***static***: For fixed fields
-```javascript
-    { static: 'hello im fixed field' }     
-```
+
+    ```javascript
+        { static: 'hello im fixed field' }     
+    ```
+
 - ***incrementalId***: For incremental numeric ids, pass the start number to increment. If you put incrementalId = true it takes from 0 the ids.
-```javascript
-    { incrementalId: 0 }     
-```
+
+    ```javascript
+        { incrementalId: 0 }     
+    ```
 
 - ***funcion***: No params are passed, only context (```this```), in this you have ```{db, object, faker, chance}```, and you can use faker or chance functions, object (the specified model), db (actual data generated)
-```javascript
-    { function: function(){
-        //this.db
-        //this.object
-        //this.faker
-        //this.chance
-        return yourValue
-    } }     
-```
+
+    ```javascript
+        { function: function(){
+            //this.db
+            //this.object
+            //this.faker
+            //this.chance
+            return yourValue
+        } }
+        
+        //OR: 
+        
+        { function(){
+            //this.db
+            //this.object
+            //this.faker
+            //this.chance
+            return yourValue
+        } }     
+    ```
+
 - ***faker***: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
+
     ```javascript
         { faker: 'lorem.words' }                            //Run faker.lorem.words()
         { faker: 'lorem.words()' }                          //Run faker.lorem.words()
@@ -108,8 +126,9 @@ Inside every value you can put:
         { faker: 'random.arrayElement(db.users)' }          //Run faker.arrayElement over a generated user entity
         { faker: 'random.arrayElement(db.users)[userId]' }  //Run faker.arrayElement over a generated user entity and take the userId only
     ```
-
+    
 - ***chance***: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
+
     ```javascript
         { chance: 'integer' }                                //Run chance.integer()
         { chance: 'integer()' }                              //Run chance.integer()
@@ -120,6 +139,7 @@ Inside every value you can put:
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
    - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
+   
     ```javascript
     [{
         //Any generator
@@ -135,8 +155,10 @@ Inside every value you can put:
         fixedLength: false
     }]     
     ```
+
 #### Optional fields
 - ***[virtual]***: Boolean, if you pass this option, this mean that this field will not appear at the output entity. But you can use during the generation.
+
 ```javascript
     {
         //Any generator
