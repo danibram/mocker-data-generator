@@ -84,7 +84,7 @@ Inside every value you can put:
 ```javascript
     { static: 'hello im fixed field' }     
 ```
-- ***incrementalId***: For incremental numeric ids, pass the start number to increment
+- ***incrementalId***: For incremental numeric ids, pass the start number to increment. If you put incrementalId = true it takes from 0 the ids.
 ```javascript
     { incrementalId: 0 }     
 ```
@@ -181,7 +181,7 @@ m.generate('user', 2)
 
 ## Release History
 
-#### (0.4.6)
+#### (0.4.7)
 - Add virtual fields
 
 #### (0.4.5)

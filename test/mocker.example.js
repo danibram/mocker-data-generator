@@ -14,6 +14,21 @@ var config = {
         },
         places: {
             values: ['HOUSE', 'CAR', 'MOTORBIKE']
+        },
+        deep:{
+            more:{
+                field:{
+                    static: 'im here',
+                    virtual: true
+                },
+                field2:{
+                    static: 'im here',
+                    virtual: true
+                }
+            },
+            dani:{
+                static: 'ready!'
+            }
         }
     },
     cat: {
@@ -21,6 +36,7 @@ var config = {
             values: ['txuri', 'pitxi', 'kitty']
         }
     }
+
 }
 var m = mocker(config)
 

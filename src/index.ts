@@ -198,7 +198,10 @@ export default class Mocker {
             if (db[this.entityOutputName] && db[this.entityOutputName].length){
                 n = db[this.entityOutputName].length
             }
-            return parseInt(n + parseInt(config.incrementalId))
+            if (config.incrementalId === true){
+                config.incrementalId = 0
+            }
+            return (n + parseInt(config.incrementalId))
         } else {
             return null
         }
