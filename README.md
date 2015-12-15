@@ -121,16 +121,19 @@ Inside every value you can put:
    - ***length***: to know how many values
    - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
     ```javascript
-        [{
-            //Any generator
-                //Faker  
-            faker: 'random.arrayElement(db.users)[userId]'
-                //Chance  
-            chance: 'integer'
-                //Function  
-            function: function (){ return /**/ }
+    [{
+        //Any generator
+            //Faker  
+        faker: 'random.arrayElement(db.users)[userId]'
+            //Chance  
+        chance: 'integer'
+            //Function  
+        function: function (){ return /**/ }
 
-        }, {length: 10, fixedLength: false}]     
+        //Array config
+        length: 10,
+        fixedLength: false
+    }]     
     ```
 #### Optional fields
 - ***[virtual]***: Boolean, if you pass this option, this mean that this field will not appear at the output entity. But you can use during the generation.
@@ -180,6 +183,41 @@ m.generate('user', 2)
 #### More, Comming soon
 
 ## Release History
+
+#### (0.5.0)
+- Break Point with array config. Now is more clear.
+
+    Old config:
+    ```javascript
+        [{
+            //Any generator
+                //Faker  
+            faker: 'random.arrayElement(db.users)[userId]'
+                //Chance  
+            chance: 'integer'
+                //Function  
+            function: function (){ return /**/ }
+
+        }, //Array config
+        {length: 10, fixedLength: false}]
+    ```
+
+    New configuration:
+    ```javascript
+        [{
+            //Any generator
+                //Faker  
+            faker: 'random.arrayElement(db.users)[userId]'
+                //Chance  
+            chance: 'integer'
+                //Function  
+            function: function (){ return /**/ }
+
+            //Array config
+            length: 10,
+            fixedLength: false
+        }]
+    ```
 
 #### (0.4.7)
 - Add virtual fields

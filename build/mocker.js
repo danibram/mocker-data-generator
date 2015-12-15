@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var proccessNode = function proccessNode(obj, k, value, path) {
 	                if (path) {
 	                    if (utils.isArray(value)) {
-	                        if (value[1].virtual) {
+	                        if (value[0].virtual) {
 	                            _this2.virtualPaths.push(path.toString());
 	                        }
 	                    } else {
@@ -255,9 +255,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function generator(field, cb) {
 	            if (utils.isArray(field)) {
 	                var fieldConfig = field[0];
-	                var arrayConfig = field[1];
 	                var array = [];
-	                var length = utils.fieldArrayCalcLength(arrayConfig);
+	                var length = utils.fieldArrayCalcLength(fieldConfig);
 	                for (var i = 0; i < length; i++) {
 	                    array.push(this.generateNormalField(fieldConfig));
 	                }

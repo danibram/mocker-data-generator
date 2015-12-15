@@ -109,7 +109,7 @@ export default class Mocker {
         let proccessNode = (obj, k, value, path?) => {
             if (path){
                 if ( utils.isArray(value) ){
-                    if (value[1].virtual){
+                    if (value[0].virtual){
                         this.virtualPaths.push(path.toString())
                     }
                 } else {
@@ -167,9 +167,8 @@ export default class Mocker {
     generator(field, cb) {
         if ( utils.isArray(field) ){
             let fieldConfig = field[0]
-            let arrayConfig = field[1]
             let array = []
-            let length = utils.fieldArrayCalcLength(arrayConfig)
+            let length = utils.fieldArrayCalcLength(fieldConfig)
             for (let i = 0; i < length; i++) {
                 array.push(this.generateNormalField(fieldConfig))
             }

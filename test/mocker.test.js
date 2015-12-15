@@ -359,6 +359,131 @@ describe('Mocker: Generators (Fields)', function() {
             })
         })
 
+        describe('Options: Array', function() {
+            it('It should recognise static field', function(done) {
+                var limit = 10
+                var model = 'hello'
+                var arr = []
+                for (var i = 0; i < limit; i++) {
+                    arr.push(model)
+                }
+
+                var situation = {
+                    sites: [{
+                        static: model,
+                        length: 10,
+                        fixedLength: true
+                    }]
+                }
+                var result = {
+                    sites: arr
+                }
+
+                var m = mocker({
+                    situation: situation
+                })
+                m.generateEntity(situation, function(data) {
+                        expect(data)
+                           .to.deep.equal(result)
+                           .to.not.be.undefined
+                           .to.not.be.null
+                        done()
+                    })
+            })
+
+            it('It should recognise functions field', function(done) {
+                var limit = 10
+                var model = 'hello'
+                var arr = []
+                for (var i = 0; i < limit; i++) {
+                    arr.push(model)
+                }
+
+                var situation = {
+                    sites: [{
+                        function() {
+                            return 'hello'
+                        },
+
+                        length: 10,
+                        fixedLength: true
+                    }]
+                }
+                var result = {
+                    sites: arr
+                }
+
+                var m = mocker({
+                    situation: situation
+                })
+                m.generateEntity(situation, function(data) {
+                        expect(data)
+                           .to.deep.equal(result)
+                           .to.not.be.undefined
+                           .to.not.be.null
+                        done()
+                    })
+            })
+
+            it('It should recognise fakerJs field', function(done) {
+                var situation = {
+                    sites: [{
+                        faker: 'lorem.words()[0]',
+                        length: 10,
+                        fixedLength: false
+                    }]
+                }
+
+                var m = mocker({
+                    situation: situation
+                })
+                m.generateEntity(situation, function(data) {
+                        expect(data.sites)
+                            .to.be.an('array')
+                            .to.have.length.below(11)
+                            .to.not.be.undefined
+                            .to.not.be.null
+                        for (var i = 0; i < data.sites.length; i++) {
+                            expect(data.sites[i])
+                                .to.be.a('string')
+                                .to.not.be.undefined
+                                .to.not.be.null
+                        }
+
+                        done()
+                    })
+            })
+
+            it('It should recognise chanceJs field', function(done) {
+                var situation = {
+                    sites: [{
+                        chance: 'integer',
+                        length: 10,
+                        fixedLength: false
+                    }]
+                }
+
+                var m = mocker({
+                    situation: situation
+                })
+                m.generateEntity(situation, function(data) {
+                        expect(data.sites)
+                            .to.be.an('array')
+                            .to.have.length.below(11)
+                            .to.not.be.undefined
+                            .to.not.be.null
+                        for (var i = 0; i < data.sites.length; i++) {
+                            expect(data.sites[i])
+                                .to.be.a('number')
+                                .to.not.be.undefined
+                                .to.not.be.null
+                        }
+
+                        done()
+                    })
+            })
+        })
+
         describe('Options: Virtual Fields', function() {
             var situation = {
                 exampleVirtual: {
