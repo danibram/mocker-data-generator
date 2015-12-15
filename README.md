@@ -187,7 +187,7 @@ m.generate('user', 2)
 #### (0.5.0)
 - Break Point with array config. Now is more clear.
 
-    Old config:
+    Old array configuration:
     ```javascript
         [{
             //Any generator
@@ -202,7 +202,7 @@ m.generate('user', 2)
         {length: 10, fixedLength: false}]
     ```
 
-    New configuration:
+    New array configuration:
     ```javascript
         [{
             //Any generator
