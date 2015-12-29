@@ -63,9 +63,9 @@ m.generate('user', 2)
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
 // {
-//      users:[array of users],
-//      groups: [array of groups],
-//      conditionalFields: [array of conditionalFields]
+//      user:[array of users],
+//      group: [array of groups],
+//      conditionalField: [array of conditionalFields]
 // }
         })
 ```
@@ -202,12 +202,35 @@ m.generate('user', 2)
         })
 ```
 
+#### General Options
+
+- ***pluralizeOutputEntity***(Boolean): Passing in an object as second argument. It activate or deactivate the pluralization, ***by default is Deactivated***.
+    ```javascript
+    //Taking the same config like in the main example
+    var m = mocker(config, { pluralizeOutputEntity: true })
+    m.generate('user', 2)
+        .then(m.generate('group', 2))
+        .then(m.generate('conditionalField', 2))
+        .then(function(data) {
+            console.log(util.inspect(data, { depth: 10 }))
+    //This returns an object
+    // {
+    //      user:[array of users],
+    //      group: [array of groups],
+    //      conditionalField: [array of conditionalFields]
+    // }
+            })
+    ```
+
 #### More, Comming soon
 
 ## Release History
 
+#### (0.6.0)
+- ***Breaking Change***: Added the posibility to enable the pluralize on the output entity. Now if you want to pluralize the output follow the example in the doc, ***by defatult is not anymore pluralized***.
+
 #### (0.5.0)
-- Break Point with array config. Now is more clear.
+- ***Breaking Change***: Break Point with array config. Now is more clear.
 
     Old array configuration:
     ```javascript

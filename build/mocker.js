@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("faker"), require("chance"), require("immutable"), require("babel-polyfill"));
+		module.exports = factory(require("faker"), require("chance"), require("immutable"), require("extend"), require("babel-polyfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["faker", "chance", "immutable", "babel-polyfill"], factory);
+		define(["faker", "chance", "immutable", "extend", "babel-polyfill"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("babel-polyfill"));
+		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("extend"), require("babel-polyfill"));
 	else
-		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["babel-polyfill"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__) {
+		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["extend"], root["babel-polyfill"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -62,10 +62,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(9);
+	__webpack_require__(10);
 
-	var mocker = function mocker(config) {
-	    return new _index2.default(config);
+	var mocker = function mocker(config, opts) {
+	    return new _index2.default(config, opts);
 	};
 
 	module.exports = mocker;
@@ -104,16 +104,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	//import * as Chance from 'chance'
 	var Immutable = __webpack_require__(8);
 	var faker = __webpack_require__(3);
 	var Chance = __webpack_require__(4);
+	var extend = __webpack_require__(9);
 	var chance = new Chance();
 
 	var Mocker = (function () {
-	    function Mocker(config) {
+	    function Mocker(config, generalOptions) {
 	        _classCallCheck(this, Mocker);
 
+	        this.generalOptions = {
+	            pluralizeOutputEntity: false
+	        };
 	        this.data = {};
 	        this.entity = {};
 	        this.initialData = null;
@@ -123,6 +126,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.entityOutputName = '';
 	        this.entityName = '';
 	        this.config = Immutable.fromJS(config);
+	        generalOptions = generalOptions ? generalOptions : {};
+	        this.generalOptions = extend({}, this.generalOptions, generalOptions);
 	    }
 
 	    _createClass(Mocker, [{
@@ -130,11 +135,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function generate(entity, options) {
 	            var _this = this;
 
-	            var entityPlural = (0, _pluralizator2.default)(entity);
-	            this.entityOutputName = entityPlural;
 	            this.entityName = entity;
-	            this.data[entityPlural] = [];
 	            this.initialData = {};
+	            var outputName = undefined;
+	            if (this.generalOptions.pluralizeOutputEntity) {
+	                outputName = (0, _pluralizator2.default)(entity);
+	            } else {
+	                outputName = entity;
+	            }
+	            this.entityOutputName = outputName;
+	            this.data[outputName] = [];
 	            return new Promise(function (resolve, reject) {
 	                var finalCb = function finalCb() {
 	                    resolve(_this.data);
@@ -182,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                } catch (e) {
 	                    console.log('Exception: mocker-data-generator');
-	                    console.log('Error generating ' + entityPlural + ' : ' + e);
+	                    console.log('Error generating ' + _this.entityOutputName + ' : ' + e);
 	                    console.log(e.stack);
 	                    reject(e);
 	                }
@@ -836,6 +846,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("extend");
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = require("babel-polyfill");

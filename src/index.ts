@@ -5,6 +5,7 @@ let Immutable = require('immutable')
 
 let faker = require('faker')
 let Chance = require('chance')
+let extend = require('extend')
 const chance = new Chance()
 
 import * as utils from './utils/index.ts'
@@ -15,6 +16,10 @@ import * as iterator from './utils/iterator.ts'
 export default class Mocker {
 
     public config: Immutable.Map<string, number>
+    public generalOptions = {
+        pluralizeOutputEntity: false
+    }
+
     public data = {}
     public entity = {}
     public initialData = null
@@ -24,16 +29,26 @@ export default class Mocker {
     private entityOutputName = ''
     private entityName = ''
 
-    constructor(config: any) {
+    constructor(config: any, generalOptions: any) {
         this.config = Immutable.fromJS(config)
+
+        generalOptions = generalOptions ? generalOptions : {}
+        this.generalOptions = extend({}, this.generalOptions, generalOptions)
     }
 
     generate(entity: string, options: any) {
-        let entityPlural = pluralize(entity)
-        this.entityOutputName = entityPlural
         this.entityName = entity
-        this.data[entityPlural] = []
         this.initialData = {}
+
+        // Calc Pluralization
+        let outputName
+        if (this.generalOptions.pluralizeOutputEntity){
+            outputName = pluralize(entity)
+        } else {
+            outputName = entity
+        }
+        this.entityOutputName = outputName
+        this.data[outputName] = []
 
         return new Promise((resolve, reject) => {
             let finalCb = () => {
@@ -96,7 +111,7 @@ export default class Mocker {
                 }
             } catch (e){
                 console.log('Exception: mocker-data-generator')
-                console.log('Error generating ' + entityPlural + ' : ' + e)
+                console.log('Error generating ' + this.entityOutputName + ' : ' + e)
                 console.log(e.stack)
                 reject(e)
             }
