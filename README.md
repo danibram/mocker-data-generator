@@ -205,6 +205,7 @@ m.generate('user', 2)
 #### General Options
 
 - ***pluralizeOutputEntity***(Boolean): Passing in an object as second argument. It activate or deactivate the pluralization, ***by default is Deactivated***.
+
     ```javascript
     //Taking the same config like in the main example
     var m = mocker(config, { pluralizeOutputEntity: true })
@@ -219,7 +220,7 @@ m.generate('user', 2)
     //      group: [array of groups],
     //      conditionalField: [array of conditionalFields]
     // }
-            })
+        })
     ```
 
 #### More, Comming soon
