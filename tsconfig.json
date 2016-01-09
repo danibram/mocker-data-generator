@@ -21,7 +21,6 @@
         "./src/interfaces.d.ts",
         "./src/utils/cleanObject.ts",
         "./src/utils/index.ts",
-        "./src/utils/iterator.ts",
         "./src/utils/pluralizator.ts",
         "./typings/chance/chance.d.ts",
         "./typings/faker/faker.d.ts",

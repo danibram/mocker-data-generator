@@ -36,5 +36,6 @@ module.exports = {
     plugins: plugins,
     ts: {
         compiler: 'typescript'
-    }
+    },
+    devtool: 'source-map'
 }

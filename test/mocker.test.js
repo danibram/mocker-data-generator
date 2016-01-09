@@ -31,7 +31,7 @@ describe('Mocker: Basic', function() {
 
 describe('Mocker: Methods', function() {
 
-    var methods = ['generate', 'generateEntity', 'generateArrayField', 'generator']
+    var methods = ['generate', 'scheema', 'proccessNode', 'build', 'proccessLeaf', 'generateField']
     for (var i = 0; i < methods.length; i++) {
         var method = methods[i]
         it('Should have ' + method, function() {
@@ -48,7 +48,7 @@ describe('Mocker: Generators (Fields)', function() {
         describe('Options: ChanceJs', function() {
             it('Should be "integer"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         chance: 'integer'
                     }, function(str) {
                         expect(str)
@@ -64,7 +64,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "integer()"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         chance: 'integer()'
                     }, function(str) {
                         expect(str)
@@ -80,7 +80,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "integer({"min": 1, "max": 10})"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         chance: 'integer()'
                     }, function(str) {
                         expect(str)
@@ -96,7 +96,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "street_suffixes()[0]["name"]"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         chance: 'street_suffixes()[0]["name"]'
                     }, function(str) {
                         expect(str)
@@ -114,7 +114,7 @@ describe('Mocker: Generators (Fields)', function() {
         describe('Options: FakerJs', function() {
             it('Should be "lorem.words"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'lorem.words'
                     }, function(str) {
                         expect(str)
@@ -135,7 +135,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "lorem.words()"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'lorem.words()'
                     }, function(str) {
                         expect(str)
@@ -156,7 +156,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "lorem.words(1)"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'lorem.words(1)'
                     }, function(str) {
                         expect(str).to.be.an('array')
@@ -174,7 +174,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "random.number({"max": 1})"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'random.number({"max": 1})'
                     }, function(str) {
                         expect(str)
@@ -190,7 +190,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "random.number({"min": 1, "max": 2})"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'random.number({"min": 1, "max": 2})'
                     }, function(str) {
                         expect(str)
@@ -206,7 +206,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "lorem.words()[0]"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'lorem.words()[0]'
                     }, function(str) {
                         expect(str)
@@ -222,7 +222,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should be "lorem.words(1)[0]"', function(done) {
                 try {
-                    m.generator({
+                    m.proccessLeaf({
                         faker: 'lorem.words(1)[0]'
                     }, function(str) {
                         expect(str)
@@ -239,7 +239,7 @@ describe('Mocker: Generators (Fields)', function() {
 
         describe('Options: Static', function() {
             it('Should have static opts', function(done) {
-                m.generator({
+                m.proccessLeaf({
                     static: 'test'
                 }, function(str) {
                     try {
@@ -275,9 +275,9 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker(config)
             it('Should create incrementalIds', function(done) {
                 m.generate('user', len)
-                    .then(function(str) {
+                    .build(function(data) {
                         try {
-                            expect(str.user)
+                            expect(data.user)
                                 .to.be.an('array')
                                 .to.deep.equal(solution)
                                 .to.not.be.null
@@ -307,7 +307,7 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker(config)
             it('Should create incrementalIds with an offset', function(done) {
                 m.generate('user', len)
-                    .then(function(str) {
+                    .build(function(str) {
                         try {
                             expect(str.user)
                                 .to.be.an('array')
@@ -324,8 +324,8 @@ describe('Mocker: Generators (Fields)', function() {
 
         describe('Options: Function', function() {
             it('Should have funtion opts', function(done) {
-                m.generator({
-                    function: function() {
+                m.proccessLeaf({
+                    function() {
                         return 'test'
                     }
                 }, function(str) {
@@ -344,8 +344,8 @@ describe('Mocker: Generators (Fields)', function() {
             })
 
             it('Should call function and have {db, object, faker} injected', function(done) {
-                m.generator({
-                    function: function() {
+                m.proccessLeaf({
+                    function() {
                         return this
                     }
                 }, function(_this) {
@@ -368,7 +368,7 @@ describe('Mocker: Generators (Fields)', function() {
         describe('Options: Values', function() {
             it('Should have values opts', function(done) {
                 var values = ['test', 'this', 'awesome', 'module']
-                m.generator({
+                m.proccessLeaf({
                     values: values
                 }, function(str) {
 
@@ -410,7 +410,8 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({
                     situation: situation
                 })
-                m.generateEntity(situation, function(data) {
+
+                m.proccessNode(situation, function(data) {
                     expect(data)
                         .to.deep.equal(result)
                         .to.not.be.undefined
@@ -444,7 +445,7 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({
                     situation: situation
                 })
-                m.generateEntity(situation, function(data) {
+                m.proccessNode(situation, function(data) {
                     expect(data)
                         .to.deep.equal(result)
                         .to.not.be.undefined
@@ -465,7 +466,7 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({
                     situation: situation
                 })
-                m.generateEntity(situation, function(data) {
+                m.proccessNode(situation, function(data) {
                     expect(data.sites)
                         .to.be.an('array')
                         .to.have.length.below(11)
@@ -494,7 +495,7 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({
                     situation: situation
                 })
-                m.generateEntity(situation, function(data) {
+                m.proccessNode(situation, function(data) {
                     expect(data.sites)
                         .to.be.an('array')
                         .to.have.length.below(11)
@@ -554,7 +555,7 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker({
                     situation: situation
                 })
-                m.generateEntity(situation, function(data) {
+                m.proccessNode(situation, function(data) {
                     expect(data)
                         .to.deep.equal(result)
                         .to.not.be.undefined
@@ -587,7 +588,7 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({
                 user: conditional
             })
-            m.generateEntity(conditional, function(data) {
+            m.proccessNode(conditional, function(data) {
                 try {
                     expect(data)
                         .to.deep.equal(expectedResult)
@@ -643,7 +644,7 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({
                 user: userMoreLvl
             })
-            m.generateEntity(userMoreLvl, function(data) {
+            m.proccessNode(userMoreLvl, function(data) {
                 try {
                     expect(data)
                         .to.deep.equal(expectedResult)
@@ -667,30 +668,30 @@ describe('Mocker: Generators (Fields)', function() {
                     },
                     much: {
                         deeper: {
-                            function: function() {
+                            function() {
                                 return this.object.name.firstName + ' ' + this.object.name.lastName
                             }
                         },
                         more: {
                             deeper: {
-                                function: function() {
+                                function() {
                                     return this.object.name.firstName + ' ' + this.object.name.lastName
                                 }
                             },
                             level: {
                                 deeper: {
-                                    function: function() {
+                                    function() {
                                         return this.object.name.firstName + ' ' + this.object.name.lastName
                                     }
                                 },
                                 awesome: {
                                     deeper: {
-                                        function: function() {
+                                        function() {
                                             return this.object.name.firstName + ' ' + this.object.name.lastName
                                         }
                                     },
                                     deeper: {
-                                        function: function() {
+                                        function() {
                                             return this.object.name.firstName + ' ' + this.object.name.lastName
                                         }
                                     }
@@ -724,7 +725,7 @@ describe('Mocker: Generators (Fields)', function() {
             var m = mocker({
                 user: userMoreLvl
             })
-            m.generateEntity(userMoreLvl, function(data) {
+            m.proccessNode(userMoreLvl, function(data) {
                 try {
                     expect(data)
                         .to.deep.equal(expectedResult)
@@ -767,7 +768,7 @@ describe('Mocker: Generators (Fields)', function() {
             m.generate('request', {
                     uniqueField: 'type'
                 })
-                .then(function(data) {
+                .build(function(data) {
                     try {
                         expect(data).to.have.property('request')
                         for (var i = 0; i < length; i++) {
@@ -817,8 +818,8 @@ describe('Mocker: Generators (Fields)', function() {
             m.generate('request', {
                     uniqueField: 'type'
                 })
-                .then(m.generate('request2', 10))
-                .then(function(data) {
+                .generate('request2', 10)
+                .build(function(data) {
 
                     try { // boilerplate to be able to get the assert failures
                         expect(data).to.have.property('request')
@@ -847,25 +848,38 @@ describe('Mocker: Generators (Fields)', function() {
 
         it('Should generate more entities', function(done) {
             var length = 10
-            var model = {
-                request: {
-                    id: {
-                        faker: 'random.number'
-                    },
-                    title: {
-                        faker: 'lorem.sentence'
-                    },
-                    number: {
-                        faker: 'random.number'
+            var m = mocker({
+                act: {
+                    request: {
+                        id: {
+                            faker: 'random.number'
+                        },
+                        title: {
+                            faker: 'lorem.sentence'
+                        },
+                        number: {
+                            faker: 'random.number'
+                        }
+                    }
+                },
+                act2: {
+                    request: {
+                        id: {
+                            faker: 'random.number'
+                        },
+                        title: {
+                            faker: 'lorem.sentence'
+                        },
+                        number: {
+                            faker: 'random.number'
+                        }
                     }
                 }
-            }
-
-            var m = mocker({
-                act: model
             })
             m.generate('act', length)
-                .then(function(data) {
+                .generate('act2', length)
+                .build(function(data) {
+
                     //expect(data.requests).to.deep.equal(expectedResult)
                     expect(data.act.length).to.equal(length)
                     for (var i = 0; i < length; i++) {
@@ -891,10 +905,12 @@ describe('Mocker: Generators (Fields)', function() {
             }
 
             var m = mocker({
-                user: userMoreLvl
+                user: {
+                    static: 'firstName'
+                }
             })
             m.generate('user', length)
-                .then(function(data) {
+                .build(function(data) {
                     try {
                         expect(data).to.deep.equal(expectedResult)
                         done()
@@ -921,7 +937,7 @@ describe('Mocker: Generators (Fields)', function() {
                 user: userMoreLvl
             }, { pluralizeOutputEntity: true })
             m.generate('user', length)
-                .then(function(data) {
+                .build(function(data) {
                     try {
                         expect(data).to.deep.equal(expectedResultPlural)
                         done()
@@ -936,7 +952,22 @@ describe('Mocker: Generators (Fields)', function() {
                 user: userMoreLvl
             }, { pluralizeOutputEntity: false })
             m.generate('user', length)
-                .then(function(data) {
+                .build(function(data) {
+                    try {
+                        expect(data).to.deep.equal(expectedResultSingle)
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
+                })
+        })
+
+        it('Should generate single entity by default', function(done) {
+            var m = mocker({
+                user: userMoreLvl
+            })
+            m.generate('user', length)
+                .build(function(data) {
                     try {
                         expect(data).to.deep.equal(expectedResultSingle)
                         done()

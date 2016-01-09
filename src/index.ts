@@ -4,6 +4,7 @@
 let Immutable = require('immutable')
 
 let faker = require('faker')
+let util = require('util')
 let Chance = require('chance')
 let extend = require('extend')
 const chance = new Chance()
@@ -11,7 +12,6 @@ const chance = new Chance()
 import * as utils from './utils/index.ts'
 import pluralize from './utils/pluralizator.ts'
 import cleanObject from './utils/cleanObject.ts'
-import * as iterator from './utils/iterator.ts'
 
 export default class Mocker {
 
@@ -22,7 +22,6 @@ export default class Mocker {
 
     public data = {}
     public entity = {}
-    public initialData = null
     public path = []
     public virtual = false
     public virtualPaths = []
@@ -36,92 +35,88 @@ export default class Mocker {
         this.generalOptions = extend({}, this.generalOptions, generalOptions)
     }
 
-    generate(entity: string, options: any) {
-        this.entityName = entity
-        this.initialData = {}
+    scheema(config, entityName, options){
+        this.entityName = entityName
 
         // Calc Pluralization
         let outputName
         if (this.generalOptions.pluralizeOutputEntity){
-            outputName = pluralize(entity)
+            outputName = pluralize(entityName)
         } else {
-            outputName = entity
+            outputName = entityName
         }
         this.entityOutputName = outputName
         this.data[outputName] = []
 
-        return new Promise((resolve, reject) => {
-            let finalCb = () => {
-                resolve(this.data)
+        try {
+
+            const end = (data) => {
+                this.data[this.entityOutputName].push(data)
             }
 
-            try {
-                if ((Number as any).isInteger(options)){
+            if ((Number as any).isInteger(options)){
 
-                    utils.repeatFN( options,
-                        (nxt) => {
-                            let cfg = this.config.toJS()
-                            if (utils.iamLastParent(cfg[entity])) {
-                                this.generator(cfg[entity], (data) => {
-                                    this.data[this.entityOutputName].push(data)
-                                    nxt()
-                                })
-                            } else {
-                                this.generateEntity(cfg[entity], (data) => {
-                                    this.data[this.entityOutputName].push(data)
-                                    nxt()
-                                })
-                            }
-                        },
-                        finalCb
-                    )
+                const gen = (fn, entityConfig) => {
+                    fn.call(this, entityConfig, end)
+                }
+
+                Array.apply(null, Array(options)).map(() => {
+                    let entityConfig = (this.config.get(entityName) as any).toJS()
+                    utils.iamLastParent(entityConfig)
+                     ? gen(this.proccessLeaf, entityConfig)
+                     : gen(this.proccessNode, entityConfig)
+                })
+
+            } else {
+
+                let entityConfig = (this.config.get(entityName) as any).toJS()
+                let f = options.uniqueField
+                let possibleValues
+                if (f === '.') {
+                    possibleValues = entityConfig.values
                 } else {
+                    possibleValues = entityConfig[f].values
+                }
 
-                    let cfg = this.config.toJS()
-                    let f = options.uniqueField
-                    let possibleValues
+
+                possibleValues.map((value) => {
+                    entityConfig = (this.config.get(entityName) as any).toJS()
+
                     if (f === '.') {
-                        possibleValues = cfg[entity].values
-                    } else {
-                        possibleValues = cfg[entity][f].values
+                        end(value)
+                        return
                     }
 
-                    let length = possibleValues.length
+                    entityConfig[f] = {static: value}
 
-                    utils.eachSeries(
-                        possibleValues,
-                        (k, nxt) => {
-                            let cfg = this.config.toJS()
-
-                            if (f === '.') {
-                                this.data[this.entityOutputName].push(k)
-                                return nxt()
-                            }
-
-                            cfg[entity][f] = {static: k}
-
-
-                            this.generateEntity(cfg[entity], (data) => {
-                                this.data[this.entityOutputName].push(data)
-                                nxt()
-                            })
-                        },
-                        finalCb
-                    )
-                }
-            } catch (e){
-                console.log('Exception: mocker-data-generator')
-                console.log('Error generating ' + this.entityOutputName + ' : ' + e)
-                console.log(e.stack)
-                reject(e)
+                    this.proccessNode(entityConfig, end)
+                })
             }
-        })
+
+            return this
+        } catch (e){
+            console.log('Exception: mocker-data-generator')
+            console.log('Error generating ' + this.entityOutputName + ' : ' + e)
+            console.log(e.stack)
+        }
     }
 
-    generateEntity(entityConfig: Object, cb) {
+    generate(entity: string, options: any) {
+        let entityConfig = (this.config.get(entity) as any).toJS()
+        return this.scheema(entityConfig, entity, options)
+    }
 
-        this.entity = (Object as any).assign({}, entityConfig)
-        let proccessNode = (obj, k, value, path?) => {
+    build(cb) {
+        let result = this.data
+        this.data = {}
+        return cb(result)
+    }
+
+    proccessNode(entityConfig: Object, cb) {
+
+        this.entity = entityConfig
+
+        let pNode = (obj, k, value, path?) => {
             if (path){
                 if ( utils.isArray(value) ){
                     if (value[0].virtual){
@@ -134,66 +129,66 @@ export default class Mocker {
                 }
             }
 
-            return new Promise((resolve, reject) => {
-                this.generator(value, (fieldCalculated) => {
-                    if (!utils.isConditional(k)){
-                        obj[k] = fieldCalculated
+            this.proccessLeaf(value, (fieldCalculated) => {
+                if (!utils.isConditional(k)){
+                    obj[k] = fieldCalculated
+                } else {
+                    let key = k.split(',')
+                    if (utils.evalWithContextData(key[0], this.entity)){
+                        obj[key[1]] = fieldCalculated
+                        delete obj[k]
                     } else {
-                        let key = k.split(',')
-                        if (utils.evalWithContextData(key[0], this.entity)){
-                            obj[key[1]] = fieldCalculated
-                            delete obj[k]
-                        } else {
-                            delete obj[k]
-                        }
+                        delete obj[k]
                     }
-                    resolve(fieldCalculated)
-                })
+                }
+                return fieldCalculated
             })
         }
 
-        let it = iterator.it(this.entity);
+        let iterate = (obj: {}, currentPath?: string[]) => {
+            if (!obj) { return }
+            if (!currentPath) { currentPath = [] }
 
+            let fields = Object.keys(obj)
+            for (var i = 0; i< fields.length; i++) {
+                let k = fields[i]
+                let value = obj[k]
 
-        let res = {
-            done: false,
-            value:{
-                obj: {},
-                k:'',
-                value: '',
-                path: []
+                let path = currentPath.slice(0)
+                path.push(k)
+
+                if (utils.iamLastParent(value)) {
+                    pNode(obj, k, value, path)
+                } else {
+                    iterate.call(this, value, path)
+                }
             }
         }
-        while(res.value){
-            res = it.next();
-            if (!res.value) break
-            let {obj, k, value, path} = res.value;
-            proccessNode(obj, k, value, path).then()
-        }
+
+        iterate.call(this, this.entity)
 
         if (this.virtualPaths.length > 0){
-            cleanObject(this.virtualPaths, this.entity, {strict: true, symbol: ','})
-                .then(cb)
+            cb(cleanObject(this.virtualPaths, this.entity, {strict: true, symbol: ','}))
         } else {
             cb(this.entity)
         }
     }
 
-    generator(field, cb) {
+    proccessLeaf(field, fn) {
         if ( utils.isArray(field) ){
             let fieldConfig = field[0]
             let array = []
             let length = utils.fieldArrayCalcLength(fieldConfig)
             for (let i = 0; i < length; i++) {
-                array.push(this.generateNormalField(fieldConfig))
+                array.push(this.generateField(fieldConfig))
             }
-            cb(array)
+            return fn(array)
         } else {
-            cb(this.generateNormalField(field))
+            return fn(this.generateField(field))
         }
     }
 
-    generateNormalField(config) {
+    generateField(config) {
         let object = this.entity
         let db = this.data
 

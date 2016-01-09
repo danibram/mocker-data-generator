@@ -39,7 +39,7 @@ var config = {
             function: function() {
                 return this.faker.random.arrayElement(this.db.users).username
             },
-            length: 10, 
+            length: 10,
             fixedLength: false
         }]
     },
@@ -57,9 +57,9 @@ var config = {
 }
 var m = mocker(config)
 m.generate('user', 2)
-    .then(m.generate('group', 2))
-    .then(m.generate('conditionalField', 2))
-    .then(function(data) {
+    .generate('group', 2)
+    .generate('conditionalField', 2)
+    .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
 // {
@@ -104,9 +104,9 @@ Inside every value you can put:
             //this.chance
             return yourValue
         } }
-        
-        //OR: 
-        
+
+        //OR:
+
         { function(){
             //this.db
             //this.object
@@ -126,7 +126,7 @@ Inside every value you can put:
         { faker: 'random.arrayElement(db.users)' }          //Run faker.arrayElement over a generated user entity
         { faker: 'random.arrayElement(db.users)[userId]' }  //Run faker.arrayElement over a generated user entity and take the userId only
     ```
-    
+
 - ***chance***: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
 
     ```javascript
@@ -139,7 +139,7 @@ Inside every value you can put:
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
    - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
-   
+
     ```javascript
     [{
         //Any generator
@@ -183,9 +183,9 @@ Initialize mocker with the config, and then generate any entity with promises st
 ```javascript
 var m = mocker(config)
 m.generate('user', 2)
-    .then(m.generate('group', 2))
-    .then(m.generate('conditionalField', 2))
-    .then(function(data) {
+    .generate('group', 2)
+    .generate('conditionalField', 2)
+    .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
         })
 ```
@@ -195,9 +195,9 @@ You can also pass instead of the number, an object with the a config, from now `
 ```javascript
 var m = mocker(config)
 m.generate('user', 2)
-    .then(m.generate('group', 2))
-    .then(m.generate('conditionalField', {uniqueField: type}))
-    .then(function(data) {
+    .generate('group', 2)
+    .generate('conditionalField', 2)
+    .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
         })
 ```
@@ -208,6 +208,31 @@ m.generate('user', 2)
     ```javascript
     //Taking the same config like in the main example
     var m = mocker(config, { pluralizeOutputEntity: true })
+    m.generate('user', 2)
+        .generate('group', 2)
+        .generate('conditionalField', 2)
+        .build(function(data) {
+            console.log(util.inspect(data, { depth: 10 }))
+    //This returns an object
+    // {
+    //      user:[array of users],
+    //      group: [array of groups],
+    //      conditionalField: [array of conditionalFields]
+    // }
+            })
+    ```
+
+#### More, Comming soon
+
+## Release History
+
+#### (0.7.0)
+
+- ***Breaking Change***: Added the posibility to enable the pluralize on the output entity. Now if you want to pluralize the output follow the example in the doc, ***by defatult is not anymore pluralized***.
+
+    Old call configuration:
+    ``` javascript
+    var m = mocker(config)
     m.generate('user', 2)
         .then(m.generate('group', 2))
         .then(m.generate('conditionalField', 2))
@@ -222,9 +247,22 @@ m.generate('user', 2)
             })
     ```
 
-#### More, Comming soon
-
-## Release History
+    New array configuration:
+    ``` javascript
+    var m = mocker(config)
+    m.generate('user', 2)
+        .generate('group', 2)
+        .generate('conditionalField', 2)
+        .build(function(data) {
+            console.log(util.inspect(data, { depth: 10 }))
+    //This returns an object
+    // {
+    //      user:[array of users],
+    //      group: [array of groups],
+    //      conditionalField: [array of conditionalFields]
+    // }
+            })
+    ```
 
 #### (0.6.0)
 - ***Breaking Change***: Added the posibility to enable the pluralize on the output entity. Now if you want to pluralize the output follow the example in the doc, ***by defatult is not anymore pluralized***.

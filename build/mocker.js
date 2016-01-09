@@ -1,51 +1,51 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("faker"), require("chance"), require("immutable"), require("extend"), require("babel-polyfill"));
+		module.exports = factory(require("faker"), require("chance"), require("immutable"), require("util"), require("extend"), require("babel-polyfill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["faker", "chance", "immutable", "extend", "babel-polyfill"], factory);
+		define(["faker", "chance", "immutable", "util", "extend", "babel-polyfill"], factory);
 	else if(typeof exports === 'object')
-		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("extend"), require("babel-polyfill"));
+		exports["MockerData"] = factory(require("faker"), require("chance"), require("immutable"), require("util"), require("extend"), require("babel-polyfill"));
 	else
-		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["extend"], root["babel-polyfill"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
+		root["MockerData"] = factory(root["faker"], root["chance"], root["immutable"], root["util"], root["extend"], root["babel-polyfill"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -55,19 +55,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	var _index = __webpack_require__(1);
-
+	
 	var _index2 = _interopRequireDefault(_index);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(10);
-
+	
 	var mocker = function mocker(config, opts) {
 	    return new _index2.default(config, opts);
 	};
-
+	
 	module.exports = mocker;
 
 /***/ },
@@ -75,51 +75,49 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
+	
 	var _index = __webpack_require__(2);
-
+	
 	var utils = _interopRequireWildcard(_index);
-
+	
 	var _pluralizator = __webpack_require__(5);
-
+	
 	var _pluralizator2 = _interopRequireDefault(_pluralizator);
-
+	
 	var _cleanObject = __webpack_require__(6);
-
+	
 	var _cleanObject2 = _interopRequireDefault(_cleanObject);
-
-	var _iterator = __webpack_require__(7);
-
-	var iterator = _interopRequireWildcard(_iterator);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Immutable = __webpack_require__(8);
+	
+	var Immutable = __webpack_require__(7);
 	var faker = __webpack_require__(3);
+	var util = __webpack_require__(8);
 	var Chance = __webpack_require__(4);
 	var extend = __webpack_require__(9);
 	var chance = new Chance();
-
-	var Mocker = (function () {
+	
+	var Mocker = function () {
 	    function Mocker(config, generalOptions) {
 	        _classCallCheck(this, Mocker);
-
+	
 	        this.generalOptions = {
 	            pluralizeOutputEntity: false
 	        };
 	        this.data = {};
 	        this.entity = {};
-	        this.initialData = null;
 	        this.path = [];
 	        this.virtual = false;
 	        this.virtualPaths = [];
@@ -129,82 +127,89 @@ return /******/ (function(modules) { // webpackBootstrap
 	        generalOptions = generalOptions ? generalOptions : {};
 	        this.generalOptions = extend({}, this.generalOptions, generalOptions);
 	    }
-
+	
 	    _createClass(Mocker, [{
-	        key: 'generate',
-	        value: function generate(entity, options) {
+	        key: 'scheema',
+	        value: function scheema(config, entityName, options) {
 	            var _this = this;
-
-	            this.entityName = entity;
-	            this.initialData = {};
+	
+	            this.entityName = entityName;
 	            var outputName = undefined;
 	            if (this.generalOptions.pluralizeOutputEntity) {
-	                outputName = (0, _pluralizator2.default)(entity);
+	                outputName = (0, _pluralizator2.default)(entityName);
 	            } else {
-	                outputName = entity;
+	                outputName = entityName;
 	            }
 	            this.entityOutputName = outputName;
 	            this.data[outputName] = [];
-	            return new Promise(function (resolve, reject) {
-	                var finalCb = function finalCb() {
-	                    resolve(_this.data);
-	                };
-	                try {
+	            try {
+	                var _ret = function () {
+	                    var end = function end(data) {
+	                        _this.data[_this.entityOutputName].push(data);
+	                    };
 	                    if (Number.isInteger(options)) {
-	                        utils.repeatFN(options, function (nxt) {
-	                            var cfg = _this.config.toJS();
-	                            if (utils.iamLastParent(cfg[entity])) {
-	                                _this.generator(cfg[entity], function (data) {
-	                                    _this.data[_this.entityOutputName].push(data);
-	                                    nxt();
-	                                });
-	                            } else {
-	                                _this.generateEntity(cfg[entity], function (data) {
-	                                    _this.data[_this.entityOutputName].push(data);
-	                                    nxt();
-	                                });
-	                            }
-	                        }, finalCb);
+	                        (function () {
+	                            var gen = function gen(fn, entityConfig) {
+	                                fn.call(_this, entityConfig, end);
+	                            };
+	                            Array.apply(null, Array(options)).map(function () {
+	                                var entityConfig = _this.config.get(entityName).toJS();
+	                                utils.iamLastParent(entityConfig) ? gen(_this.proccessLeaf, entityConfig) : gen(_this.proccessNode, entityConfig);
+	                            });
+	                        })();
 	                    } else {
 	                        (function () {
-	                            var cfg = _this.config.toJS();
+	                            var entityConfig = _this.config.get(entityName).toJS();
 	                            var f = options.uniqueField;
 	                            var possibleValues = undefined;
 	                            if (f === '.') {
-	                                possibleValues = cfg[entity].values;
+	                                possibleValues = entityConfig.values;
 	                            } else {
-	                                possibleValues = cfg[entity][f].values;
+	                                possibleValues = entityConfig[f].values;
 	                            }
-	                            var length = possibleValues.length;
-	                            utils.eachSeries(possibleValues, function (k, nxt) {
-	                                var cfg = _this.config.toJS();
+	                            possibleValues.map(function (value) {
+	                                entityConfig = _this.config.get(entityName).toJS();
 	                                if (f === '.') {
-	                                    _this.data[_this.entityOutputName].push(k);
-	                                    return nxt();
+	                                    end(value);
+	                                    return;
 	                                }
-	                                cfg[entity][f] = { static: k };
-	                                _this.generateEntity(cfg[entity], function (data) {
-	                                    _this.data[_this.entityOutputName].push(data);
-	                                    nxt();
-	                                });
-	                            }, finalCb);
+	                                entityConfig[f] = { static: value };
+	                                _this.proccessNode(entityConfig, end);
+	                            });
 	                        })();
 	                    }
-	                } catch (e) {
-	                    console.log('Exception: mocker-data-generator');
-	                    console.log('Error generating ' + _this.entityOutputName + ' : ' + e);
-	                    console.log(e.stack);
-	                    reject(e);
-	                }
-	            });
+	                    return {
+	                        v: _this
+	                    };
+	                }();
+	
+	                if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	            } catch (e) {
+	                console.log('Exception: mocker-data-generator');
+	                console.log('Error generating ' + this.entityOutputName + ' : ' + e);
+	                console.log(e.stack);
+	            }
 	        }
 	    }, {
-	        key: 'generateEntity',
-	        value: function generateEntity(entityConfig, cb) {
+	        key: 'generate',
+	        value: function generate(entity, options) {
+	            var entityConfig = this.config.get(entity).toJS();
+	            return this.scheema(entityConfig, entity, options);
+	        }
+	    }, {
+	        key: 'build',
+	        value: function build(cb) {
+	            var result = this.data;
+	            this.data = {};
+	            return cb(result);
+	        }
+	    }, {
+	        key: 'proccessNode',
+	        value: function proccessNode(entityConfig, cb) {
 	            var _this2 = this;
-
-	            this.entity = Object.assign({}, entityConfig);
-	            var proccessNode = function proccessNode(obj, k, value, path) {
+	
+	            this.entity = entityConfig;
+	            var pNode = function pNode(obj, k, value, path) {
 	                if (path) {
 	                    if (utils.isArray(value)) {
 	                        if (value[0].virtual) {
@@ -216,68 +221,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        }
 	                    }
 	                }
-	                return new Promise(function (resolve, reject) {
-	                    _this2.generator(value, function (fieldCalculated) {
-	                        if (!utils.isConditional(k)) {
-	                            obj[k] = fieldCalculated;
+	                _this2.proccessLeaf(value, function (fieldCalculated) {
+	                    if (!utils.isConditional(k)) {
+	                        obj[k] = fieldCalculated;
+	                    } else {
+	                        var key = k.split(',');
+	                        if (utils.evalWithContextData(key[0], _this2.entity)) {
+	                            obj[key[1]] = fieldCalculated;
+	                            delete obj[k];
 	                        } else {
-	                            var key = k.split(',');
-	                            if (utils.evalWithContextData(key[0], _this2.entity)) {
-	                                obj[key[1]] = fieldCalculated;
-	                                delete obj[k];
-	                            } else {
-	                                delete obj[k];
-	                            }
+	                            delete obj[k];
 	                        }
-	                        resolve(fieldCalculated);
-	                    });
+	                    }
+	                    return fieldCalculated;
 	                });
 	            };
-	            var it = iterator.it(this.entity);
-	            var res = {
-	                done: false,
-	                value: {
-	                    obj: {},
-	                    k: '',
-	                    value: '',
-	                    path: []
+	            var iterate = function iterate(obj, currentPath) {
+	                if (!obj) {
+	                    return;
+	                }
+	                if (!currentPath) {
+	                    currentPath = [];
+	                }
+	                var fields = Object.keys(obj);
+	                for (var i = 0; i < fields.length; i++) {
+	                    var k = fields[i];
+	                    var value = obj[k];
+	                    var path = currentPath.slice(0);
+	                    path.push(k);
+	                    if (utils.iamLastParent(value)) {
+	                        pNode(obj, k, value, path);
+	                    } else {
+	                        iterate.call(_this2, value, path);
+	                    }
 	                }
 	            };
-	            while (res.value) {
-	                res = it.next();
-	                if (!res.value) break;
-	                var _res$value = res.value;
-	                var obj = _res$value.obj;
-	                var k = _res$value.k;
-	                var value = _res$value.value;
-	                var path = _res$value.path;
-
-	                proccessNode(obj, k, value, path).then();
-	            }
+	            iterate.call(this, this.entity);
 	            if (this.virtualPaths.length > 0) {
-	                (0, _cleanObject2.default)(this.virtualPaths, this.entity, { strict: true, symbol: ',' }).then(cb);
+	                cb((0, _cleanObject2.default)(this.virtualPaths, this.entity, { strict: true, symbol: ',' }));
 	            } else {
 	                cb(this.entity);
 	            }
 	        }
 	    }, {
-	        key: 'generator',
-	        value: function generator(field, cb) {
+	        key: 'proccessLeaf',
+	        value: function proccessLeaf(field, fn) {
 	            if (utils.isArray(field)) {
 	                var fieldConfig = field[0];
 	                var array = [];
 	                var length = utils.fieldArrayCalcLength(fieldConfig);
 	                for (var i = 0; i < length; i++) {
-	                    array.push(this.generateNormalField(fieldConfig));
+	                    array.push(this.generateField(fieldConfig));
 	                }
-	                cb(array);
+	                return fn(array);
 	            } else {
-	                cb(this.generateNormalField(field));
+	                return fn(this.generateField(field));
 	            }
 	        }
 	    }, {
-	        key: 'generateNormalField',
-	        value: function generateNormalField(config) {
+	        key: 'generateField',
+	        value: function generateField(config) {
 	            var object = this.entity;
 	            var db = this.data;
 	            if (config.faker) {
@@ -304,10 +307,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }]);
-
+	
 	    return Mocker;
-	})();
-
+	}();
+	
 	exports.default = Mocker;
 
 /***/ },
@@ -315,7 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
@@ -477,11 +480,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
+	
 	exports.default = function (str) {
 	    var plural = {
 	        '(quiz)$': "$1zes",
@@ -563,286 +566,209 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
+	
 	exports.default = function (paths, object, options) {
-	    return new Promise(function (resolve) {
-	        var objectCleaner = regeneratorRuntime.mark(function objectCleaner(path, obj, options) {
-	            var lvls, dest, i, field;
-	            return regeneratorRuntime.wrap(function objectCleaner$(_context) {
-	                while (1) {
-	                    switch (_context.prev = _context.next) {
-	                        case 0:
-	                            lvls = path.split(options.symbol);
-	                            dest = obj;
-
-	                            if (!(!lvls || lvls.length === 0)) {
-	                                _context.next = 4;
-	                                break;
-	                            }
-
-	                            return _context.abrupt("return");
-
-	                        case 4:
-	                            if (obj) {
-	                                _context.next = 6;
-	                                break;
-	                            }
-
-	                            return _context.abrupt("return");
-
-	                        case 6:
-	                            i = 0;
-
-	                        case 7:
-	                            if (!(i < lvls.length)) {
-	                                _context.next = 19;
-	                                break;
-	                            }
-
-	                            field = lvls[i];
-
-	                            if (!(i === lvls.length - 1 && dest[field])) {
-	                                _context.next = 15;
-	                                break;
-	                            }
-
-	                            if (!(Object.getOwnPropertyNames(dest[field]).length < 1)) {
-	                                _context.next = 13;
-	                                break;
-	                            }
-
-	                            delete dest[field];
-	                            return _context.abrupt("break", 19);
-
-	                        case 13:
-	                            _context.next = 16;
+	    var objectCleaner = regeneratorRuntime.mark(function objectCleaner(path, obj, options) {
+	        var lvls, dest, i, field;
+	        return regeneratorRuntime.wrap(function objectCleaner$(_context) {
+	            while (1) {
+	                switch (_context.prev = _context.next) {
+	                    case 0:
+	                        lvls = path.split(options.symbol);
+	                        dest = obj;
+	
+	                        if (!(!lvls || lvls.length === 0)) {
+	                            _context.next = 4;
 	                            break;
-
-	                        case 15:
-	                            dest = dest[field];
-
-	                        case 16:
-	                            i++;
-	                            _context.next = 7;
+	                        }
+	
+	                        return _context.abrupt("return");
+	
+	                    case 4:
+	                        if (obj) {
+	                            _context.next = 6;
 	                            break;
-
-	                        case 19:
-	                            lvls.pop();
-
-	                            if (!(lvls.length > 0)) {
-	                                _context.next = 24;
-	                                break;
-	                            }
-
-	                            return _context.delegateYield(objectCleaner(lvls.join(options.symbol), obj, options), "t0", 22);
-
-	                        case 22:
-	                            _context.next = 25;
+	                        }
+	
+	                        return _context.abrupt("return");
+	
+	                    case 6:
+	                        i = 0;
+	
+	                    case 7:
+	                        if (!(i < lvls.length)) {
+	                            _context.next = 19;
 	                            break;
-
-	                        case 24:
-	                            return _context.abrupt("return");
-
-	                        case 25:
-	                        case "end":
-	                            return _context.stop();
-	                    }
+	                        }
+	
+	                        field = lvls[i];
+	
+	                        if (!(i === lvls.length - 1 && dest[field])) {
+	                            _context.next = 15;
+	                            break;
+	                        }
+	
+	                        if (!(Object.getOwnPropertyNames(dest[field]).length < 1)) {
+	                            _context.next = 13;
+	                            break;
+	                        }
+	
+	                        delete dest[field];
+	                        return _context.abrupt("break", 19);
+	
+	                    case 13:
+	                        _context.next = 16;
+	                        break;
+	
+	                    case 15:
+	                        dest = dest[field];
+	
+	                    case 16:
+	                        i++;
+	                        _context.next = 7;
+	                        break;
+	
+	                    case 19:
+	                        lvls.pop();
+	
+	                        if (!(lvls.length > 0)) {
+	                            _context.next = 24;
+	                            break;
+	                        }
+	
+	                        return _context.delegateYield(objectCleaner(lvls.join(options.symbol), obj, options), "t0", 22);
+	
+	                    case 22:
+	                        _context.next = 25;
+	                        break;
+	
+	                    case 24:
+	                        return _context.abrupt("return");
+	
+	                    case 25:
+	                    case "end":
+	                        return _context.stop();
 	                }
-	            }, objectCleaner, this);
-	        });
-	        var forEachPath = regeneratorRuntime.mark(function forEachPath(path, object, options) {
-	            var lvls, dest, i, _field;
-
-	            return regeneratorRuntime.wrap(function forEachPath$(_context2) {
-	                while (1) {
-	                    switch (_context2.prev = _context2.next) {
-	                        case 0:
-	                            lvls = path.split(options.symbol);
-	                            dest = object;
-	                            i = 0;
-
-	                        case 3:
-	                            if (!(i < lvls.length)) {
-	                                _context2.next = 14;
-	                                break;
-	                            }
-
-	                            _field = lvls[i];
-
-	                            if (!(i === lvls.length - 1)) {
-	                                _context2.next = 10;
-	                                break;
-	                            }
-
-	                            delete dest[_field];
-	                            return _context2.delegateYield(objectCleaner(path, object, options), "t0", 8);
-
-	                        case 8:
-	                            _context2.next = 11;
-	                            break;
-
-	                        case 10:
-	                            dest = dest[_field];
-
-	                        case 11:
-	                            i++;
-	                            _context2.next = 3;
-	                            break;
-
-	                        case 14:
-	                        case "end":
-	                            return _context2.stop();
-	                    }
-	                }
-	            }, forEachPath, this);
-	        });
-	        var forPaths = regeneratorRuntime.mark(function forPaths(paths, object, options) {
-	            var i, path;
-	            return regeneratorRuntime.wrap(function forPaths$(_context3) {
-	                while (1) {
-	                    switch (_context3.prev = _context3.next) {
-	                        case 0:
-	                            i = 0;
-
-	                        case 1:
-	                            if (!(i < paths.length)) {
-	                                _context3.next = 7;
-	                                break;
-	                            }
-
-	                            path = paths[i];
-	                            return _context3.delegateYield(forEachPath(path, object, options), "t0", 4);
-
-	                        case 4:
-	                            i++;
-	                            _context3.next = 1;
-	                            break;
-
-	                        case 7:
-	                        case "end":
-	                            return _context3.stop();
-	                    }
-	                }
-	            }, forPaths, this);
-	        });
-	        var it = forPaths(paths, object, options);
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
-
-	        try {
-	            for (var _iterator = it[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                var res = _step.value;
 	            }
-	        } catch (err) {
-	            _didIteratorError = true;
-	            _iteratorError = err;
+	        }, objectCleaner, this);
+	    });
+	    var forEachPath = regeneratorRuntime.mark(function forEachPath(path, object, options) {
+	        var lvls, dest, i, _field;
+	
+	        return regeneratorRuntime.wrap(function forEachPath$(_context2) {
+	            while (1) {
+	                switch (_context2.prev = _context2.next) {
+	                    case 0:
+	                        lvls = path.split(options.symbol);
+	                        dest = object;
+	                        i = 0;
+	
+	                    case 3:
+	                        if (!(i < lvls.length)) {
+	                            _context2.next = 14;
+	                            break;
+	                        }
+	
+	                        _field = lvls[i];
+	
+	                        if (!(i === lvls.length - 1)) {
+	                            _context2.next = 10;
+	                            break;
+	                        }
+	
+	                        delete dest[_field];
+	                        return _context2.delegateYield(objectCleaner(path, object, options), "t0", 8);
+	
+	                    case 8:
+	                        _context2.next = 11;
+	                        break;
+	
+	                    case 10:
+	                        dest = dest[_field];
+	
+	                    case 11:
+	                        i++;
+	                        _context2.next = 3;
+	                        break;
+	
+	                    case 14:
+	                    case "end":
+	                        return _context2.stop();
+	                }
+	            }
+	        }, forEachPath, this);
+	    });
+	    var forPaths = regeneratorRuntime.mark(function forPaths(paths, object, options) {
+	        var i, path;
+	        return regeneratorRuntime.wrap(function forPaths$(_context3) {
+	            while (1) {
+	                switch (_context3.prev = _context3.next) {
+	                    case 0:
+	                        i = 0;
+	
+	                    case 1:
+	                        if (!(i < paths.length)) {
+	                            _context3.next = 7;
+	                            break;
+	                        }
+	
+	                        path = paths[i];
+	                        return _context3.delegateYield(forEachPath(path, object, options), "t0", 4);
+	
+	                    case 4:
+	                        i++;
+	                        _context3.next = 1;
+	                        break;
+	
+	                    case 7:
+	                    case "end":
+	                        return _context3.stop();
+	                }
+	            }
+	        }, forPaths, this);
+	    });
+	    var it = forPaths(paths, object, options);
+	    var _iteratorNormalCompletion = true;
+	    var _didIteratorError = false;
+	    var _iteratorError = undefined;
+	
+	    try {
+	        for (var _iterator = it[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var res = _step.value;
+	        }
+	    } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	    } finally {
+	        try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	                _iterator.return();
+	            }
 	        } finally {
-	            try {
-	                if (!_iteratorNormalCompletion && _iterator.return) {
-	                    _iterator.return();
-	                }
-	            } finally {
-	                if (_didIteratorError) {
-	                    throw _iteratorError;
-	                }
+	            if (_didIteratorError) {
+	                throw _iteratorError;
 	            }
 	        }
-
-	        resolve(object);
-	    });
+	    }
+	
+	    return object;
 	};
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.it = undefined;
-
-	var _index = __webpack_require__(2);
-
-	var utils = _interopRequireWildcard(_index);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	var it = exports.it = regeneratorRuntime.mark(function it(obj, currentPath) {
-	    var fields, i, k, value, path, _path;
-
-	    return regeneratorRuntime.wrap(function it$(_context) {
-	        while (1) {
-	            switch (_context.prev = _context.next) {
-	                case 0:
-	                    if (obj) {
-	                        _context.next = 2;
-	                        break;
-	                    }
-
-	                    return _context.abrupt('return');
-
-	                case 2:
-	                    if (!currentPath) {
-	                        currentPath = [];
-	                    }
-	                    fields = Object.keys(obj);
-	                    i = 0;
-
-	                case 5:
-	                    if (!(i < fields.length)) {
-	                        _context.next = 21;
-	                        break;
-	                    }
-
-	                    k = fields[i];
-	                    value = obj[k];
-	                    path = currentPath.slice(0);
-
-	                    path.push(k);
-
-	                    if (!utils.iamLastParent(value)) {
-	                        _context.next = 15;
-	                        break;
-	                    }
-
-	                    _context.next = 13;
-	                    return { obj: obj, k: k, value: value, path: path };
-
-	                case 13:
-	                    _context.next = 18;
-	                    break;
-
-	                case 15:
-	                    _path = currentPath.slice(0);
-
-	                    _path.push(k);
-	                    return _context.delegateYield(it(value, _path), 't0', 18);
-
-	                case 18:
-	                    i++;
-	                    _context.next = 5;
-	                    break;
-
-	                case 21:
-	                case 'end':
-	                    return _context.stop();
-	            }
-	        }
-	    }, it, this);
-	});
+	module.exports = require("immutable");
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-	module.exports = require("immutable");
+	module.exports = require("util");
 
 /***/ },
 /* 9 */
@@ -860,3 +786,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+//# sourceMappingURL=mocker.js.map
