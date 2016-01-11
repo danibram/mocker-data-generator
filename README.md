@@ -4,8 +4,6 @@
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
 
-This is a ligth alternative to use [Faker + JSON schema](http://json-schema-faker.js.org/).
-
 ## Getting started
 
 Install the module with: `npm install mocker-data-generator`
