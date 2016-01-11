@@ -1,50 +1,49 @@
-var mocker = require('../build/mocker.js')
+var mocker = require('../lib')
 var util = require('util')
 
-var config = {
-    situation: {
-        exampleVirtual:{
-            static: 'hello',
-            virtual: true
-        },
-        id: {
-            function() {
-                return this.object.exampleVirtual
-            }
-        },
-        places: {
-            values: ['HOUSE', 'CAR', 'MOTORBIKE']
-        },
-        deep:{
-            more:{
-                field:{
-                    static: 'im here',
-                    virtual: true
-                },
-                field2:{
-                    static: 'im here',
-                    virtual: true
-                }
-            },
-            dani:{
-                static: 'ready!'
-            }
+var situation = {
+    exampleVirtual:{
+        static: 'hi',
+        virtual: true
+    },
+    id: {
+        function() {
+            return this.object.exampleVirtual
         }
     },
-    cat: {
-        name:{
-            values: ['txuri', 'pitxi', 'kitty']
+    places: {
+        values: ['HOUSE', 'CAR', 'MOTORBIKE']
+    },
+    deep:{
+        more:{
+            field:{
+                static: 'im here',
+                virtual: true
+            },
+            field2:{
+                static: 'im here',
+                virtual: true
+            },
+            f:{
+                function(){
+                    return this.object.exampleVirtual
+                }
+            }
+        },
+        dani:{
+            static: 'ready!'
         }
     }
-
-}
-var m = mocker(config)
-
-// m.generate('user', 4)
-// .then(m.generate('group', 2))
-// .then(m.generate('conditionalField', 2))
-m.generate('situation', 1)
-
-    .then(function(data) {
-        console.log(util.inspect(data, { depth: 10 }))
+};
+var cat = {
+    name: {
+        values: ['txuri', 'pitxi', 'kitty']
+    }
+};
+var m = mocker()
+    .schema('cat', cat, 3)
+    .schema('cat2', cat, {uniqueField: 'name'})
+    .schema(situation, 'situation', 5)
+    .build(function(data){
+        console.log(util.inspect(data, {depth:10}))
     })

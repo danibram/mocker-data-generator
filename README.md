@@ -11,54 +11,53 @@ This is a ligth alternative to use [Faker + JSON schema](http://json-schema-fake
 Install the module with: `npm install mocker-data-generator`
 
 ```javascript
-var config = {
-    user: {
-        firstName: {
-            faker: 'name.firstName'
-        },
-        lastName: {
-            faker: 'name.lastName'
-        },
-        country: {
-            faker: 'address.country'
-        },
-        createdAt: {
-            faker: 'date.past'
-        },
-        username:{
-            function: function() {
-                return this.object.lastName.substring(0, 5) + this.object.firstName.substring(0, 3) + Math.floor(Math.random() * 10)
-            }
-        }
+var user = {
+    firstName: {
+        faker: 'name.firstName'
     },
-    group: {
-        description: {
-            faker: 'lorem.paragraph'
-        },
-        users: [{
-            function: function() {
-                return this.faker.random.arrayElement(this.db.users).username
-            },
-            length: 10,
-            fixedLength: false
-        }]
+    lastName: {
+        faker: 'name.lastName'
     },
-    conditionalField: {
-        type:{
-            values: ['HOUSE', 'CAR', 'MOTORBIKE']
-        },
-        'object.type=="HOUSE",location':{
-            faker: 'address.city'
-        },
-        'object.type=="CAR"||object.type=="MOTORBIKE",speed':{
-            faker: 'random.number'
+    country: {
+        faker: 'address.country'
+    },
+    createdAt: {
+        faker: 'date.past'
+    },
+    username:{
+        function: function() {
+            return this.object.lastName.substring(0, 5) + this.object.firstName.substring(0, 3) + Math.floor(Math.random() * 10)
         }
     }
-}
-var m = mocker(config)
-m.generate('user', 2)
-    .generate('group', 2)
-    .generate('conditionalField', 2)
+};
+var group = {
+    description: {
+        faker: 'lorem.paragraph'
+    },
+    users: [{
+        function: function() {
+            return this.faker.random.arrayElement(this.db.users).username
+        },
+        length: 10,
+        fixedLength: false
+    }]
+};
+var conditionalField = {
+    type:{
+        values: ['HOUSE', 'CAR', 'MOTORBIKE']
+    },
+    'object.type=="HOUSE",location':{
+        faker: 'address.city'
+    },
+    'object.type=="CAR"||object.type=="MOTORBIKE",speed':{
+        faker: 'random.number'
+    }
+};
+
+mocker()
+    .schema('user', user, 2)
+    .schema('group', group, 2)
+    .schema('conditionalField', conditionalField 2)
     .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
@@ -181,51 +180,57 @@ Inside every value you can put:
 Initialize mocker with the config, and then generate any entity with promises style, use generate function that accepts the name of the model and the amount of data to generate. Like the example:
 
 ```javascript
-var m = mocker(config)
-m.generate('user', 2)
-    .generate('group', 2)
-    .generate('conditionalField', 2)
+mocker()
+    .schema('user', user, 2)
+    .schema('group', group, 2)
+    .schema('conditionalField', conditionalField 2)
     .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
+//This returns an object
+// {
+//      user:[array of users],
+//      group: [array of groups],
+//      conditionalField: [array of conditionalFields]
+// }
         })
 ```
 
-You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the alues of the field you will specify. See the output of this example:
+You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the values of the field you will specify. See the output of this example:
 
 ```javascript
-var m = mocker(config)
-m.generate('user', 2)
-    .generate('group', 2)
-    .generate('conditionalField', 2)
-    .build(function(data) {
-        console.log(util.inspect(data, { depth: 10 }))
-        })
+var cat = {
+    name: {
+        values: ['txuri', 'pitxi', 'kitty']
+    }
+};
+var m = mocker()
+    .schema('cat', cat, 10)
+    .schema('cat2', cat, {uniqueField: 'name'})
+    .build(function(data){
+        console.log(util.inspect(data, {depth:10}))
+    })
 ```
-
-#### General Options
-
-- ***pluralizeOutputEntity***(Boolean): Passing in an object as second argument. It activate or deactivate the pluralization, ***by default is Deactivated***.
-
-    ```javascript
-    //Taking the same config like in the main example
-    var m = mocker(config, { pluralizeOutputEntity: true })
-    m.generate('user', 2)
-        .generate('group', 2)
-        .generate('conditionalField', 2)
-        .build(function(data) {
-            console.log(util.inspect(data, { depth: 10 }))
-    //This returns an object
-    // {
-    //      user:[array of users],
-    //      group: [array of groups],
-    //      conditionalField: [array of conditionalFields]
-    // }
-        })
-    ```
 
 #### More, Comming soon
 
 ## Release History
+
+#### (1.0.0)
+- ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
+
+    ```javascript
+    var cat = {
+        name: {
+            values: ['txuri', 'pitxi', 'kitty']
+        }
+    };
+    var m = mocker()
+        .schema('cat', cat, 10)
+        .schema('cat2', cat, {uniqueField: 'name'})
+        .build(function(data){
+            console.log(util.inspect(data, {depth:10}))
+        })
+    ```
 
 #### (0.7.0)
 
