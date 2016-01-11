@@ -68,6 +68,11 @@ export const iamLastParent = function(obj) {
 export const iamLastChild = function (parent, k) {
     if (isArray(parent[k])) {
         let last = false
+
+        if (parent[k].length === 0){
+            return true
+        }
+
         for (let i = 0; i < parent[k].length; i++) {
             let el = parent[k][i]
             last = !isObject(el)

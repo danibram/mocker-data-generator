@@ -19,7 +19,7 @@ let iterate = function (obj, res, currentPath) {
 
             if (path){
                 if ( isArray(value) ){
-                    if (value[0].virtual){
+                    if (value[0] && value[0].virtual){
                         this.virtualPaths.push(path.toString())
                     }
                 } else {

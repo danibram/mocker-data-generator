@@ -20,6 +20,9 @@ var User  = {
                 return this.object.userData.uid
             }
         }
+    },
+    iepa: {
+        static: []
     }
 }
 
