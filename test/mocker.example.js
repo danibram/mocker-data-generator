@@ -1,6 +1,28 @@
 var mocker = require('../lib')
 var util = require('util')
 
+
+var User  = {
+    userData: {
+        firstName: {
+            faker: 'name.firstName'
+        },
+        lastName: {
+            faker: 'name.lastName'
+        },
+        uid: {
+                  function() {
+                        return this.object.userData.lastName.slice(0,5) + this.object.userData.firstName.slice(0,2) + 1
+                  }
+        },
+        displayName: {
+            function() {
+                return this.object.userData.uid
+            }
+        }
+    }
+}
+
 var situation = {
     exampleVirtual:{
         static: 'hi',
@@ -41,9 +63,10 @@ var cat = {
     }
 };
 var m = mocker()
+    .schema('User', User, 3)
     .schema('cat', cat, 3)
     .schema('cat2', cat, {uniqueField: 'name'})
-    .schema(situation, 'situation', 5)
+    .schema('situation', situation, 5)
     .build(function(data){
         console.log(util.inspect(data, {depth:10}))
     })

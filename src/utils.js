@@ -66,7 +66,19 @@ export const iamLastParent = function(obj) {
 }
 
 export const iamLastChild = function (parent, k) {
-    return !isObject(parent[k]) && !isArray(parent[k])
+    if (isArray(parent[k])) {
+        let last = false
+        for (let i = 0; i < parent[k].length; i++) {
+            let el = parent[k][i]
+            last = !isObject(el)
+            if (last){
+                break
+            }
+        }
+        return last
+    } else {
+        return !isObject(parent[k])
+    }
 }
 
 export const isConditional = function (str) {

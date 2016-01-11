@@ -215,7 +215,8 @@ var m = mocker()
 
 ## Release History
 
-#### (1.0.0)
+#### (1.0.1)
+- Fix Arrays
 - ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
 
     ```javascript
