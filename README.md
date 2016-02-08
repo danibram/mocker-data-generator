@@ -1,5 +1,7 @@
 # mocker-data-generator
 
+[![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true)](https://nodei.co/npm/mocker-data-generator/)
+
 [![Dependency Status](https://david-dm.org/danibram/mocker-data-generator.svg)](https://david-dm.org/danibram/mocker-data-generator) [![Build Status](https://travis-ci.org/danibram/mocker-data-generator.svg)](https://travis-ci.org/danibram/mocker-data-generator)
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
