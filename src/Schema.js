@@ -5,45 +5,43 @@ const chance = new Chance()
 
 let iterate = function (obj, res, currentPath) {
     if (!currentPath) { currentPath = [] }
-    let fields = Object.keys(obj)
-    for (var i = 0; i< fields.length; i++) {
+    Object.keys(obj)
+        .map((k) => {
+            let value = obj[k]
 
-        let k = fields[i]
-        let value = obj[k]
-
-        let path = currentPath.slice(0)
-        path.push(k)
+            let path = currentPath.slice(0)
+            path.push(k)
 
 
-        if (iamLastParent(value)) {
+            if (iamLastParent(value)) {
 
-            if (path){
-                if ( isArray(value) ){
-                    if (value[0] && value[0].virtual){
-                        this.virtualPaths.push(path.toString())
+                if (path){
+                    if ( isArray(value) ){
+                        if (value[0] && value[0].virtual){
+                            this.virtualPaths.push(path.toString())
+                        }
+                    } else {
+                        if (value.virtual){
+                            this.virtualPaths.push(path.toString())
+                        }
                     }
+                }
+
+                let fieldCalculated = this.proccessLeaf(value)
+
+                if (!isConditional(k)){
+                    res[k] = fieldCalculated
                 } else {
-                    if (value.virtual){
-                        this.virtualPaths.push(path.toString())
+                    let key = k.split(',')
+                    if (evalWithContextData(key[0], this.result)){
+                        res[key[1]] = fieldCalculated
                     }
                 }
-            }
-
-            let fieldCalculated = this.proccessLeaf(value)
-
-            if (!isConditional(k)){
-                res[k] = fieldCalculated
             } else {
-                let key = k.split(',')
-                if (evalWithContextData(key[0], this.result)){
-                    res[key[1]] = fieldCalculated
-                }
+                res[k] = {}
+                iterate.call(this, value, res[k], path)
             }
-        } else {
-            res[k] = {}
-            iterate.call(this, value, res[k], path)
-        }
-    }
+        })
 }
 
 export default class Schema {
