@@ -751,6 +751,32 @@ describe('Mocker: Generators (Fields)', function() {
                 })
 
         })
+        it('Should generate correctly with 2 ways of uniqueField', function(done) {
+            var cat = {
+                name: ['txuri', 'pitxi', 'kitty']
+            };
+            var cat2 = {
+                name: {
+                    values: ['txuri', 'pitxi', 'kitty']
+                }
+            };
+            var result = [ { name: 'txuri' }, { name: 'pitxi' }, { name: 'kitty' } ]
+            var m = mocker()
+                .schema('cat', cat, {uniqueField: 'name'})
+                .schema('cat2', cat2, {uniqueField: 'name'})
+                .build(function(data){
+                    try {
+                        expect(data.cat)
+                            .to.deep.equal(data.cat2)
+                            .to.deep.equal(result)
+                            .to.not.be.undefined
+                            .to.not.be.null
+                        done()
+                    } catch (x) {
+                        done(x)
+                    }
+                })
+        })
 
         it('Should not affect init values to next entity', function(done) {
             var length = 10

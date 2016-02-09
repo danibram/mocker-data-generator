@@ -61,14 +61,17 @@ var situation = {
     }
 };
 var cat = {
+    name: ['txuri', 'pitxi', 'kitty']
+};
+var cat2 = {
     name: {
         values: ['txuri', 'pitxi', 'kitty']
     }
 };
 var m = mocker()
     .schema('User', User, 3)
-    .schema('cat', cat, 3)
-    .schema('cat2', cat, {uniqueField: 'name'})
+    .schema('cat', cat, {uniqueField: 'name'})
+    .schema('cat2', cat2, {uniqueField: 'name'})
     .schema('situation', situation, 5)
     .build(function(data){
         console.log(util.inspect(data, {depth:10}))

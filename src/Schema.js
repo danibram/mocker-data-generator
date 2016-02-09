@@ -128,9 +128,17 @@ export default class Schema {
             if (f === '.') {
                 possibleValues = this.schema.values
             } else {
-                possibleValues = this.schema[f].values
+                if (isArray(this.schema[f].values)){
+                    possibleValues = this.schema[f].values
+                } else {
+                    possibleValues = this.schema[f]
+                }
             }
 
+            if ( !isArray(possibleValues) ){
+                console.error('The field ' + f + ', on the scheema ' + this.name + ' is not an array.')
+                return this.db[this.name]
+            }
 
             possibleValues.map((value) => {
 
@@ -145,7 +153,6 @@ export default class Schema {
                 this.result = {}
             })
         }
-
         return this.db[this.name]
     }
 

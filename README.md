@@ -195,13 +195,33 @@ mocker()
         })
 ```
 
-You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the values of the field you will specify. See the output of this example:
+You can also pass instead of the number, an object with the a config, from now ```{uniqueField}```. If this field exists tells to the generator that instead of init a fixed length of data, generate an amount of data depending of the values of the field you will specify.
+You have 2 way to deal with this, check the examples
+See the output of this example:
 
 ```javascript
+//
+// First way, using an 'values' embebbed object
+//
+
 var cat = {
     name: {
         values: ['txuri', 'pitxi', 'kitty']
     }
+};
+var m = mocker()
+    .schema('cat', cat, 10)
+    .schema('cat2', cat, {uniqueField: 'name'})
+    .build(function(data){
+        console.log(util.inspect(data, {depth:10}))
+    })
+
+//
+// Second way, without 'values' embebbed.
+//
+
+var cat = {
+    name: ['txuri', 'pitxi', 'kitty']
 };
 var m = mocker()
     .schema('cat', cat, 10)
@@ -215,7 +235,9 @@ var m = mocker()
 
 ## Release History
 
-#### (1.0.2)
+#### (1.0.4)
+- Added on uniqueField two ways to generate the data
+- Starting to add errors
 - Fix Arrays
 - ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
 
