@@ -238,6 +238,8 @@ var m = mocker()
 #### (1.0.4)
 - Added on uniqueField two ways to generate the data
 - Starting to add errors
+
+#### (1.0.3)
 - Fix Arrays
 - ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
 
