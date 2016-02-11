@@ -476,6 +476,98 @@ describe('Mocker: Generators (Fields)', function() {
                     done(e)
                 }
             })
+
+            it('It should adds concated array.', function(done) {
+                var cat2 = {
+                    name: {
+                        values: ['txuri', 'pitxi', 'kitty']
+                    },
+                    emails: [{
+                        faker: 'lorem.words()[0]',
+                        length: 10,
+                        concat: '[object.name, object.name]'
+                    }]
+                };
+                var data = m.proccessNode(cat2)
+                try {
+                    expect(data)
+                    expect(data.emails)
+                        .to.be.an('array')
+                        .to.have.length.below(13)
+                        .to.not.be.undefined
+                        .to.not.be.null
+                    done()
+                } catch(e){
+                    done(e)
+                }
+            })
+
+            it('It should adds concated stricts.', function(done) {
+                var cat2 = {
+                    name: {
+                        values: ['txuri', 'pitxi', 'kitty']
+                    },
+                    emails: [{
+                        faker: 'lorem.words()[0]',
+                        length: 4,
+                        concat: '[object.name, object.name]',
+                        concatStrict: true,
+                        fixedLength: true
+                    }]
+                };
+                var data = m.proccessNode(cat2)
+                try {
+                    expect(data)
+                    expect(data.emails)
+                        .to.be.an('array')
+                        .to.have.length(4)
+                        .to.not.be.undefined
+                        .to.not.be.null
+                    var ln = 0
+                    for (var i = 0; i < data.emails.length; i++) {
+                        if (data.emails[i] === data.name){
+                            ln += 1
+                        }
+                    }
+                    expect(ln).to.deep.equal(1)
+                    done()
+                } catch(e){
+                    done(e)
+                }
+            })
+
+            it('It should adds concated array and not increase the number with fixedLength option.', function(done) {
+                var cat2 = {
+                    name: {
+                        values: ['txuri', 'pitxi', 'kitty']
+                    },
+                    emails: [{
+                        faker: 'lorem.words()[0]',
+                        length: 10,
+                        concat: '[object.name, object.name]',
+                        fixedLength: true
+                    }]
+                };
+                var data = m.proccessNode(cat2)
+                try {
+                    expect(data)
+                    expect(data.emails)
+                        .to.be.an('array')
+                        .to.have.length(10)
+                        .to.not.be.undefined
+                        .to.not.be.null
+                    var ln = 0
+                    for (var i = 0; i < data.emails.length; i++) {
+                        if (data.emails[i] === data.name){
+                            ln += 1
+                        }
+                    }
+                    expect(ln).to.deep.equal(2)
+                    done()
+                } catch(e){
+                    done(e)
+                }
+            })
         })
 
         describe('Options: Virtual Fields', function() {

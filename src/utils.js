@@ -12,15 +12,15 @@ export const isObject = function (arg) {
     return Object.prototype.toString.call(arg) === '[object Object]';
 }
 
-export const evalWithContextData =  function (key, object) {
+export const evalWithContextData =  function (key, object, db) {
     // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }
 
-export const fieldArrayCalcLength = function (config) {
+export const fieldArrayCalcLength = function (config, fixedArrayLength) {
     let length
     if (config.fixedLength) {
-        length = config.length
+        length = config.length - fixedArrayLength
     } else {
         length = Math.floor((Math.random() * config.length) + 1)
     }

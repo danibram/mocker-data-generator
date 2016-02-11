@@ -137,13 +137,15 @@ Inside every value you can put:
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
-   - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value.
+   - ***fixedLength***: true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value. False by default.
+   - ***concat***: An stringuified array ex: '[object.id, db.users.id]'. This should be an evaluable string to concat with the array that are generating. Also takes in mind that if you have a fixedLength, should not increase the lenght.
+   - ***strictConcat***: true to remove duplicates in the concated string array, when it is calculated. False by default.
 
     ```javascript
     [{
         //Any generator
             //Faker  
-        faker: 'random.arrayElement(db.users)[userId]'
+        faker: 'random.arrayElement(db.users).userId'
             //Chance  
         chance: 'integer'
             //Function  
@@ -151,7 +153,11 @@ Inside every value you can put:
 
         //Array config
         length: 10,
-        fixedLength: false
+        fixedLength: true
+
+        //Concat
+        concat: '[db.users[0].userId, db.users[1].userId]'
+        strictConcat: true
     }]     
     ```
 
@@ -232,141 +238,6 @@ var m = mocker()
 ```
 
 #### More, Comming soon
-
-## Release History
-
-#### (1.0.4)
-- Added on uniqueField two ways to generate the data
-- Starting to add errors
-
-#### (1.0.3)
-- Fix Arrays
-- ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
-
-    ```javascript
-    var cat = {
-        name: {
-            values: ['txuri', 'pitxi', 'kitty']
-        }
-    };
-    var m = mocker()
-        .schema('cat', cat, 10)
-        .schema('cat2', cat, {uniqueField: 'name'})
-        .build(function(data){
-            console.log(util.inspect(data, {depth:10}))
-        })
-    ```
-
-#### (0.7.0)
-
-- ***Breaking Change***: Added the posibility to enable the pluralize on the output entity. Now if you want to pluralize the output follow the example in the doc, ***by defatult is not anymore pluralized***.
-
-    Old call configuration:
-    ``` javascript
-    var m = mocker(config)
-    m.generate('user', 2)
-        .then(m.generate('group', 2))
-        .then(m.generate('conditionalField', 2))
-        .then(function(data) {
-            console.log(util.inspect(data, { depth: 10 }))
-    //This returns an object
-    // {
-    //      user:[array of users],
-    //      group: [array of groups],
-    //      conditionalField: [array of conditionalFields]
-    // }
-            })
-    ```
-
-    New array configuration:
-    ``` javascript
-    var m = mocker(config)
-    m.generate('user', 2)
-        .generate('group', 2)
-        .generate('conditionalField', 2)
-        .build(function(data) {
-            console.log(util.inspect(data, { depth: 10 }))
-    //This returns an object
-    // {
-    //      user:[array of users],
-    //      group: [array of groups],
-    //      conditionalField: [array of conditionalFields]
-    // }
-            })
-    ```
-
-#### (0.6.0)
-- ***Breaking Change***: Added the posibility to enable the pluralize on the output entity. Now if you want to pluralize the output follow the example in the doc, ***by defatult is not anymore pluralized***.
-
-#### (0.5.0)
-- ***Breaking Change***: Break Point with array config. Now is more clear.
-
-    Old array configuration:
-    ```javascript
-        [{
-            //Any generator
-                //Faker  
-            faker: 'random.arrayElement(db.users)[userId]'
-                //Chance  
-            chance: 'integer'
-                //Function  
-            function: function (){ return /**/ }
-
-        }, //Array config
-        {length: 10, fixedLength: false}]
-    ```
-
-    New array configuration:
-    ```javascript
-        [{
-            //Any generator
-                //Faker  
-            faker: 'random.arrayElement(db.users)[userId]'
-                //Chance  
-            chance: 'integer'
-                //Function  
-            function: function (){ return /**/ }
-
-            //Array config
-            length: 10,
-            fixedLength: false
-        }]
-    ```
-
-#### (0.4.7)
-- Add virtual fields
-
-#### (0.4.5)
-- Add incrementalId config
-- Some tweaks on dev config to start to use generators on typescript
-- Performance tweaks for large data generation
-
-#### (0.4.1)
-- Show in console the errors. (I will improve this)
-- Add support to chanceJs, exactly like FakerJs (see "Model definition" ***Chance***)
-
-#### (0.3.0)
-- Fix errors on iteration over nested structures (new improved interator)
-- Added support to call more naturally to FackerJs fields (see "Model definition" ***Faker***)
-
-#### (0.2.2)
-- Added a pluralization function
-- Fixed a little issue with the roots schemas (now you can do really crazy things, see test/mocker.example.js)
-- Fix errors introduced in 0.2.0
-
-#### (0.1.6)
-- Fix an error: (Clean initial data field)
-- Fix some memory errors adding inmutableJS for the model
-- Add new tests
-
-#### (0.1.1)
-- Real Refractor of the code
-- Add support multi-level schemas
-- Add tests
-- Add travis support
-
-#### (0.0.4)
-- First release i will update soon with tests and more examples, stay tuned!
 
 ## Development
 

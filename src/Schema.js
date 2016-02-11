@@ -1,4 +1,4 @@
-import {isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional} from './utils'
+import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional} from './utils'
 import faker from 'faker'
 import Chance from 'chance'
 const chance = new Chance()
@@ -57,14 +57,25 @@ export default class Schema {
     }
 
     proccessLeaf (field) {
+
         if ( isArray(field) ){
             let fieldConfig = field[0]
             let array = []
-            let length = fieldArrayCalcLength(fieldConfig)
+            let na = []
+
+            if (fieldConfig.concat){
+                na = evalWithContextData(fieldConfig.concat, this.result, this.db)
+                //Strict Mode
+                na = (fieldConfig.concatStrict) ? [...new Set(na)] : na
+            }
+
+            let length = fieldArrayCalcLength(fieldConfig, na.length)
+
             for (let i = 0; i < length; i++) {
                 array.push(this.generateField(fieldConfig))
             }
-            return array
+
+            return array.concat(na)
         } else {
             return this.generateField(field)
         }
@@ -112,27 +123,52 @@ export default class Schema {
         this.result = {}
         this.db = db ? db : {}
         this.db[this.name] = []
-
         if (Number.isInteger(this.options)){
 
-            Array.apply(null, Array(this.options)).map(() => {
+            /*Array.from(new Array(this.options)).map(() => {
                 this.buildSingle(this.schema)
                 this.db[this.name].push(this.result)
                 this.result = {}
-            })
+            })*/
 
-        } else {
+            /*for (var i = 0; i < this.options; i++) {
+                this.buildSingle(this.schema)
+                this.db[this.name].push(this.result)
+                this.result = {}
+            }*/
+
+            for (var i=0, il=this.options; i<il; i++) {
+                this.buildSingle(this.schema)
+                this.db[this.name].push(this.result)
+                this.result = {}
+            }
+/*
+            let count = 0
+            while (count < this.options) {
+                this.buildSingle(this.schema)
+                this.db[this.name].push(this.result)
+                this.result = {}
+                count += 1
+            }*/
+
+        } else if (isObject(this.options)){
             let f = this.options.uniqueField
             let entityConfig = this.schema
             let possibleValues
             if (f === '.') {
                 possibleValues = this.schema.values
             } else {
-                if (isArray(this.schema[f].values)){
-                    possibleValues = this.schema[f].values
+                if (this.schema[f]){
+                    if (isArray(this.schema[f].values)){
+                        possibleValues = this.schema[f].values
+                    } else {
+                        possibleValues = this.schema[f]
+                    }
                 } else {
-                    possibleValues = this.schema[f]
+                    console.error('The field ' + f + ', on the scheema ' + this.name + ' not exists.')
+                    return this.db[this.name]
                 }
+
             }
 
             if ( !isArray(possibleValues) ){
@@ -152,6 +188,8 @@ export default class Schema {
                 this.db[this.name].push(this.result)
                 this.result = {}
             })
+        } else {
+            console.error('An string ' + this.options + ', is not recognized as a parameter.')
         }
         return this.db[this.name]
     }
