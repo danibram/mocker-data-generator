@@ -8,7 +8,7 @@
 [![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)]()
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)]()
 [![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)]()
-[![GitHub license](https://img.shields.io/badge/awesomenes-maximun-orange.svg?style=flat-square)]()
+[![GitHub license](https://img.shields.io/badge/awesomeness-maximun-orange.svg?style=flat-square)]()
 
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
