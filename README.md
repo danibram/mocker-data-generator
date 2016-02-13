@@ -2,7 +2,14 @@
 
 [![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true)](https://nodei.co/npm/mocker-data-generator/)
 
-[![Dependency Status](https://david-dm.org/danibram/mocker-data-generator.svg)](https://david-dm.org/danibram/mocker-data-generator) [![Build Status](https://travis-ci.org/danibram/mocker-data-generator.svg)](https://travis-ci.org/danibram/mocker-data-generator)
+[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)]()
+[![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)]()
+[![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)]()
+[![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)]()
+[![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)]()
+[![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)]()
+[![GitHub license](https://img.shields.io/badge/awesomenes-maximun-orange.svg?style=flat-square)]()
+
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
 

@@ -1,5 +1,8 @@
 # Release History
 
+## (1.0.6)
+- Updated chance.js to 1.0
+
 ## (1.0.5)
 - Added the concat option, and the strictConcat on Array generator.
 

@@ -1,6 +1,12 @@
 language: node_js
 node_js:
-  - "4.0"
+  - node
+  - "5"
+  - "4"
+  - iojs
+  - iojs-2
+  - iojs-1
+  - "0.12"
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
