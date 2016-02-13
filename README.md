@@ -1,14 +1,14 @@
 # mocker-data-generator
 
-[![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true)](https://nodei.co/npm/mocker-data-generator/)
+[![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true&stars=true)][npm-home-module]
 
-[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)]()
-[![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)]()
-[![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)]()
-[![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)]()
-[![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)]()
-[![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)]()
-[![GitHub license](https://img.shields.io/badge/awesomeness-maximun-orange.svg?style=flat-square)]()
+[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![GitHub license](https://img.shields.io/badge/awesome-true-orange.svg?style=flat-square)][npm-home-module]
 
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
@@ -257,3 +257,6 @@ json-schema-faker is awesome and works really nice, but i need a simplified and 
 
 ## License
 Licensed under the MIT license. 2015
+
+
+[npm-home-module]: https://www.npmjs.com/package/mocker-data-generator
