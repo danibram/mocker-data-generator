@@ -130,7 +130,7 @@ Inside every value you can put:
         { faker: 'lorem.words(1)' }                         //Run faker.lorem.words(1)
         { faker: 'integer({"min": 1, "max": 10})' }         //Run faker.lorem.words(1) and take the first
         { faker: 'random.arrayElement(db.users)' }          //Run faker.arrayElement over a generated user entity
-        { faker: 'random.arrayElement(db.users)[userId]' }  //Run faker.arrayElement over a generated user entity and take the userId only
+        { faker: 'random.arrayElement(db.users)["userId"]' }  //Run faker.arrayElement over a generated user entity and take the userId only
     ```
 
 - ***chance***: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
