@@ -291,7 +291,7 @@ describe('Mocker: Generators (Fields)', function() {
         describe('Options: Function', function() {
             it('Should have funtion opts', function(done) {
                 var res = m.proccessLeaf({
-                    function() {
+                    function: function() {
                         return 'test'
                     }
                 })
@@ -309,7 +309,7 @@ describe('Mocker: Generators (Fields)', function() {
 
             it('Should call function and have {db, object, faker} injected', function(done) {
                 var _this = m.proccessLeaf({
-                    function() {
+                    function: function() {
                         return this
                     }
                 })
@@ -393,7 +393,7 @@ describe('Mocker: Generators (Fields)', function() {
 
                 var situation = {
                     sites: [{
-                        function() {
+                        function: function() {
                             return 'hello'
                         },
 
@@ -578,7 +578,7 @@ describe('Mocker: Generators (Fields)', function() {
                 },
 
                 id: {
-                    function() {
+                    function: function() {
                         return this.object.exampleVirtual
                     }
                 },
@@ -725,30 +725,30 @@ describe('Mocker: Generators (Fields)', function() {
                     },
                     much: {
                         deeper: {
-                            function() {
+                            function: function() {
                                 return this.object.name.firstName + ' ' + this.object.name.lastName
                             }
                         },
                         more: {
                             deeper: {
-                                function() {
+                                function: function() {
                                     return this.object.name.firstName + ' ' + this.object.name.lastName
                                 }
                             },
                             level: {
                                 deeper: {
-                                    function() {
+                                    function: function() {
                                         return this.object.name.firstName + ' ' + this.object.name.lastName
                                     }
                                 },
                                 awesome: {
                                     deeper: {
-                                        function() {
+                                        function: function() {
                                             return this.object.name.firstName + ' ' + this.object.name.lastName
                                         }
                                     },
                                     deeper: {
-                                        function() {
+                                        function: function() {
                                             return this.object.name.firstName + ' ' + this.object.name.lastName
                                         }
                                     }
