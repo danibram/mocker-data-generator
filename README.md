@@ -3,13 +3,13 @@
 [![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true&stars=true)][npm-home-module]
 
 [![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+
 [![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
-[![Build status](https://ci.appveyor.com/api/projects/status/86sa9s4l3yss1nv0?svg=true)](https://ci.appveyor.com/project/danibram/mocker-data-generator)
-[![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
-[![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
-[![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
-[![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module]
-[![GitHub license](https://img.shields.io/badge/awesome-true-orange.svg?style=flat-square)][npm-home-module]
+[![Build status](https://ci.appveyor.com/api/projects/status/bp9uy3nq679r5w0a?svg=true)][appveyor]
+
+[![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+
+[![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/badge/awesome-true-orange.svg?style=flat-square)][npm-home-module]
 
 
 A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
@@ -261,3 +261,4 @@ Licensed under the MIT license. 2015
 
 
 [npm-home-module]: https://www.npmjs.com/package/mocker-data-generator
+[appveyor]: https://ci.appveyor.com/project/danibram/mocker-data-generator
