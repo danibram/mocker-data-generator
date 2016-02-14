@@ -1,5 +1,6 @@
-import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional} from './utils'
+import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional, fnCallWithContext} from './utils'
 import faker from 'faker'
+import casual from 'casual'
 import Chance from 'chance'
 const chance = new Chance()
 
@@ -76,6 +77,8 @@ export default class Schema {
             }
 
             return array.concat(na)
+        } else if (field.related){
+            return this.generateField(field)
         } else {
             return this.generateField(field)
         }
@@ -86,14 +89,31 @@ export default class Schema {
         let db = this.db
 
         if (config.faker){
-            return stringToFn('faker', config.faker, db, object)
+            return stringToFn('faker', config.faker, object, db)
         } else if (config.chance) {
-            return stringToFn('chance', config.chance, db, object)
+            return stringToFn('chance', config.chance, object, db)
+        } else if (config.casual) {
+            return stringToFn('casual', config.casual, object, db)
+        } else if (config.self) {
+            return stringToFn('object', config.self, object, db)
+        } else if (config.db) {
+            return stringToFn('db', config.db, object, db)
+        } else if (config.related) {
+            let entities = this.db[config.related]
+            let i = Math.floor(entities.length * Math.random());
+
+            if (!config.get){
+                return entities[i]
+            } else {
+                let entity = entities[i]
+                return stringToFn('object', config.get, entity, db)
+            }
+
         } else if (config.values) {
             let i = Math.floor(config.values.length * Math.random());
             return config.values[i]
         } else if (config.function) {
-            return config.function.call({object, faker, chance, db})
+            return fnCallWithContext(config.function, object, db)
         } else if (config.static) {
             return config.static
         } else if (config.hasOwnProperty('incrementalId')) {

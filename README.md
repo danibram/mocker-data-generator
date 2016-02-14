@@ -82,17 +82,47 @@ Data generation goes with model based composed by generators, the generators can
 
 #### Model definition
 
-Every model should contains the specified fields. Key can be 2 types:
+##### Every model should contains the specified fields. Key can be 2 types:
 
 - ***Normal string*** key: indicates the key.
 - ***Comaseparated string*** key: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
 
-Inside every value you can put:
+##### Inside every value you can put:
 
 - ***static***: For fixed fields
 
     ```javascript
         { static: 'hello im fixed field' }     
+    ```
+
+- ***self***: get himself object, and evaluate the string, so you can get calculated fields.
+
+    ```javascript
+        { self: 'id' } //will get the id of the generated entity
+    ```
+
+- ***db***: get the db, and evaluate the string, so you can access to this entities.
+
+        ```javascript
+            { db: 'user[0].id' } //will get the first user id
+        ```
+
+- ***related***: You can pass 2 paramters:
+    - ***related***: the name of the related entity, get one random.
+    - ***get***: Optional string that will be evaluated over the random related entity.
+
+
+    ```javascript
+        {
+            related: 'user' //this populate the field with one random user
+        }
+
+        //OR:
+
+        {
+            related: 'user',
+            get: 'id' //this populate the field with one id of a random user
+        }    
     ```
 
 - ***incrementalId***: For incremental numeric ids, pass the start number to increment. If you put incrementalId = true it takes from 0 the ids.
@@ -197,7 +227,7 @@ Initialize mocker with the config, and then generate any entity with promises st
 mocker()
     .schema('user', user, 2)
     .schema('group', group, 2)
-    .schema('conditionalField', conditionalField 2)
+    .schema('conditionalField', conditionalField, 2)
     .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object

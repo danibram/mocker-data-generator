@@ -4,6 +4,8 @@ var assert = require('chai').assert
 var faker = require('faker')
 var util = require('util')
 
+
+
 var m = mocker()
 
 describe('Mocker: Methods', function() {
@@ -22,189 +24,12 @@ describe('Mocker: Methods', function() {
 
 describe('Mocker: Generators (Fields)', function() {
     describe('Generators: Fields options', function() {
-        describe('Options: ChanceJs', function() {
-            it('Should be "integer"', function(done) {
-                try {
-                    var res  = m.proccessLeaf({
-                        chance: 'integer'
-                    })
-
-                    expect(res)
-                        .to.be.a('number')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    done()
-
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "integer()"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        chance: 'integer()'
-                    })
-                    expect(res)
-                        .to.be.a('number')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "integer({"min": 1, "max": 10})"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        chance: 'integer()'
-                    })
-                    expect(res)
-                        .to.be.a('number')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "street_suffixes()[0]["name"]"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        chance: 'street_suffixes()[0]["name"]'
-                    })
-                    expect(res)
-                        .to.be.a('string')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    done()
-
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
-
-        describe('Options: FakerJs', function() {
-            it('Should be "lorem.words"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'lorem.words'
-                    })
-                    expect(res)
-                        .to.be.an('array')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    expect(res.length)
-                        .to.be.a('number')
-                        .to.be.equal(3)
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "lorem.words()"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'lorem.words()'
-                    })
-                    expect(res)
-                        .to.be.an('array')
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    expect(res.length)
-                        .to.be.a('number')
-                        .to.be.equal(3)
-                        .not.to.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "lorem.words(1)"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'lorem.words(1)'
-                    })
-                    expect(res).to.be.an('array')
-                    expect(res.length)
-                        .to.be.a('number')
-                        .to.be.equal(1)
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "random.number({"max": 1})"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'random.number({"max": 1})'
-                    })
-                    expect(res)
-                        .to.be.a('number')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "random.number({"min": 1, "max": 2})"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'random.number({"min": 1, "max": 2})'
-                    })
-                    expect(res)
-                        .to.be.a('number')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "lorem.words()[0]"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'lorem.words()[0]'
-                    })
-                    expect(res)
-                        .to.be.a('string')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should be "lorem.words(1)[0]"', function(done) {
-                try {
-                    var res = m.proccessLeaf({
-                        faker: 'lorem.words(1)[0]'
-                    })
-                    expect(res)
-                        .to.be.a('string')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
+        require('./providers/faker.test')
+        require('./providers/chance.test')
+        require('./providers/casual.test')
+        require('./options/self.test')
+        require('./options/db.test')
+        require('./options/related.test')
 
         describe('Options: Static', function() {
             it('Should have static opts', function(done) {

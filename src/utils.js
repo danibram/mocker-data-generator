@@ -1,6 +1,8 @@
 import Faker from 'faker'
 import Chance from 'chance'
+import Casual from 'casual'
 
+const casual = Casual
 const faker = Faker
 const chance = new Chance()
 
@@ -17,6 +19,10 @@ export const evalWithContextData =  function (key, object, db) {
     return eval(key)
 }
 
+export const fnCallWithContext = function (fn, object, db) {
+    return fn.call({object, db, faker, chance, casual})
+}
+
 export const fieldArrayCalcLength = function (config, fixedArrayLength) {
     let length
     if (config.fixedLength) {
@@ -27,9 +33,7 @@ export const fieldArrayCalcLength = function (config, fixedArrayLength) {
     return length
 }
 
-//General utils
-
-export const stringToFn = function (moduleName, string, db, object) {
+export const stringToFn = function (moduleName, string, object, db) {
 
     let re = /(^[a-zA-Z.]*)/   //aZ.aZ
     let matches = re.exec(string)
@@ -40,7 +44,7 @@ export const stringToFn = function (moduleName, string, db, object) {
 
     re = /\((.*?)\)/ //Match ()
     matches = re.exec(string)
-    if (!matches){
+    if (!matches && ['casual', 'db', 'object'].indexOf(moduleName) < 0){
         strFn = moduleName + '.' + string + '()'
     }
 

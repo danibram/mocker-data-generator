@@ -1,5 +1,11 @@
 # Release History
 
+## (1.1.0)
+- Added casualJs
+- Added self option
+- Added db option
+- Added related option
+
 ## (1.0.6)
 - Updated chance.js to 1.0
 
