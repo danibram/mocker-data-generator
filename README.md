@@ -175,11 +175,11 @@ Data generation goes with model based composed by generators, the generators can
 
 - ***casual***: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
 
-```javascript
-    { casual: 'country' }
-    { chance: 'array_of_digits()' }
-    { casual: 'array_of_digits(3)[0]' }
-```
+    ```javascript
+        { casual: 'country' }
+        { chance: 'array_of_digits()' }
+        { casual: 'array_of_digits(3)[0]' }
+    ```
 
 - ***randexp***: pass a regexp string to use randexp generator.
 
