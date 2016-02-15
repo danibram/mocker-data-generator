@@ -1,6 +1,7 @@
 import Faker from 'faker'
 import Chance from 'chance'
 import Casual from 'casual'
+import RandExp from 'randexp'
 
 const casual = Casual
 const faker = Faker
@@ -31,6 +32,10 @@ export const fieldArrayCalcLength = function (config, fixedArrayLength) {
         length = Math.floor((Math.random() * config.length) + 1)
     }
     return length
+}
+
+export const randexpWrapper = function (randexpString){
+    return new RandExp(randexpString).gen()
 }
 
 export const stringToFn = function (moduleName, string, object, db) {

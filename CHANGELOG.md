@@ -1,5 +1,9 @@
 # Release History
 
+## (1.1.1)
+- Added RandExpJs generator
+- Improve test system (I know im improving it! =P)
+
 ## (1.1.0)
 - Added casualJs
 - Added self option

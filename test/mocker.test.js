@@ -27,6 +27,7 @@ describe('Mocker: Generators (Fields)', function() {
         require('./providers/faker.test')
         require('./providers/chance.test')
         require('./providers/casual.test')
+        require('./providers/randexp.test')
         require('./options/self.test')
         require('./options/db.test')
         require('./options/related.test')

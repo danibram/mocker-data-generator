@@ -1,4 +1,4 @@
-import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional, fnCallWithContext} from './utils'
+import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional, fnCallWithContext, randexpWrapper} from './utils'
 import faker from 'faker'
 import casual from 'casual'
 import Chance from 'chance'
@@ -94,6 +94,8 @@ export default class Schema {
             return stringToFn('chance', config.chance, object, db)
         } else if (config.casual) {
             return stringToFn('casual', config.casual, object, db)
+        } else if (config.randexp) {
+            return randexpWrapper(config.randexp)
         } else if (config.self) {
             return stringToFn('object', config.self, object, db)
         } else if (config.db) {

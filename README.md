@@ -12,7 +12,7 @@
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/badge/awesome-true-orange.svg?style=flat-square)][npm-home-module]
 
 
-A simplified way to generate masive mock data based on a schema, and you can use super cool libraries like fakerJs and chanceJs to generate fake data.
+A simplified way to generate masive mock data based on a schema, using the awesome fake/random data generators like (FakerJs, ChanceJs, CasualJs and RandExpJs), all in one tool to generate your fake data for testing.
 
 ## Getting started
 
@@ -171,6 +171,20 @@ Data generation goes with model based composed by generators, the generators can
         { chance: 'integer()' }                              //Run chance.integer()
         { chance: 'integer({"min": 1, "max": 10})' }         //Run chance.integer({"min": 1, "max": 10})
         { chance: 'street_suffixes()[0]["name"]' }           //Run chance.street_suffixes() takes first result and the name inside
+    ```
+
+- ***casual***: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), ***you must pass an exactly JSON syntax***:
+
+```javascript
+    { casual: 'country' }
+    { chance: 'array_of_digits()' }
+    { casual: 'array_of_digits(3)[0]' }
+```
+
+- ***randexp***: pass a regexp string to use randexp generator.
+
+    ```javascript
+        { randexp: /hello+ (world|to you)/ }
     ```
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
