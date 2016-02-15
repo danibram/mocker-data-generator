@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module]
 
-[![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![Version](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square)][travis]
 [![Build status](https://ci.appveyor.com/api/projects/status/bp9uy3nq679r5w0a?svg=true)][appveyor]
 
 [![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
@@ -306,3 +306,4 @@ Licensed under the MIT license. 2015
 
 [npm-home-module]: https://www.npmjs.com/package/mocker-data-generator
 [appveyor]: https://ci.appveyor.com/project/danibram/mocker-data-generator
+[travis]: https://travis-ci.org/danibram/mocker-data-generator
