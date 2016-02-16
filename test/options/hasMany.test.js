@@ -56,7 +56,6 @@ describe('Options: hasOne', function() {
         m.schema('user', user, 2)
             .schema('act', act, length)
             .build(function(data) {
-                console.log(util.inspect(data, {depth:10}))
                 expect(data.act.length).to.equal(length)
                 done()
             })
