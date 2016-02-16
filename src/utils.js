@@ -1,12 +1,3 @@
-import Faker from 'faker'
-import Chance from 'chance'
-import Casual from 'casual'
-import RandExp from 'randexp'
-
-const casual = Casual
-const faker = Faker
-const chance = new Chance()
-
 export const isArray = function(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
 }
@@ -20,10 +11,6 @@ export const evalWithContextData =  function (key, object, db) {
     return eval(key)
 }
 
-export const fnCallWithContext = function (fn, object, db) {
-    return fn.call({object, db, faker, chance, casual})
-}
-
 export const fieldArrayCalcLength = function (config, fixedArrayLength) {
     let length
     if (config.fixedLength) {
@@ -32,28 +19,6 @@ export const fieldArrayCalcLength = function (config, fixedArrayLength) {
         length = Math.floor((Math.random() * config.length) + 1)
     }
     return length
-}
-
-export const randexpWrapper = function (randexpString){
-    return new RandExp(randexpString).gen()
-}
-
-export const stringToFn = function (moduleName, string, object, db) {
-
-    let re = /(^[a-zA-Z.]*)/   //aZ.aZ
-    let matches = re.exec(string)
-    let strFn
-    if (matches && matches.length === 2){
-        strFn = moduleName + '.' + string
-    }
-
-    re = /\((.*?)\)/ //Match ()
-    matches = re.exec(string)
-    if (!matches && ['casual', 'db', 'object'].indexOf(moduleName) < 0){
-        strFn = moduleName + '.' + string + '()'
-    }
-
-    return eval(strFn)
 }
 
 export const iamLastParent = function(obj) {

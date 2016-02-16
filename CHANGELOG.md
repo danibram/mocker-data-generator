@@ -1,9 +1,14 @@
 # Release History
 
+## (1.2.0)
+- New internal reorganization
+- Added hasOne (related is deprecated) and hasMany
+- ***Breaking Change***: related config is deprecated, instead of related use hasOne.
+
 ## (1.1.1)
 - Added RandExpJs generator
 - Improve test system (I know im improving it! =P)
-
+- ***Breaking Change***: the older versions aren´t compatible with this module, the way to generate the data are changed:
 ## (1.1.0)
 - Added casualJs
 - Added self option
