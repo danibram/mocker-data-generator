@@ -28,8 +28,8 @@
     "build": "node_modules/.bin/babel -s -d lib src",
     "dev": "npm run build -- -w",
     "test": "./node_modules/.bin/mocha ./test/mocker.test.js",
-    "test:newWay": "mocha -R spec --require source-map-support/register lib/__test__/*.spec.js ",
-    "test:dev": "npm run test -- -w"
+    "test:dev": "npm run test -- -w",
+    "test:travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/mocker.test.js"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -38,9 +38,10 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
+    "codecov": "^1.0.1",
     "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.0.0",
     "source-map-support": "^0.4.0"
   },
   "dependencies": {
