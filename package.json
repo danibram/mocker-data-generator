@@ -1,6 +1,6 @@
 {
   "name": "mocker-data-generator",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
   "main": "./lib",
   "repository": {
