@@ -321,6 +321,14 @@ Run ```npm build``` to build the normal and minified version.
 
 json-schema-faker is awesome and works really nice, but i need a simplified and fast way to generate mock data for my proyects, so i created this.
 
+## Credits
+I couldn't do this without this awesome libraries, so thanks to all:
+
+- Faker:  https://github.com/Marak/faker.js
+- Chance:  https://github.com/victorquinn/chancejs
+- Casual:  https://github.com/boo1ean/casual
+- RandExpJs: https://github.com/fent/randexp.js
+
 ## License
 Licensed under the MIT license. 2015
 
