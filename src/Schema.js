@@ -1,8 +1,6 @@
 import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional, fnCallWithContext, randexpWrapper} from './utils'
-import faker from 'faker'
-import casual from 'casual'
-import Chance from 'chance'
-const chance = new Chance()
+
+import Generator from './Generator'
 
 let iterate = function (obj, res, currentPath) {
     if (!currentPath) { currentPath = [] }
@@ -34,7 +32,7 @@ let iterate = function (obj, res, currentPath) {
                     res[k] = fieldCalculated
                 } else {
                     let key = k.split(',')
-                    if (evalWithContextData(key[0], this.result)){
+                    if (evalWithContextData(key[0], this.object)){
                         res[key[1]] = fieldCalculated
                     }
                 }
@@ -45,15 +43,16 @@ let iterate = function (obj, res, currentPath) {
         })
 }
 
-export default class Schema {
+export default class Schema extends Generator{
     constructor(name, cfg, options){
+        super()
         this.schema = cfg
         this.name = name
         this.options = options
 
         // Temp fields
-        this.db = {}
-        this.result = {}
+        this.DB = {}
+        this.object = {}
         this.virtualPaths = []
     }
 
@@ -61,117 +60,58 @@ export default class Schema {
 
         if ( isArray(field) ){
             let fieldConfig = field[0]
-            let array = []
             let na = []
-
+            let array = []
             if (fieldConfig.concat){
-                na = evalWithContextData(fieldConfig.concat, this.result, this.db)
+                na = evalWithContextData(fieldConfig.concat, this.object, this.DB)
                 //Strict Mode
                 na = (fieldConfig.concatStrict) ? [...new Set(na)] : na
             }
 
             let length = fieldArrayCalcLength(fieldConfig, na.length)
 
-            for (let i = 0; i < length; i++) {
+            Array.from(new Array(length)).map(() => {
                 array.push(this.generateField(fieldConfig))
-            }
+            })
 
             return array.concat(na)
-        } else if (field.related){
-            return this.generateField(field)
         } else {
             return this.generateField(field)
         }
     }
 
-    generateField(config) {
-        let object = this.result
-        let db = this.db
+    generateField(cfg) {
+        let result = null
+        let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
-        if (config.faker){
-            return stringToFn('faker', config.faker, object, db)
-        } else if (config.chance) {
-            return stringToFn('chance', config.chance, object, db)
-        } else if (config.casual) {
-            return stringToFn('casual', config.casual, object, db)
-        } else if (config.randexp) {
-            return randexpWrapper(config.randexp)
-        } else if (config.self) {
-            return stringToFn('object', config.self, object, db)
-        } else if (config.db) {
-            return stringToFn('db', config.db, object, db)
-        } else if (config.related) {
-            let entities = this.db[config.related]
-            let i = Math.floor(entities.length * Math.random());
-
-            if (!config.get){
-                return entities[i]
-            } else {
-                let entity = entities[i]
-                return stringToFn('object', config.get, entity, db)
+        generators.map((key) => {
+            if (cfg.hasOwnProperty(key)){
+                result = this[key](cfg)
             }
+        })
 
-        } else if (config.values) {
-            let i = Math.floor(config.values.length * Math.random());
-            return config.values[i]
-        } else if (config.function) {
-            return fnCallWithContext(config.function, object, db)
-        } else if (config.static) {
-            return config.static
-        } else if (config.hasOwnProperty('incrementalId')) {
-            let n = 0
-
-            if (db[this.name] && db[this.name].length){
-                n = db[this.name].length
-            }
-            if (config.incrementalId === true){
-                config.incrementalId = 0
-            }
-            return (n + parseInt(config.incrementalId))
-        } else {
-            return null
-        }
+        return result
     }
 
     buildSingle (schema) {
         if (iamLastParent(schema)) {
-            this.result = this.proccessLeaf(schema)
+            this.object = this.proccessLeaf(schema)
         } else {
-            iterate.call(this, schema, this.result)
+            iterate.call(this, schema, this.object)
         }
     }
 
     build (db){
-        this.result = {}
-        this.db = db ? db : {}
-        this.db[this.name] = []
+        this.object = {}
+        this.DB = db ? db : {}
+        this.DB[this.name] = []
         if (Number.isInteger(this.options)){
 
-            /*Array.from(new Array(this.options)).map(() => {
+            Array.from(new Array(this.options)).map(() => {
                 this.buildSingle(this.schema)
-                this.db[this.name].push(this.result)
-                this.result = {}
-            })*/
-
-            /*for (var i = 0; i < this.options; i++) {
-                this.buildSingle(this.schema)
-                this.db[this.name].push(this.result)
-                this.result = {}
-            }*/
-
-            for (var i=0, il=this.options; i<il; i++) {
-                this.buildSingle(this.schema)
-                this.db[this.name].push(this.result)
-                this.result = {}
-            }
-/*
-            let count = 0
-            while (count < this.options) {
-                this.buildSingle(this.schema)
-                this.db[this.name].push(this.result)
-                this.result = {}
-                count += 1
-            }*/
+                this.DB[this.name].push(this.object)
+                this.object = {}
+            })
 
         } else if (isObject(this.options)){
             let f = this.options.uniqueField
@@ -188,14 +128,14 @@ export default class Schema {
                     }
                 } else {
                     console.error('The field ' + f + ', on the scheema ' + this.name + ' not exists.')
-                    return this.db[this.name]
+                    return this.DB[this.name]
                 }
 
             }
 
             if ( !isArray(possibleValues) ){
                 console.error('The field ' + f + ', on the scheema ' + this.name + ' is not an array.')
-                return this.db[this.name]
+                return this.DB[this.name]
             }
 
             possibleValues.map((value) => {
@@ -207,13 +147,13 @@ export default class Schema {
                 entityConfig[f] = {static: value}
 
                 this.buildSingle(entityConfig)
-                this.db[this.name].push(this.result)
-                this.result = {}
+                this.DB[this.name].push(this.object)
+                this.object = {}
             })
         } else {
             console.error('An string ' + this.options + ', is not recognized as a parameter.')
         }
-        return this.db[this.name]
+        return this.DB[this.name]
     }
 
 

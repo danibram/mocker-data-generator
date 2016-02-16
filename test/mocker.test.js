@@ -30,7 +30,8 @@ describe('Mocker: Generators (Fields)', function() {
         require('./providers/randexp.test')
         require('./options/self.test')
         require('./options/db.test')
-        require('./options/related.test')
+        require('./options/hasOne.test')
+        require('./options/hasMany.test')
 
         describe('Options: Static', function() {
             it('Should have static opts', function(done) {
@@ -197,6 +198,7 @@ describe('Mocker: Generators (Fields)', function() {
                 var m = mocker()
 
                 var data = m.proccessNode(situation)
+
                 try {
                     expect(data)
                         .to.deep.equal(result)

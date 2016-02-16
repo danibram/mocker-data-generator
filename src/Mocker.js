@@ -7,7 +7,7 @@ export default class Mocker {
 
     constructor(options) {
         this.options = options ? options : {}
-        this.db = {}
+        this.DB = {}
     }
 
     schema(name, schema, options) {
@@ -16,12 +16,12 @@ export default class Mocker {
     }
 
     reset () {
-        this.db = {}
+        this.DB = {}
         return this
     }
 
     restart () {
-        this.db = {}
+        this.DB = {}
         this.schemas = []
         return this
     }
@@ -40,8 +40,8 @@ export default class Mocker {
             acc[schema.name] = instances
 
             return acc
-        }, this.db)
-        return cb(this.db)
+        }, this.DB)
+        return cb(this.DB)
     }
 
     //proccessLeaf test
@@ -53,6 +53,6 @@ export default class Mocker {
     proccessNode (schema){
         let s = new Schema()
         s.buildSingle(schema)
-        return s.result
+        return s.object
     }
 }
