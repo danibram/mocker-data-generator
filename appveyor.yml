@@ -43,6 +43,3 @@ version: "{build}"
 
 matrix:
   fast_finish: true
-
-cache:
-  - node_modules -> package.json                                        # local npm modules
