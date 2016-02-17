@@ -12,7 +12,7 @@
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Awesome license](https://img.shields.io/badge/bateries-included-orange.svg?style=flat-square)][npm-home-module]
 
 
-A simplified way to generate masive mock data based on a schema, using the awesome fake/random data generators like (FakerJs, ChanceJs, CasualJs and RandExpJs), all in one tool to generate your fake data for testing.
+A simplified way to generate massive mock data based on a schema, using the awesome fake/random data generators like (FakerJs, ChanceJs, CasualJs and RandExpJs), all in one tool to generate your fake data for testing.
 
 ## Getting started
 
@@ -85,7 +85,7 @@ Data generation goes with model based composed by generators, the generators can
 ##### Every model should contains the specified fields. Key can be 2 types:
 
 - ***Normal string*** key: indicates the key.
-- ***Comaseparated string*** key: indicates that there is a conditional, before the coma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
+- ***Commaseparated string*** key: indicates that there is a conditional, before the comma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
 
 ##### Inside every value you can put:
 
@@ -107,7 +107,7 @@ Data generation goes with model based composed by generators, the generators can
         { db: 'user[0].id' } //will get the first user id
     ```
 
-- ***hasOne***: You can pass 2 paramters:
+- ***hasOne***: You can pass 2 parameters:
     - ***hasOne***: the name of the related entity, get one random.
     - ***get*** (Optional): String that will be evaluated over the random related entity.
 
@@ -124,11 +124,11 @@ Data generation goes with model based composed by generators, the generators can
             get: 'id' //this populate the field with one id of a random user
         }    
     ```
-- ***hasMany***: You can pass 4 paramters:
+- ***hasMany***: You can pass 4 parameters:
     - ***hasMany***: the name of the related entity, get one random.
     - ***amount*** (Optional): Fixed number of related entities to get.
-    - ***min*** (Optional): Minimun entities to get.
-    - ***max*** (Optional): Maximun entities to get.
+    - ***min*** (Optional): Minimum entities to get.
+    - ***max*** (Optional): Maximum entities to get.
 
 
     ```javascript
@@ -210,9 +210,9 @@ Data generation goes with model based composed by generators, the generators can
 
 - ***[Array]***: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
    - ***length***: to know how many values
-   - ***fixedLength*** (Optional): true to create always same amount of values in the array, false to generate a random number bettwen 0 and 'length' value. False by default.
-   - ***concat*** (Optional): An stringuified array ex: '[object.id, db.users.id]'. This should be an evaluable string to concat with the array that are generating. Also takes in mind that if you have a fixedLength, should not increase the lenght.
-   - ***strictConcat*** (Optional): true to remove duplicates in the concated string array, when it is calculated. False by default.
+   - ***fixedLength*** (Optional): true to create always same amount of values in the array, false to generate a random number between 0 and 'length' value. False by default.
+   - ***concat*** (Optional): An stringuified array ex: '[object.id, db.users.id]'. This should be an evaluable string to concat with the array that are generating. Also takes in mind that if you have a fixedLength, should not increase the length.
+   - ***strictConcat*** (Optional): true to remove duplicates in the concatenated string array, when it is calculated. False by default.
 
     ```javascript
     [{
@@ -280,7 +280,7 @@ See the output of this example:
 
 ```javascript
 //
-// First way, using an 'values' embebbed object
+// First way, using an 'values' embedded object
 //
 
 var cat = {
@@ -296,7 +296,7 @@ var m = mocker()
     })
 
 //
-// Second way, without 'values' embebbed.
+// Second way, without 'values' embedded.
 //
 
 var cat = {
@@ -310,16 +310,16 @@ var m = mocker()
     })
 ```
 
-#### More, Comming soon
+#### More, Coming soon
 
 ## Development
 
-Run ```npm install;npm run dev``` to watch the proyect, webpack compile the code automatically.
+Run ```npm install;npm run dev``` to watch the project, webpack compile the code automatically.
 Run ```npm build``` to build the normal and minified version.
 
 ## Why not use json-schema-faker?
 
-json-schema-faker is awesome and works really nice, but i need a simplified and fast way to generate mock data for my proyects, so i created this.
+json-schema-faker is awesome and works really nice, but i need a simplified and fast way to generate mock data for my projects, so i created this.
 
 ## Credits
 I couldn't do this without this awesome libraries, so thanks to all:
