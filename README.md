@@ -2,7 +2,10 @@
 
 [![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true&stars=true)][npm-home-module]
 
-[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Linux Build status](https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square&label=linux)][travis][![Windows Build status](https://img.shields.io/appveyor/ci/danibram/mocker-data-generator.svg?style=flat-square&label=windows)][appveyor][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+
+
+[![Linux Build status][travis-badge]][travis-link][![Windows Build status][appveyor-badge]][appveyor-link][![Codecov coverage][codecov-badge]][codecov-link][![Codecov coverage][coveralls-badge]][coveralls-link]
 
 [![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
 
@@ -100,9 +103,9 @@ Data generation goes with model based composed by generators, the generators can
 
 - ***db***: get the db, and evaluate the string, so you can access to this entities.
 
-        ```javascript
-            { db: 'user[0].id' } //will get the first user id
-        ```
+    ```javascript
+        { db: 'user[0].id' } //will get the first user id
+    ```
 
 - ***hasOne***: You can pass 2 paramters:
     - ***hasOne***: the name of the related entity, get one random.
@@ -329,7 +332,12 @@ I couldn't do this without this awesome libraries, so thanks to all:
 ## License
 Licensed under the MIT license. 2015
 
-
+[coveralls-link]: https://coveralls.io/github/danibram/mocker-data-generator
+[coveralls-badge]: https://img.shields.io/coveralls/danibram/mocker-data-generator.svg?style=flat-square&label=coveralls%20coverage
+[codecov-badge]: https://img.shields.io/codecov/c/github/danibram/mocker-data-generator.svg?style=flat-square&label=codecov%20coverage
+[codecov-link]: https://codecov.io/github/danibram/mocker-data-generator
 [npm-home-module]: https://www.npmjs.com/package/mocker-data-generator
-[appveyor]: https://ci.appveyor.com/project/danibram/mocker-data-generator
-[travis]: https://travis-ci.org/danibram/mocker-data-generator
+[appveyor-badge]: https://img.shields.io/appveyor/ci/danibram/mocker-data-generator.svg?style=flat-square&label=windows
+[appveyor-link]: https://ci.appveyor.com/project/danibram/mocker-data-generator
+[travis-link]: https://travis-ci.org/danibram/mocker-data-generator
+[travis-badge]: https://img.shields.io/travis/danibram/mocker-data-generator.svg?style=flat-square&label=linux
