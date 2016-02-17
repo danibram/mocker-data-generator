@@ -21,11 +21,11 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
   # install modules
-  - IF %nodejs_version% LSS 1 (npm install -g npm@2)
-  - IF %nodejs_version% LSS 1 set PATH=%APPDATA%\npm;%PATH%
+  - npm install -g npm
+  - PATH=%APPDATA%\npm;%PATH%
   # Typical npm stuff.
   - npm cache clean
-  - npm install --msvs_version=%MSVS_VERSION%
+  - npm install
 
 # Post-install test scripts.
 test_script:
