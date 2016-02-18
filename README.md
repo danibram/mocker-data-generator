@@ -65,7 +65,7 @@ var conditionalField = {
 mocker()
     .schema('user', user, 2)
     .schema('group', group, 2)
-    .schema('conditionalField', conditionalField 2)
+    .schema('conditionalField', conditionalField, 2)
     .build(function(data) {
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
@@ -82,7 +82,7 @@ Data generation goes with model based composed by generators, the generators can
 
 #### Methods
 
-- ***schema(name, schema, generationType)***: Adds a new schema, you must specify this params:
+- ***schema(name, schema, generationType)***: Add a new schema, you must specify this params:
 
     - name (String): Name of the schema.
     - schema (JSON): The schema you define
