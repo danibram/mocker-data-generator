@@ -11,6 +11,7 @@
 
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Awesome license](https://img.shields.io/badge/bateries-included-orange.svg?style=flat-square)][npm-home-module]
 
+[![Support link][paypal-badge]][paypal-link]
 
 A simplified way to generate massive mock data based on a schema, using the awesome fake/random data generators like (FakerJs, ChanceJs, CasualJs and RandExpJs), all in one tool to generate your fake data for testing.
 
@@ -346,6 +347,8 @@ I couldn't do this without this awesome libraries, so thanks to all:
 ## License
 Licensed under the MIT license. 2015
 
+[paypal-badge]: https://img.shields.io/badge/support-paypal-blue.svg?style=flat-square
+[paypal-link]: https://www.paypal.me/danibram
 [https://github.com/Marak/faker.js]: https://github.com/Marak/faker.js
 [https://github.com/victorquinn/chancejs]: https://github.com/victorquinn/chancejs
 [https://github.com/boo1ean/casual]: https://github.com/boo1ean/casual
