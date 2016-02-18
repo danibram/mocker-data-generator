@@ -80,9 +80,23 @@ mocker()
 ## Documentation
 Data generation goes with model based composed by generators, the generators can have access to the data generated and to the entity generated. ***Generators run syncronously, take care of the related entities!!***
 
-#### Model definition
+#### Methods
 
-##### Every model should contains the specified fields. Key can be 2 types:
+- ***schema(name, schema, generationType)***: Adds a new schema, you must specify this params:
+
+    - name (String): Name of the schema.
+    - schema (JSON): The schema you define
+    - generationType (integer or JSON): In this field you specify how you will generate this schema. 2 ways:
+        - Integer to specify how many of this you want.
+        - JSON with this object ```{uniqueField: '<yourUniqueField>'}``` this means that this field (<yourUniqueField>) is an array and you want to generate entities with this unique values
+
+- ***reset()***: Clean the internal DB.
+- ***restart()***: Clean the internal DB and all the schemas inside.
+- ***build(callback)***: This methods start to produce the data and wrap it to the callback
+
+#### Schema definition
+
+##### Every schema should contains the specified fields. Key can be 2 types:
 
 - ***Normal string*** key: indicates the key.
 - ***Commaseparated string*** key: indicates that there is a conditional, before the comma you must specify a conditional (you have all level fields generated in this moment), then you must specify the field if the conditional is true see the example.
