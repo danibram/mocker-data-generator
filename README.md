@@ -338,13 +338,18 @@ json-schema-faker is awesome and works really nice, but i need a simplified and 
 ## Credits
 I couldn't do this without this awesome libraries, so thanks to all:
 
-- Faker:  https://github.com/Marak/faker.js
-- Chance:  https://github.com/victorquinn/chancejs
-- Casual:  https://github.com/boo1ean/casual
-- RandExpJs: https://github.com/fent/randexp.js
+- Faker:  [https://github.com/Marak/faker.js]
+- Chance:  [https://github.com/victorquinn/chancejs]
+- Casual:  [https://github.com/boo1ean/casual]
+- RandExpJs: [https://github.com/fent/randexp.js]
 
 ## License
 Licensed under the MIT license. 2015
+
+[https://github.com/Marak/faker.js]: https://github.com/Marak/faker.js
+[https://github.com/victorquinn/chancejs]: https://github.com/victorquinn/chancejs
+[https://github.com/boo1ean/casual]: https://github.com/boo1ean/casual
+[https://github.com/fent/randexp.js]: https://github.com/fent/randexp.js
 
 [coveralls-link]: https://coveralls.io/github/danibram/mocker-data-generator
 [coveralls-badge]: https://img.shields.io/coveralls/danibram/mocker-data-generator.svg?style=flat-square&label=coveralls%20coverage
