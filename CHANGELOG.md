@@ -1,5 +1,8 @@
 # Release History
 
+## (1.2.1)
+- Start to parse better the errors
+
 ## (1.2.0)
 - New internal reorganization
 - Added hasOne (related is deprecated) and hasMany

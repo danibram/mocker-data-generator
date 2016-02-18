@@ -1,6 +1,6 @@
 {
   "name": "mocker-data-generator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
   "main": "./lib",
   "repository": {
@@ -9,11 +9,18 @@
   },
   "keywords": [
     "mock",
+    "data",
     "faker",
     "fakerjs",
+    "chance",
+    "chancejs",
+    "casual",
+    "randexp",
     "json",
     "fake",
-    "mocks"
+    "mocks",
+    "massive",
+    "generator",
   ],
   "author": {
     "name": "Daniel Biedma Ramos",

@@ -84,11 +84,17 @@ export default class Schema extends Generator{
         let result = null
         let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
-        generators.map((key) => {
-            if (cfg.hasOwnProperty(key)){
-                result = this[key](cfg)
-            }
-        })
+            generators.map((key) => {
+                try {
+                    if (cfg.hasOwnProperty(key)){
+                        result = this[key](cfg)
+                    }
+                } catch(e){
+                    result = null
+                    console.error('Error on generator [' + key + ']: ', e)
+                }
+            })
+
 
         return result
     }

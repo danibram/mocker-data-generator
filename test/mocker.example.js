@@ -15,7 +15,12 @@ var cat2 = {
         concat: '[object.name, object.name]',
         concatStrict: true,
         fixedLength: true
-    }]
+    }],
+    get:{
+        function(){
+            return this.emails.casa
+        }
+    }
 };
 var start = moment()
 var m = mocker()
