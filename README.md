@@ -347,7 +347,7 @@ I couldn't do this without this awesome libraries, so thanks to all:
 ## License
 Licensed under the MIT license. 2015
 
-[paypal-badge]: https://img.shields.io/badge/support-paypal-blue.svg?style=flat-square
+[paypal-badge]: https://img.shields.io/badge/❤%20support-paypal-blue.svg?style=flat-square
 [paypal-link]: https://www.paypal.me/danibram
 [https://github.com/Marak/faker.js]: https://github.com/Marak/faker.js
 [https://github.com/victorquinn/chancejs]: https://github.com/victorquinn/chancejs
