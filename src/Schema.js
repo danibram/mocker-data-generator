@@ -82,7 +82,7 @@ export default class Schema extends Generator{
 
     generateField(cfg) {
         let result = null
-        let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
+        let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'eval', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
             generators.map((key) => {
                 try {
@@ -91,7 +91,7 @@ export default class Schema extends Generator{
                     }
                 } catch(e){
                     result = null
-                    console.error('Error on generator [' + key + ']: ', e)
+                    throw 'Generator: "' + key + '" ' + e
                 }
             })
 

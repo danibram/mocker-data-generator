@@ -38,9 +38,13 @@ describe('Options: db', function() {
         m.schema('user', user, 2)
             .schema('act', act, length)
             .build(function(data) {
-                expect(data.act.length).to.equal(length)
-                expect(data.act[0].user_id).to.equal(data.user[0].id)
-                done()
+                try {
+                    expect(data.act.length).to.equal(length)
+                    expect(data.act[0].user_id).to.equal(data.user[0].id)
+                    done()
+                } catch (x) {
+                    done(x)
+                }
             })
     })
 })

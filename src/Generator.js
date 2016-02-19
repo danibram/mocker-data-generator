@@ -75,6 +75,17 @@ export default class Generator {
         return eval('db.' + cfg.db)
     }
 
+    eval(cfg){
+        let db = this.DB
+        let object = this.object
+        let faker = f
+        let chance = ch
+        let casual = c
+        let randexp = R
+
+        return eval(cfg.eval)
+    }
+
     values(cfg){
         let i = Math.floor(cfg.values.length * Math.random());
         return cfg.values[i]

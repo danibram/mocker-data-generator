@@ -29,9 +29,13 @@ describe('Options: self', function() {
         var m = mocker()
         m.schema('act', act, length)
             .build(function(data) {
-                expect(data.act.length).to.equal(length)
-                expect(data.act[0].request_id).to.equal(data.act[0].request.id)
-                done()
+                try {
+                    expect(data.act.length).to.equal(length)
+                    expect(data.act[0].request_id).to.equal(data.act[0].request.id)
+                    done()
+                } catch (x) {
+                    done(x)
+                }
             })
     })
 })

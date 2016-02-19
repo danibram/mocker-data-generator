@@ -28,8 +28,13 @@ export default class Mocker {
 
     build(cb) {
         this.schemas.reduce((acc, schema) => {
+            let instances
 
-            let instances = schema.build(acc)
+            try {
+                instances = schema.build(acc)
+            } catch(e){
+                console.error(new Error(' Schema: "' + schema.name + '" ' + e))
+            }
 
             // Clean virtuals
             if (schema.virtualPaths.length > 0){

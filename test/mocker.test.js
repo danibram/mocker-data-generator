@@ -30,6 +30,7 @@ describe('Mocker: Generators (Fields)', function() {
         require('./providers/randexp.test')
         require('./options/self.test')
         require('./options/db.test')
+        require('./options/eval.test')
         require('./options/hasOne.test')
         require('./options/hasMany.test')
 

@@ -1,5 +1,10 @@
 # Release History
 
+## (1.2.2)
+- Better error management
+- Added eval methods
+- Update docs with the online mocker-api: https://mocker-api.herokuapp.com/
+
 ## (1.2.1)
 - Start to parse better the errors
 
