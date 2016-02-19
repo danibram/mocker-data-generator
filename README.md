@@ -117,15 +117,15 @@ Data generation goes with model based composed by generators, the generators can
 - **_eval_**: evaluate the current string, remember that i inject all the awesome methods, faker, chance, casual, randexp, and also the db and object methods. With this eval field, **_you must pass an exactly JSON syntax_**:
 
   ```javascript
-        { eval: 'object.id' } //will get the first user id
+        { eval: 'object.id' } 
 
         //OR
 
-        { eval: 'db.user[0]' } //will get the first user id
+        { eval: 'db.user[0]' }
 
         //OR
 
-        { eval: 'faker.lorem.words()' } //will get the first user id
+        { eval: 'faker.lorem.words()' } 
   ```
 
 - **_hasOne_**: You can pass 2 parameters:
