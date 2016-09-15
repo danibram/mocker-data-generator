@@ -13,13 +13,8 @@ describe('Options: FakerJs', function() {
                 faker: 'lorem.words'
             })
             expect(res)
-                .to.be.an('array')
+                .to.be.an('string')
                 .not.to.be.null
-                .to.not.be.undefined
-            expect(res.length)
-                .to.be.a('number')
-                .to.be.equal(3)
-                .to.not.be.null
                 .to.not.be.undefined
             done()
         } catch (x) {
@@ -33,12 +28,7 @@ describe('Options: FakerJs', function() {
                 faker: 'lorem.words()'
             })
             expect(res)
-                .to.be.an('array')
-                .not.to.be.null
-                .to.not.be.undefined
-            expect(res.length)
-                .to.be.a('number')
-                .to.be.equal(3)
+                .to.be.an('string')
                 .not.to.be.null
                 .to.not.be.undefined
             done()
@@ -52,12 +42,7 @@ describe('Options: FakerJs', function() {
             var res = m.proccessLeaf({
                 faker: 'lorem.words(1)'
             })
-            expect(res).to.be.an('array')
-            expect(res.length)
-                .to.be.a('number')
-                .to.be.equal(1)
-                .to.not.be.null
-                .to.not.be.undefined
+            expect(res).to.be.an('string')
             done()
         } catch (x) {
             done(x)

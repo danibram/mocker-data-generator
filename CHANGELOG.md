@@ -1,6 +1,7 @@
 # Release History
 
-## (1.2.4)
+## (1.2.5)
+- Fix string issue with fakerJs
 - Fixed babel polyfill issues
 - updates on dev packages
 
