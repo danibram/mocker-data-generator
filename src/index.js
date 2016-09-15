@@ -1,4 +1,7 @@
-require('babel-polyfill')
+if (!global._babelPolyfill) {
+   require('babel-polyfill');
+}
+
 import Mocker from './Mocker'
 
 const initMocker = function(opts) {

@@ -1,5 +1,9 @@
 # Release History
 
+## (1.2.3)
+- Fixed babel polyfill issues
+- updates on dev packages
+
 ## (1.2.2)
 - Better error management
 - Added eval methods
@@ -99,11 +103,11 @@
     ```javascript
         [{
             //Any generator
-                //Faker  
+                //Faker
             faker: 'random.arrayElement(db.users)[userId]'
-                //Chance  
+                //Chance
             chance: 'integer'
-                //Function  
+                //Function
             function: function (){ return /**/ }
 
         }, //Array config
@@ -114,11 +118,11 @@
     ```javascript
         [{
             //Any generator
-                //Faker  
+                //Faker
             faker: 'random.arrayElement(db.users)[userId]'
-                //Chance  
+                //Chance
             chance: 'integer'
-                //Function  
+                //Function
             function: function (){ return /**/ }
 
             //Array config
