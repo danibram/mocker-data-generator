@@ -1,6 +1,6 @@
 # Release History
 
-## (1.2.3)
+## (1.2.4)
 - Fixed babel polyfill issues
 - updates on dev packages
 
