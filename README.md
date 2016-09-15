@@ -47,7 +47,7 @@ var group = {
     },
     users: [{
         function: function() {
-            return this.faker.random.arrayElement(this.db.users).username
+            return this.faker.random.arrayElement(this.db.user).username
         },
         length: 10,
         fixedLength: false
