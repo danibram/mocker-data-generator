@@ -68,7 +68,7 @@ export default class Schema extends Generator{
                 na = (fieldConfig.concatStrict) ? [...new Set(na)] : na
             }
 
-            let length = fieldArrayCalcLength(fieldConfig, na.length)
+            let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
             Array.from(new Array(length)).map(() => {
                 array.push(this.generateField(fieldConfig))
