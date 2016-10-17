@@ -70,8 +70,8 @@ export default class Schema extends Generator{
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
-            Array.from(new Array(length)).map(() => {
-                array.push(this.generateField(fieldConfig))
+            Array.from(new Array(length)).map((_null, index) => {
+                array.push(this.generateField(fieldConfig, index))
             })
 
             return array.concat(na)
@@ -80,14 +80,14 @@ export default class Schema extends Generator{
         }
     }
 
-    generateField(cfg) {
+    generateField(cfg, ...args) {
         let result = null
         let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'eval', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
             generators.map((key) => {
                 try {
                     if (cfg.hasOwnProperty(key)){
-                        result = this[key](cfg)
+                        result = this[key](cfg, ...args)
                     }
                 } catch(e){
                     result = null
