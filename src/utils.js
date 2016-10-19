@@ -11,9 +11,11 @@ export const evalWithContextData =  function (key, object, db) {
     return eval(key)
 }
 
-export const fieldArrayCalcLength = function (config, fixedArrayLength) {
+export const fieldArrayCalcLength = function (config, fixedArrayLength, schema) {
     let length
-    if (config.fixedLength) {
+    if (typeof config.length === 'function') {
+        length = config.length.call(schema);
+    } else if (config.fixedLength) {
         length = config.length - fixedArrayLength
     } else {
         length = Math.floor((Math.random() * config.length) + 1)

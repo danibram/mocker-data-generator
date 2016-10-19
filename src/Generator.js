@@ -91,7 +91,7 @@ export default class Generator {
         return cfg.values[i]
     }
 
-    function (cfg){
+    function (cfg, ...args){
         let object = this.object
         let db = this.DB
         let faker = f
@@ -99,7 +99,7 @@ export default class Generator {
         let casual = c
         let randexp = R
 
-        return cfg.function.call({object, db, faker, chance, casual, randexp})
+        return cfg.function.call({object, db, faker, chance, casual, randexp}, ...args)
     }
 
     static (cfg){
