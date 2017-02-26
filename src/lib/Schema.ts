@@ -1,6 +1,6 @@
-import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, stringToFn, evalWithContextData, isConditional, fnCallWithContext, randexpWrapper} from './utils'
+import {isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, evalWithContextData, isConditional } from './utils'
 
-import Generator from './Generator'
+import { Generator } from './Generator'
 
 let iterate = function (obj, res, currentPath) {
     if (!currentPath) { currentPath = [] }
@@ -43,8 +43,9 @@ let iterate = function (obj, res, currentPath) {
         })
 }
 
-export default class Schema extends Generator{
-    constructor(name, cfg, options){
+export class Schema extends Generator{
+
+    constructor(name: string, cfg, options){
         super()
         this.schema = cfg
         this.name = name
@@ -61,7 +62,7 @@ export default class Schema extends Generator{
         if ( isArray(field) ){
             let fieldConfig = field[0]
             let na = []
-            let array = []
+
             if (fieldConfig.concat){
                 na = evalWithContextData(fieldConfig.concat, this.object, this.DB)
                 //Strict Mode
@@ -70,9 +71,7 @@ export default class Schema extends Generator{
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
-            Array.from(new Array(length)).map((el, index) => {
-                array.push(this.generateField(fieldConfig, index))
-            })
+            let array = Array.from(new Array(length)).map((el, index) => this.generateField(fieldConfig, index))
 
             return array.concat(na)
         } else {
@@ -80,20 +79,19 @@ export default class Schema extends Generator{
         }
     }
 
-    generateField(cfg, ...args) {
-        let result = null
+    generateField(cfg, ...args): {} {
+        let result = {}
         let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'eval', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
-            generators.map((key) => {
-                try {
-                    if (cfg.hasOwnProperty(key)){
-                        result = this[key](cfg, ...args)
-                    }
-                } catch(e){
-                    result = null
-                    throw 'Generator: "' + key + '" ' + e
+        generators.forEach((key) => {
+            try {
+                if (cfg.hasOwnProperty(key)){
+                    result = this[key](cfg, ...args)
                 }
-            })
+            } catch(e){
+                throw 'Generator: "' + key + '" ' + e
+            }
+        })
 
 
         return result
@@ -111,7 +109,8 @@ export default class Schema extends Generator{
         this.object = {}
         this.DB = db ? db : {}
         this.DB[this.name] = []
-        if (Number.isInteger(this.options)){
+
+        if (Number.isInteger((this.options as any))){
 
             Array.from(new Array(this.options)).map(() => {
                 this.buildSingle(this.schema)

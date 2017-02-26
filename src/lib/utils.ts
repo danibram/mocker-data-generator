@@ -1,12 +1,12 @@
-export const isArray = function(arg) {
+export const isArray = function(arg: any): boolean {
     return Object.prototype.toString.call(arg) === '[object Array]';
 }
 
-export const isObject = function (arg) {
+export const isObject = function (arg: any): boolean {
     return Object.prototype.toString.call(arg) === '[object Object]';
 }
 
-export const evalWithContextData =  function (key, object, db) {
+export const evalWithContextData = function (key: string, object: {}, db?) {
     // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }

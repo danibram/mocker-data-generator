@@ -1,11 +1,21 @@
 
-import R from 'randexp'
-import f from 'faker'
-import c from 'casual'
-import Ch from 'chance'
+import * as R from 'randexp'
+import * as f from 'faker'
+import * as c from 'casual'
+import * as Ch from 'chance'
 const ch = new Ch()
 
-export default class Generator {
+export class Generator {
+    name: string
+    DB: {}
+    object: {}
+    schema: {
+        values: string[]
+    }
+    options: {
+        uniqueField: string
+    }
+    virtualPaths: string[]
 
     faker(cfg) {
         let faker = f

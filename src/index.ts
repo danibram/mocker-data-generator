@@ -1,11 +1,3 @@
-if (!global._babelPolyfill) {
-   require('babel-polyfill');
-}
-
-import Mocker from './Mocker'
-
-const initMocker = function(opts) {
-    return new Mocker(opts)
-}
-
-module.exports = initMocker
+export * from './lib/Mocker'
+export * from './lib/Schema'
+export * from './lib/Generator'

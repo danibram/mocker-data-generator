@@ -1,180 +1,17 @@
-var mocker = require('../lib')
-var expect = require('chai').expect
-var assert = require('chai').assert
-var faker = require('faker')
-var util = require('util')
+import { test } from 'ava'
+import { Generator } from '../'
+import { isArray, isObject } from './utils'
 
+const gen = new Generator()
 
-
-var m = mocker()
-
-describe('Mocker: Methods', function() {
-
-    var methods = ['schema', 'build', 'reset', 'restart']
-    for (var i = 0; i < methods.length; i++) {
-        var method = methods[i]
-        it('Should have ' + method, function() {
-            expect(m[method])
-                .to.be.a('function')
-                .to.not.be.null
-                .to.not.be.undefined
-        })
-    }
+test('Should works', async t => {
+    let res = gen.static({ static: 'test' })
+    t.true(typeof res === 'string')
+    t.true(res === 'test')
 })
 
-describe('Mocker: Generators (Fields)', function() {
-    describe('Generators: Fields options', function() {
-        require('./providers/faker.test')
-        require('./providers/chance.test')
-        require('./providers/casual.test')
-        require('./providers/randexp.test')
-        require('./options/self.test')
-        require('./options/db.test')
-        require('./options/eval.test')
-        require('./options/hasOne.test')
-        require('./options/hasMany.test')
+/*
 
-        describe('Options: Static', function() {
-            it('Should have static opts', function(done) {
-                var res = m.proccessLeaf({
-                    static: 'test'
-                })
-                try {
-                    expect(res)
-                        .to.be.a('string')
-                        .to.deep.equal('test')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
-
-        describe('Options: IncrementalId', function() {
-            var len = 10
-            var solution = []
-            var user = {
-                id: {
-                    incrementalId: 0
-                }
-            }
-
-            for (var i = 0; i < len; i++) {
-                solution.push({
-                    id: i
-                })
-            }
-
-            var m = mocker()
-            it('Should create incrementalIds', function(done) {
-                m.schema('user', user, len)
-                    .build(function(data) {
-                        try {
-                            expect(data.user)
-                                .to.be.an('array')
-                                .to.deep.equal(solution)
-                                .to.not.be.null
-                                .to.not.be.undefined
-                            done()
-                        } catch (x) {
-                            done(x)
-                        }
-                    })
-            })
-
-            var len = 10
-            var solution = []
-            var user = {
-                id: {
-                    incrementalId: 10
-                }
-            }
-
-            for (var i = 0; i < len; i++) {
-                solution.push({
-                    id: i + 10
-                })
-            }
-
-            var m = mocker()
-            it('Should create incrementalIds with an offset', function(done) {
-                m.schema('user', user, len)
-                    .build(function(str) {
-                        try {
-                            expect(str.user)
-                                .to.be.an('array')
-                                .to.deep.equal(solution)
-                                .to.not.be.null
-                                .to.not.be.undefined
-                            done()
-                        } catch (x) {
-                            done(x)
-                        }
-                    })
-            })
-        })
-
-        describe('Options: Function', function() {
-            it('Should have funtion opts', function(done) {
-                var res = m.proccessLeaf({
-                    function: function() {
-                        return 'test'
-                    }
-                })
-                try {
-                    expect(res)
-                        .to.be.a('string')
-                        .to.deep.equal('test')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-
-            it('Should call function and have {db, object, faker} injected', function(done) {
-                var _this = m.proccessLeaf({
-                    function: function() {
-                        return this
-                    }
-                })
-
-                try {
-                    expect(_this).to.be.an('object')
-                    expect(_this.faker).to.deep.equal(faker)
-                    assert.property(_this, 'db')
-                    assert.property(_this, 'object')
-                    assert.property(_this, 'faker')
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-
-            })
-        })
-
-        describe('Options: Values', function() {
-            it('Should have values opts', function(done) {
-                var values = ['test', 'this', 'awesome', 'module']
-                var res = m.proccessLeaf({
-                    values: values
-                })
-
-                try {
-                    expect(res)
-                        .to.be.a('string')
-                        .to.not.be.null
-                        .to.not.be.undefined
-                    assert.ok(values.indexOf(res) > -1)
-                    done()
-                } catch (x) {
-                    done(x)
-                }
-            })
-        })
 
         describe('Options: Array', function() {
             it('It should recognise static field', function(done) {
@@ -918,4 +755,4 @@ describe('Mocker: Generators (Fields)', function() {
 
 
     })*/
-})
+

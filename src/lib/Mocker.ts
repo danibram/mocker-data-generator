@@ -1,32 +1,34 @@
-import Schema from './Schema'
-import {cleanVirtuals} from './utils'
+import { Schema } from './Schema'
+import { cleanVirtuals } from './utils'
 
-export default class Mocker {
+export class Mocker {
 
-    schemas = [];
+    schemas: Schema[] = [];
+    options = {}
+    DB = {}
 
-    constructor(options) {
-        this.options = options ? options : {}
+    constructor(options={}) {
+        this.options = options
         this.DB = {}
     }
 
-    schema(name, schema, options) {
+    schema(name: string, schema: {}, options?: {}): Mocker {
         this.schemas.push(new Schema(name, schema, options))
         return this
     }
 
-    reset () {
+    reset (): Mocker {
         this.DB = {}
         return this
     }
 
-    restart () {
+    restart (): Mocker {
         this.DB = {}
         this.schemas = []
         return this
     }
 
-    build(cb) {
+    build(cb?): {} | Promise<{}> {
         this.schemas.reduce((acc, schema) => {
             let instances
 
@@ -46,18 +48,13 @@ export default class Mocker {
 
             return acc
         }, this.DB)
-        return cb(this.DB)
-    }
 
-    //proccessLeaf test
-    proccessLeaf (schema){
-        let s = new Schema()
-        return s.proccessLeaf(schema)
-    }
-
-    proccessNode (schema){
-        let s = new Schema()
-        s.buildSingle(schema)
-        return s.object
+        if (cb){
+            return cb(this.DB)
+        } else {
+            return Promise.resolve(this.DB)
+        }
     }
 }
+
+export const mocker = (opts?) => new Mocker(opts)
