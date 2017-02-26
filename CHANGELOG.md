@@ -1,6 +1,7 @@
 # Release History
 
 ## (1.2.7)
+- Fix little issue with array generators, now parse well the index inside, add a test for that
 - Fix string issue with fakerJs
 - Fixed babel polyfill issues
 - updates on dev packages
