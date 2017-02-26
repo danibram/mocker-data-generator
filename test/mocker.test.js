@@ -247,6 +247,40 @@ describe('Mocker: Generators (Fields)', function() {
                 }
             })
 
+            it('It should recognise index in function field', function(done) {
+                var limit = 10
+                var model = 10
+                var arr = []
+                for (var i = 0; i < limit; i++) {
+                    arr.push(i)
+                }
+
+                var situation = {
+                    sites: [{
+                        function: function(index) {
+                            return index
+                        },
+                        length: 10,
+                        fixedLength: true
+                    }]
+                }
+                var result = {
+                    sites: arr
+                }
+
+                var m = mocker()
+                var data = m.proccessNode(situation)
+                try {
+                    expect(data)
+                        .to.deep.equal(result)
+                        .to.not.be.undefined
+                        .to.not.be.null
+                        done()
+                } catch(e){
+                    done(e)
+                }
+            })
+
             it('It should recognise fakerJs field', function(done) {
                 var situation = {
                     sites: [{
