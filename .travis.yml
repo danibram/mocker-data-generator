@@ -1,3 +1,4 @@
+sudo: false
 language: node_js
 node_js:
   - node
@@ -9,13 +10,5 @@ node_js:
   - "0.12"
   - "0.10"
 
-script: "npm run-script test:travis"
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
 after_success:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-  - ./node_modules/.bin/codecov
-  - rm -rf ./coverage
+  - yarn send-coverage

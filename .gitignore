@@ -1,4 +1,8 @@
 .vscode
 node_modules
 _site
+build
+src/**.js
 coverage
+.nyc_output
+*.log
