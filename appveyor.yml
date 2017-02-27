@@ -5,8 +5,8 @@ init:
 # Test against this version of Node.js
 environment:
   matrix:
-  - nodejs_version: "5"
-  - nodejs_version: "4"
+  - node_version: "6"
+  - node_version: "4"
   - nodejs_version: "0.12"
   - nodejs_version: "0.10"
 
@@ -18,20 +18,15 @@ platform:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
-  # install modules
-  - npm install -g npm
-  - PATH=%APPDATA%\npm;%PATH%
-  # Typical npm stuff.
-  - npm cache clean
-  - npm install
+  - yarn install
 
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
   - node --version
-  - npm --version
+  - yarn --version
   # run tests
-  - npm test
+  - yarn test
 
 # Don't actually build.
 build: off
