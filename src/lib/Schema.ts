@@ -11,16 +11,15 @@ let iterate = function (obj, res, currentPath) {
             let path = currentPath.slice(0)
             path.push(k)
 
-
             if (iamLastParent(value)) {
 
-                if (path){
-                    if ( isArray(value) ){
-                        if (value[0] && value[0].virtual){
+                if (path) {
+                    if ( isArray(value) ) {
+                        if (value[0] && value[0].virtual) {
                             this.virtualPaths.push(path.toString())
                         }
                     } else {
-                        if (value.virtual){
+                        if (value.virtual) {
                             this.virtualPaths.push(path.toString())
                         }
                     }
@@ -28,11 +27,11 @@ let iterate = function (obj, res, currentPath) {
 
                 let fieldCalculated = this.proccessLeaf(value)
 
-                if (!isConditional(k)){
+                if (!isConditional(k)) {
                     res[k] = fieldCalculated
                 } else {
                     let key = k.split(',')
-                    if (evalWithContextData(key[0], this.object)){
+                    if (evalWithContextData(key[0], this.object)) {
                         res[key[1]] = fieldCalculated
                     }
                 }
@@ -43,9 +42,9 @@ let iterate = function (obj, res, currentPath) {
         })
 }
 
-export class Schema extends Generator{
+export class Schema extends Generator {
 
-    constructor(name: string, cfg, options){
+    constructor (name: string, cfg, options) {
         super()
         this.schema = cfg
         this.name = name
@@ -59,13 +58,13 @@ export class Schema extends Generator{
 
     proccessLeaf (field) {
 
-        if ( isArray(field) ){
+        if ( isArray(field) ) {
             let fieldConfig = field[0]
             let na = []
 
-            if (fieldConfig.concat){
+            if (fieldConfig.concat) {
                 na = evalWithContextData(fieldConfig.concat, this.object, this.DB)
-                //Strict Mode
+                // Strict Mode
                 na = (fieldConfig.concatStrict) ? [...new Set(na)] : na
             }
 
@@ -79,20 +78,19 @@ export class Schema extends Generator{
         }
     }
 
-    generateField(cfg, ...args): {} {
+    generateField (cfg, ...args): {} {
         let result = {}
         let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'eval', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
 
         generators.forEach((key) => {
             try {
-                if (cfg.hasOwnProperty(key)){
+                if (cfg.hasOwnProperty(key)) {
                     result = this[key](cfg, ...args)
                 }
-            } catch(e){
+            } catch (e) {
                 throw 'Generator: "' + key + '" ' + e
             }
         })
-
 
         return result
     }
@@ -105,12 +103,12 @@ export class Schema extends Generator{
         }
     }
 
-    build (db){
+    build (db) {
         this.object = {}
         this.DB = db ? db : {}
         this.DB[this.name] = []
 
-        if (Number.isInteger((this.options as any))){
+        if (Number.isInteger((this.options as any))) {
 
             Array.from(new Array(this.options)).map(() => {
                 this.buildSingle(this.schema)
@@ -118,15 +116,15 @@ export class Schema extends Generator{
                 this.object = {}
             })
 
-        } else if (isObject(this.options)){
+        } else if (isObject(this.options)) {
             let f = this.options.uniqueField
             let entityConfig = this.schema
             let possibleValues
             if (f === '.') {
                 possibleValues = this.schema.values
             } else {
-                if (this.schema[f]){
-                    if (isArray(this.schema[f].values)){
+                if (this.schema[f]) {
+                    if (isArray(this.schema[f].values)) {
                         possibleValues = this.schema[f].values
                     } else {
                         possibleValues = this.schema[f]
@@ -138,7 +136,7 @@ export class Schema extends Generator{
 
             }
 
-            if ( !isArray(possibleValues) ){
+            if ( !isArray(possibleValues) ) {
                 console.error('The field ' + f + ', on the scheema ' + this.name + ' is not an array.')
                 return this.DB[this.name]
             }
@@ -160,6 +158,5 @@ export class Schema extends Generator{
         }
         return this.DB[this.name]
     }
-
 
 }

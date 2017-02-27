@@ -11,8 +11,6 @@ test('Should works', async t => {
 })
 
 /*
-
-
         describe('Options: Array', function() {
             it('It should recognise static field', function(done) {
                 var limit = 10
@@ -752,7 +750,4 @@ test('Should works', async t => {
                     }
                 })
         })
-
-
     })*/
-

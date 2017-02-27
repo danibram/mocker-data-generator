@@ -1,9 +1,9 @@
-export const isArray = function(arg: any): boolean {
-    return Object.prototype.toString.call(arg) === '[object Array]';
+export const isArray = function (arg: any): boolean {
+    return Object.prototype.toString.call(arg) === '[object Array]'
 }
 
 export const isObject = function (arg: any): boolean {
-    return Object.prototype.toString.call(arg) === '[object Object]';
+    return Object.prototype.toString.call(arg) === '[object Object]'
 }
 
 export const evalWithContextData = function (key: string, object: {}, db?) {
@@ -14,7 +14,7 @@ export const evalWithContextData = function (key: string, object: {}, db?) {
 export const fieldArrayCalcLength = function (config, fixedArrayLength, schema) {
     let length
     if (typeof config.length === 'function') {
-        length = config.length.call(schema);
+        length = config.length.call(schema)
     } else if (config.fixedLength) {
         length = config.length - fixedArrayLength
     } else {
@@ -23,36 +23,18 @@ export const fieldArrayCalcLength = function (config, fixedArrayLength, schema) 
     return length
 }
 
-export const iamLastParent = function(obj) {
-    let last = false
-    if (isObject(obj)) {
-        let ks = Object.keys(obj)
-
-        for (let i = 0; i < ks.length; i++) {
-            let k = ks[i]
-            last = iamLastChild(obj, k)
-            if (!last){
-                break
-            }
-        }
-    } else {
-        last = true
-    }
-    return last
-}
-
 export const iamLastChild = function (parent, k) {
     if (isArray(parent[k])) {
         let last = false
 
-        if (parent[k].length === 0){
+        if (parent[k].length === 0) {
             return true
         }
 
         for (let i = 0; i < parent[k].length; i++) {
             let el = parent[k][i]
             last = !isObject(el)
-            if (last){
+            if (last) {
                 break
             }
         }
@@ -62,6 +44,24 @@ export const iamLastChild = function (parent, k) {
     }
 }
 
+export const iamLastParent = function (obj) {
+    let last = false
+    if (isObject(obj)) {
+        let ks = Object.keys(obj)
+
+        for (let i = 0; i < ks.length; i++) {
+            let k = ks[i]
+            last = iamLastChild(obj, k)
+            if (!last) {
+                break
+            }
+        }
+    } else {
+        last = true
+    }
+    return last
+}
+
 export const isConditional = function (str) {
     let arr = str.split(',')
     return arr.length > 1
@@ -69,15 +69,15 @@ export const isConditional = function (str) {
 
 export const cleanVirtuals = function (paths, object, options) {
 
-    //clean specific paths
-    let objectCleaner = function *(path, obj, options) {
+    // clean specific paths
+    let objectCleaner = function * (path, obj, options) {
         let lvls = path.split(options.symbol)
         let dest = obj
 
         if (!lvls || lvls.length === 0) { return }
         if (!obj) { return }
 
-        for (var i = 0; i< lvls.length; i++) {
+        for (let i = 0; i < lvls.length; i++) {
             let field = lvls[i]
             if (i === lvls.length - 1 && dest[field]) {
                 if (Object.getOwnPropertyNames(dest[field]).length < 1) {
@@ -90,23 +90,23 @@ export const cleanVirtuals = function (paths, object, options) {
         }
         lvls.pop()
 
-        if (lvls.length > 0){
+        if (lvls.length > 0) {
             yield *objectCleaner(lvls.join(options.symbol), obj, options)
         } else {
             return
         }
     }
 
-    let forEachPath = function *(path, object, options) {
+    let forEachPath = function * (path, object, options) {
         let lvls = path.split(options.symbol)
         let dest = object
 
-        for (var i = 0; i < lvls.length; i++) {
+        for (let i = 0; i < lvls.length; i++) {
             let field = lvls[i]
             if (i === lvls.length - 1) {
                 // delete specific path
                 delete dest[field]
-                //clean specific path
+                // clean specific path
                 yield *objectCleaner(path, object, options)
             } else {
                 dest = dest[field]
@@ -114,21 +114,21 @@ export const cleanVirtuals = function (paths, object, options) {
         }
     }
 
-    let forPaths = function *(paths, object, options) {
-        for (var i = 0; i < paths.length; i++) {
+    let forPaths = function * (paths, object, options) {
+        for (let i = 0; i < paths.length; i++) {
             let path = paths[i]
             yield *forEachPath(path, object, options)
         }
     }
 
-    let it = forPaths(paths, object, options);
+    let it = forPaths(paths, object, options)
     for (const res of it) { }
 
     return object
 }
 
-export const calculateKey = function(k){
-    if (!isConditional(k)){
+export const calculateKey = function (k) {
+    if (!isConditional(k)) {
         return k
     } else {
         let key = k.split(',')
@@ -136,12 +136,12 @@ export const calculateKey = function(k){
     }
 }
 
-export const conditionalField = function (acc, k, result, object){
-    if (!isConditional(k)){
+export const conditionalField = function (acc, k, result, object) {
+    if (!isConditional(k)) {
         acc[k] = result
     } else {
         let key = k.split(',')
-        if (evalWithContextData(key[0], object)){
+        if (evalWithContextData(key[0], object)) {
             acc[key[1]] = result
         }
     }

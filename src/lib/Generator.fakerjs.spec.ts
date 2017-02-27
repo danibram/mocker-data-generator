@@ -1,6 +1,5 @@
 import { test } from 'ava'
 import { Generator } from '../'
-import { expect, assert } from 'chai'
 
 const gen = new Generator()
 
@@ -41,4 +40,3 @@ test('Should be "lorem.words(1)[0]""', async t => {
     let res = gen.faker({ faker: 'lorem.words(1)[0]' })
     t.true(typeof res === 'string')
 })
-

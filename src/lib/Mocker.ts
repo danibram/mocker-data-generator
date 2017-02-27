@@ -3,16 +3,16 @@ import { cleanVirtuals } from './utils'
 
 export class Mocker {
 
-    schemas: Schema[] = [];
+    schemas: Schema[] = []
     options = {}
     DB = {}
 
-    constructor(options={}) {
+    constructor (options= {}) {
         this.options = options
         this.DB = {}
     }
 
-    schema(name: string, schema: {}, options?: {}): Mocker {
+    schema (name: string, schema: {}, options?: {}): Mocker {
         this.schemas.push(new Schema(name, schema, options))
         return this
     }
@@ -28,18 +28,18 @@ export class Mocker {
         return this
     }
 
-    build(cb?): {} | Promise<{}> {
+    build (cb?): {} | Promise<{}> {
         this.schemas.reduce((acc, schema) => {
             let instances
 
             try {
                 instances = schema.build(acc)
-            } catch(e){
+            } catch (e) {
                 console.error(new Error(' Schema: "' + schema.name + '" ' + e))
             }
 
             // Clean virtuals
-            if (schema.virtualPaths.length > 0){
+            if (schema.virtualPaths.length > 0) {
                 instances.forEach(x => cleanVirtuals(schema.virtualPaths, x, {strict: true, symbol: ','}))
             }
 
@@ -49,7 +49,7 @@ export class Mocker {
             return acc
         }, this.DB)
 
-        if (cb){
+        if (cb) {
             return cb(this.DB)
         } else {
             return Promise.resolve(this.DB)

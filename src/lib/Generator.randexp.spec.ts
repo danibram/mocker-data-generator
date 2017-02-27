@@ -1,6 +1,5 @@
 import { test } from 'ava'
 import { Generator } from '../'
-import { expect, assert } from 'chai'
 
 const gen = new Generator()
 
