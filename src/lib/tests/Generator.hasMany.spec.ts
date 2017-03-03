@@ -1,6 +1,6 @@
 import { test } from 'ava'
-import { Generator } from '../'
-import { isArray, isObject } from './utils'
+import { Generator } from '../../'
+import { isArray, isObject } from '../utils'
 
 const gen = new Generator()
 
@@ -31,4 +31,17 @@ test('Should get many from the DB with min', async t => {
     res.forEach(r => t.true(data.indexOf(r) > -1) )
     t.true(res.length <= 10)
     t.true(res.length >= 4)
+})
+
+test('Should get many from the DB with fixed amount', async t => {
+    let data = Array.from(new Array(10)).map((el, i) => ({ 'id': i }) )
+    gen.DB = { hello: data }
+
+    let res = gen.hasMany({
+        hasMany: 'hello',
+        amount: 5
+    })
+
+    res.forEach(r => t.true(data.indexOf(r) > -1) )
+    t.true(res.length === 5)
 })

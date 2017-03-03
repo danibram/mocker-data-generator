@@ -1,6 +1,6 @@
 import { test } from 'ava'
-import { Generator } from '../'
-import { isArray, isObject } from './utils'
+import { Generator } from '../../'
+import { isArray, isObject } from '../utils'
 
 const gen = new Generator()
 
