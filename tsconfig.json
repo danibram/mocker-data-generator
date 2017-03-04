@@ -1,7 +1,7 @@
 {
   "extends": "./config/tsconfig.flexible",
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "outDir": "build/main",
     "rootDir": "src",
     "moduleResolution": "node",
@@ -13,7 +13,9 @@
     "traceResolution": false,
     "pretty": true,
     "lib" : [
-      "es6"
+      "es6",
+      "es5",
+      "es2015"
     ],
     "types" : [
       "node"
