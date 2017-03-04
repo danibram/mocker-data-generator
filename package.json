@@ -78,7 +78,7 @@
     "tslint": "^4.5.1",
     "tslint-config-standard": "^4.0.0",
     "typedoc": "^0.5.5",
-    "typescript": "^2.2.1"
+    "typescript": "next"
   },
   "dependencies": {
     "casual": "^1.5.11",

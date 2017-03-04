@@ -117,12 +117,12 @@ export const cleanVirtuals = function (paths, object, options) {
     let forPaths = function * (paths, object, options) {
         for (let i = 0; i < paths.length; i++) {
             let path = paths[i]
-            yield *forEachPath(path, object, options)
+            yield * (forEachPath as any)(path, object, options)
         }
     }
 
     let it = forPaths(paths, object, options)
-    for (const res of it) { }
+    for (const res of (it as any)) { }
 
     return object
 }

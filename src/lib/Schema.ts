@@ -60,12 +60,13 @@ export class Schema extends Generator {
 
         if ( isArray(field) ) {
             let fieldConfig = field[0]
-            let na = []
+            let na = Array()
 
             if (fieldConfig.concat) {
                 na = evalWithContextData(fieldConfig.concat, this.object, this.DB)
                 // Strict Mode
-                na = (fieldConfig.concatStrict) ? [...new Set(na)] : na
+
+                na = (fieldConfig.concatStrict) ? [...Array.from(new Set(na))] : na
             }
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)

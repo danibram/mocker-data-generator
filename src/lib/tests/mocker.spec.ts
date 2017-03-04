@@ -2,8 +2,6 @@ import { test } from 'ava'
 import { mocker, Mocker, Schema } from '../../'
 import { isArray, isObject } from '../utils'
 
-
-
 test('Should return an new instance of mocker', async t => {
     t.deepEqual(mocker(), new Mocker())
 })
@@ -29,7 +27,7 @@ test('Virtuals should be eliminated in the final object and can be accesible dur
         },
 
         id: {
-            function: function() {
+            function: function () {
                 return this.object.exampleVirtual
             }
         },
@@ -77,30 +75,30 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
             },
             much: {
                 deeper: {
-                    function: function() {
+                    function: function () {
                         return this.object.name.firstName + ' ' + this.object.name.lastName
                     }
                 },
                 more: {
                     deeper: {
-                        function: function() {
+                        function: function () {
                             return this.object.name.firstName + ' ' + this.object.name.lastName
                         }
                     },
                     level: {
                         deeper: {
-                            function: function() {
+                            function: function () {
                                 return this.object.name.firstName + ' ' + this.object.name.lastName
                             }
                         },
                         awesome: {
                             deeper: {
-                                function: function() {
+                                function: function () {
                                     return this.object.name.firstName + ' ' + this.object.name.lastName
                                 }
                             },
                             deeper2: {
-                                function: function() {
+                                function: function () {
                                     return this.object.name.firstName + ' ' + this.object.name.lastName
                                 }
                             }
@@ -162,7 +160,6 @@ test('Should work with conditional keys', async t => {
     t.deepEqual(db.situation[0], expectedResult)
 
 })
-
 
 test('Should not affect init values to next entity', async t => {
     let length = 10
@@ -227,7 +224,6 @@ test('Should generate more entities', async t => {
     t.deepEqual(Object.keys(data), Array('act', 'act2'))
     t.true(data.act.length === length)
     t.true(data.act2.length === length)
-
 
     data.act.forEach(d => {
         t.true(Object.keys(d).length === Object.keys(model1).length)

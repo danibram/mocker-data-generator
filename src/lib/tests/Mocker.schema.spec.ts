@@ -12,4 +12,3 @@ test('Should load 1 schema', async t => {
     t.true(mock.schemas.length === 1)
     t.true(mock.schemas[0] instanceof Schema)
 })
-

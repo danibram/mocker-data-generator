@@ -64,7 +64,7 @@ test('Array: It should recognise index param in normal function field', async t 
 
     let model = {
         test: [{
-            function: function(i) { return i },
+            function: function (i) { return i },
             length: 10,
             fixedLength: true
         }]
@@ -133,8 +133,6 @@ test('Array: It should concat elements', async t => {
     t.true(isArray(data[0].emails))
     t.true(data[0].emails.length < 13)
     t.true(data[0].emails.length > 2)
-
-
 })
 
 /*
