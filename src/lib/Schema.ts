@@ -103,7 +103,7 @@ export class Schema extends Generator {
         }
     }
 
-    build (db) {
+    build (db = {}) {
         this.object = {}
         this.DB = db ? db : {}
         this.DB[this.name] = []

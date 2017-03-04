@@ -1,11 +1,15 @@
 import { Schema } from './Schema'
 import { cleanVirtuals } from './utils'
 
+export type PromiseCb = Promise<any> | void
+export type IDB = {
+    [key: string]: any[]
+}
 export class Mocker {
 
     schemas: Schema[] = []
+    DB: IDB = {}
     options = {}
-    DB = {}
 
     constructor (options= {}) {
         this.options = options
@@ -28,7 +32,9 @@ export class Mocker {
         return this
     }
 
-    build (cb?): {} | Promise<{}> {
+    build (cb?: (( _: any ) => void) ): Promise<any>
+    build (cb?: (( _: any ) => void) ): void
+    build (cb?: (( _: any ) => void) ): any {
         this.schemas.reduce((acc, schema) => {
             let instances
 
