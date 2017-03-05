@@ -56,6 +56,57 @@ test('Array: It should recognise normal function field', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
+test('Array: Should generate fixed length', async t => {
+
+    let expectedResult = {
+        test: Array.from(new Array(10)).map( _ => 'test' )
+    }
+
+    let model = {
+        test: [{
+            static: 'test',
+            length: 10,
+            fixedLength: true
+        }]
+    }
+
+    let schema = new Schema('web', model, 1)
+    let data = schema.build()
+
+    t.deepEqual(data[0], expectedResult)
+})
+
+test('Array: Should generate function length', async t => {
+
+    let model = {
+        test: [{
+            static: 'test',
+            length: () => 10
+        }]
+    }
+
+    let schema = new Schema('web', model, 1)
+    let data = schema.build()
+
+    t.true(data[0].test.length === 10)
+})
+
+test('Array: Should generate dynamic length', async t => {
+
+    let model = {
+        test: [{
+            static: 'test',
+            length: 10
+        }]
+    }
+
+    let schema = new Schema('web', model, 1)
+    let data = schema.build()
+
+    t.true(data[0].test.length <= 10)
+    t.true(data[0].test.length > 0)
+})
+
 test('Array: It should recognise index param in normal function field', async t => {
 
     let expectedResult = {

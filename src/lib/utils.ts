@@ -125,24 +125,3 @@ export const cleanVirtuals = function (paths, object, options) {
 
     return object
 }
-
-export const calculateKey = function (k) {
-    if (!isConditional(k)) {
-        return k
-    } else {
-        let key = k.split(',')
-        return key[0]
-    }
-}
-
-export const conditionalField = function (acc, k, result, object) {
-    if (!isConditional(k)) {
-        acc[k] = result
-    } else {
-        let key = k.split(',')
-        if (evalWithContextData(key[0], object)) {
-            acc[key[1]] = result
-        }
-    }
-    return
-}
