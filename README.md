@@ -1,7 +1,7 @@
 # mocker-data-generator
 [![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true&stars=true)][npm-home-module]
 
-[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module]
+[![npm version](https://img.shields.io/npm/v/mocker-data-generator.svg?style=flat-square)][npm-home-module][![GitHub license](https://img.shields.io/npm/dt/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg?style=flat-square)](https://github.com/conventional-changelog/standard-version)
 
 [![Linux Build status][travis-badge]][travis-link][![Windows Build status][appveyor-badge]][appveyor-link][![Codecov coverage][codecov-badge]][codecov-link][![Codecov coverage][coveralls-badge]][coveralls-link]
 
@@ -18,8 +18,22 @@
 
 A simplified way to generate massive mock data based on a schema, using the awesome fake/random data generators like (FakerJs, ChanceJs, CasualJs and RandExpJs), all in one tool to generate your fake data for testing.
 
+Now the library has been migrated 100% to typescript typing are included.
+
 ## Getting started
 Install the module with: `npm install mocker-data-generator`
+
+Import it
+
+```javascript
+var mocker = require('mocker-data-generator').default (vainilla way)
+
+or
+
+import mocker from 'mocker-data-generator' (ES6 or Typescript way)
+```
+
+Then use it:
 
 ```javascript
 var user = {
@@ -122,7 +136,7 @@ Data generation goes with model based composed by generators, the generators can
 - **_eval_**: evaluate the current string, remember that i inject all the awesome methods, faker, chance, casual, randexp, and also the db and object methods. With this eval field, **_you must pass an exactly JSON syntax_**:
 
   ```javascript
-        { eval: 'object.id' } 
+        { eval: 'object.id' }
 
         //OR
 
@@ -130,7 +144,7 @@ Data generation goes with model based composed by generators, the generators can
 
         //OR
 
-        { eval: 'faker.lorem.words()' } 
+        { eval: 'faker.lorem.words()' }
   ```
 
 - **_hasOne_**: You can pass 2 parameters:
@@ -244,11 +258,11 @@ Data generation goes with model based composed by generators, the generators can
     ```javascript
     [{
        //Any generator
-           //Faker  
+           //Faker
        faker: 'random.arrayElement(db.users).userId'
-           //Chance  
+           //Chance
        chance: 'integer'
-           //Function  
+           //Function
        function: function (){ return /**/ }
 
        //Array config
@@ -267,13 +281,13 @@ Data generation goes with model based composed by generators, the generators can
 ```javascript
     {
         //Any generator
-            //Faker  
+            //Faker
         faker: 'random.arrayElement(db.users)[userId]'
-            //Chance  
+            //Chance
         chance: 'integer'
             //static
         static: 'any static field'
-            //Function  
+            //Function
         function: function (){ return /**/ }
 
         //with the virtual option
@@ -353,6 +367,7 @@ I couldn't do this without this awesome libraries, so thanks to all:
 - Chance:  [[https://github.com/victorquinn/chancejs](https://github.com/victorquinn/chancejs)]
 - Casual:  [[https://github.com/boo1ean/casual](https://github.com/boo1ean/casual)]
 - RandExpJs: [[https://github.com/fent/randexp.js](https://github.com/fent/randexp.js)]
+- typescript-starter: [[https://github.com/bitjson/typescript-starter](https://github.com/bitjson/typescript-starter)]
 
 ## License
 Licensed under the MIT license. 2015
