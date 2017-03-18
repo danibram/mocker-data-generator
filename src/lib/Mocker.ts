@@ -62,5 +62,3 @@ export class Mocker {
         }
     }
 }
-
-export const mocker = (opts?) => new Mocker(opts)

@@ -1,10 +1,12 @@
-var mocker = require('../lib')
+
+var mocker = require('../build/main/index.js').default
 var util = require('util')
 var moment = require('moment')
 
 var cat = {
     name: ['txuri', 'pitxi', 'kitty']
 };
+
 var cat2 = {
     name: {
         values: ['txuri', 'pitxi', 'kitty']
@@ -18,14 +20,15 @@ var cat2 = {
     }],
     get:{
         function(){
-            return this.emails.casa
+            return this.object.emails[0]
         }
     }
 };
+
 var start = moment()
 var m = mocker()
     .schema('cat', cat2, 1)
-    .build(function(data){
-        console.log('Time: ' + moment().diff(start, 's'))
+    .build(function(data) {
+        console.log('Time: ' + moment().diff(start, 'ms') + ' ms')
         console.log(util.inspect(data, {depth:10}))
     })

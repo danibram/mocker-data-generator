@@ -1,5 +1,5 @@
 import { test } from 'ava'
-import { mocker, Mocker, Schema } from '../../'
+import mocker, { Mocker, Schema } from '../../'
 import { isArray, isObject } from '../utils'
 
 test('Should return an new instance of mocker', async t => {
