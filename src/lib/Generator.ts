@@ -1,7 +1,7 @@
-
 import * as R from 'randexp'
 import * as f from 'faker'
-import * as c from 'casual'
+const c = require('casual-browserify')
+// import * as c from 'casual-browserify'
 import * as Ch from 'chance'
 const ch = new Ch()
 

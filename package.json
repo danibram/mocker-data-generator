@@ -81,7 +81,7 @@
     "typescript": "^2.3.3"
   },
   "dependencies": {
-    "casual": "^1.5.12",
+    "casual-browserify": "^1.5.12",
     "chance": "^1.0.8",
     "faker": "^4.1.0",
     "randexp": "^0.4.5",
