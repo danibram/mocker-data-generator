@@ -78,14 +78,14 @@
     "tslint": "^5.1.0",
     "tslint-config-standard": "^5.0.2",
     "typedoc": "^0.5.5",
-    "typescript": "next",
-    "tslib": "^1.5.0"
+    "typescript": "next"
   },
   "dependencies": {
     "casual": "^1.5.11",
     "chance": "^1.0.0",
     "faker": "^4.1.0",
-    "randexp": "^0.4.5"
+    "randexp": "^0.4.5",
+    "tslib": "^1.5.0"
   },
   "nyc": {
     "exclude": [
