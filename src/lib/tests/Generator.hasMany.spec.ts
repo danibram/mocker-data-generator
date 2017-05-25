@@ -45,3 +45,17 @@ test('Should get many from the DB with fixed amount', async t => {
     res.forEach(r => t.true(data.indexOf(r) > -1) )
     t.true(res.length === 5)
 })
+
+test('Should get many from the DB, and one field of each entity', async t => {
+    let data = Array.from(new Array(10)).map((el, i) => ({ 'id': i }) )
+    gen.DB = { hello: data }
+
+    let res = gen.hasMany({
+        hasMany: 'hello',
+        get: 'id',
+        amount: 1
+
+    })
+
+    t.true(typeof res[0] === 'number')
+})
