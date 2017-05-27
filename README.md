@@ -174,18 +174,42 @@ Data generation goes with model based composed by generators, the generators can
   - **_get_** (Optional): String that will be evaluated over the random related entity.
 
     ```javascript
+        // In this case we will get 1 user (hasMany)
         {
             hasMany: 'user' //this populate the field with one random user
         }
 
         //OR:
+        // In this case we will get 1 (amount) user (hasMany)
 
         {
             hasMany: 'user',
             amount: 1, //optional
-            min: 1, //optional
-            max: 1 //optional
-            get: 'id' //this populate the field with one id of a random user
+        }
+
+        //OR:
+        // In this case we will get as max 3 (max) users (hasMany)
+
+        {
+            hasMany: 'user',
+            max: 3 //optional
+        }
+
+        //OR:
+        // In this case we will get bettween min 1 (min) and max 3 (max) users (hasMany)
+
+        {
+            hasMany: 'user',
+            min: 1 //optional
+            max: 3 //optional
+        }
+
+        //OR:
+        // In this case we will get the id (get) from 1 random user (hasMany)
+
+        {
+            hasMany: 'user',
+            get: 'id'
         }
     ```
 
