@@ -71,7 +71,13 @@ export class Schema extends Generator {
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
-            let array = Array.from(new Array(length)).map((el, index) => this.generateField(fieldConfig, index, length))
+            let array = Array
+                .from(new Array(length))
+                .reduce((acc, el, index) => {
+                    let self = acc.slice(0)
+                    acc.push(this.generateField(fieldConfig, index, length, self))
+                    return acc
+                }, [])
 
             return array.concat(na)
         } else {

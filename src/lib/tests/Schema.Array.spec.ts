@@ -174,11 +174,34 @@ test('Array: Function generator should include index and length', async t => {
 
     let model = {
         test: [{
-            function: function(index, length) { // index is provided
+            function: function(index, length, self) { // index is provided
                 return {
                     index,
                     length
                 }
+            },
+            fixedLength: true,
+            length: 10
+        }]
+    }
+
+    let schema = new Schema('web', model, 1)
+    let data = schema.build()
+
+    t.deepEqual(data[0], expectedResult)
+})
+
+test('Array: Function generator should include self too', async t => {
+
+    let expectedResult = {
+        test: Array.from(new Array(10)).map(( _, index) => 'hello' )
+    }
+
+    let model = {
+        test: [{
+            function: function(index, length, self) { // index is provided
+                t.deepEqual(self, Array.from(new Array(index)).map(( _, index) => 'hello' ))
+                return 'hello'
             },
             fixedLength: true,
             length: 10
