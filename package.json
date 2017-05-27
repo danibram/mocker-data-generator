@@ -82,7 +82,7 @@
   },
   "dependencies": {
     "casual-browserify": "^1.5.12",
-    "chance": "^1.0.8",
+    "chance": "^1.0.9",
     "faker": "^4.1.0",
     "randexp": "^0.4.5",
     "tslib": "^1.7.1"
