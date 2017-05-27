@@ -171,6 +171,7 @@ Data generation goes with model based composed by generators, the generators can
   - **_amount_** (Optional): Fixed number of related entities to get.
   - **_min_** (Optional): Minimum entities to get.
   - **_max_** (Optional): Maximum entities to get.
+  - **_get_** (Optional): String that will be evaluated over the random related entity.
 
     ```javascript
         {
@@ -184,6 +185,7 @@ Data generation goes with model based composed by generators, the generators can
             amount: 1, //optional
             min: 1, //optional
             max: 1 //optional
+            get: 'id' //this populate the field with one id of a random user
         }
     ```
 

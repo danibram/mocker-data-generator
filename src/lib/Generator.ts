@@ -154,6 +154,14 @@ export class Generator {
             amount = Math.floor(Math.random() * (max - min + 1)) + min
         }
 
-        return Array.from(new Array(amount)).map(() => this.hasOne({hasOne: cfg.hasMany}))
+        let newCfg = {
+            hasOne: cfg.hasMany
+        }
+
+        if (cfg.get) {
+            newCfg['get'] = cfg.get
+        }
+
+        return Array.from(new Array(amount)).map(() => this.hasOne(newCfg))
     }
 }
