@@ -166,6 +166,31 @@ test('Array: It should recognise context in function field', async t => {
     })
 })
 
+test('Array: Function generator should include index and length', async t => {
+
+    let expectedResult = {
+        test: Array.from(new Array(10)).map(( _, index) => ({ index, length: 10 }) )
+    }
+
+    let model = {
+        test: [{
+            function: function(index, length) { // index is provided
+                return {
+                    index,
+                    length
+                }
+            },
+            fixedLength: true,
+            length: 10
+        }]
+    }
+
+    let schema = new Schema('web', model, 1)
+    let data = schema.build()
+
+    t.deepEqual(data[0], expectedResult)
+})
+
 test('Array: It should concat elements', async t => {
     let model = {
         name: {

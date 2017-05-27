@@ -264,8 +264,8 @@ Data generation goes with model based composed by generators, the generators can
        faker: 'random.arrayElement(db.users).userId'
            //Chance
        chance: 'integer'
-           //Function
-       function: function (){ return /**/ }
+           //Function that has included index and length, as params
+       function: function (index, length){ return /**/ }
 
        //Array config
        length: 10,
