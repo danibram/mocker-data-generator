@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/danibram/mocker-data-generator/compare/v2.0.2...v2.1.0) (2017-05-27)
+
+
+### Features
+
+* Added a way to obtain actual array while the generation, [@zamnuts](https://github.com/zamnuts) suggestion ([2588a34](https://github.com/danibram/mocker-data-generator/commit/2588a34))
+* Added length on the array function generator, thanks [@zamnuts](https://github.com/zamnuts) ([1f17519](https://github.com/danibram/mocker-data-generator/commit/1f17519))
+* added PR #16 Add parameter to hasMany generator, thanks [@justinbarry](https://github.com/justinbarry) ([71d947f](https://github.com/danibram/mocker-data-generator/commit/71d947f))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/danibram/mocker-data-generator/compare/v2.0.1...v2.0.2) (2017-05-24)
 
