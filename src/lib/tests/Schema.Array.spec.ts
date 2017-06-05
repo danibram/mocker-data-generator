@@ -174,7 +174,7 @@ test('Array: Function generator should include index and length', async t => {
 
     let model = {
         test: [{
-            function: function(index, length, self) { // index is provided
+            function: function (index, length, self) {
                 return {
                     index,
                     length
@@ -199,7 +199,7 @@ test('Array: Function generator should include self too', async t => {
 
     let model = {
         test: [{
-            function: function(index, length, self) { // index is provided
+            function: function (index, length, self) { // index is provided
                 t.deepEqual(self, Array.from(new Array(index)).map(( _, index) => 'hello' ))
                 return 'hello'
             },

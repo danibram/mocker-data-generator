@@ -71,11 +71,11 @@
     "codecov": "^2.1.0",
     "multiview": "^2.5.3",
     "npm-scripts-info": "^0.3.6",
-    "nyc": "^10.3.2",
+    "nyc": "^11.0.2",
     "opn-cli": "^3.1.0",
     "standard-version": "^4.0.0",
     "trash-cli": "^1.4.0",
-    "tslint": "5.4.0",
+    "tslint": "^5.4.2",
     "tslint-config-standard": "^5.0.2",
     "typedoc": "^0.7.0",
     "typescript": "^2.3.3"
