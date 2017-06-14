@@ -5,7 +5,7 @@ import { isArray, isObject } from '../utils'
 const gen = new Generator()
 
 gen.name = 'user'
-gen.DB = { user: [{id: 0},{id: 1},{id: 2}] }
+gen.DB = { user: [{id: 0}, {id: 1}, {id: 2}] }
 
 test('Incremental Id true', async t => {
     /*let values = ['test', 'this', 'awesome', 'module']
