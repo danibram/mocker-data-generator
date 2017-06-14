@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* added min max for value generation randomly with tests. thanks [@jhkim](https://github.com/jhkim)-novavin ([5eaa6f4](https://github.com/danibram/mocker-data-generator/commit/5eaa6f4))
+* added min max for value generation randomly with tests. thanks [@jhkim-novavin](https://github.com/jhkim-novavin) ([5eaa6f4](https://github.com/danibram/mocker-data-generator/commit/5eaa6f4))
 
 
 
