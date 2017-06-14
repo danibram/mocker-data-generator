@@ -103,8 +103,9 @@ Data generation goes with model based composed by generators, the generators can
 - **_schema(name, schema, generationType)_**: Add a new schema, you must specify this params:
   - name (String): Name of the schema.
   - schema (JSON): The schema you define
-  - generationType (integer or JSON): In this field you specify how you will generate this schema. 2 ways:
-    - Integer to specify how many of this you want.
+  - generationType (integer or JSON): In this field you specify how you will generate this schema. 3 ways:
+    - Integer to specify how many objects of this schema you want.
+    - JSON with this object `{max: '<maximunValues>'}` you can also optionally pass min `{max: '<maximunValues>', min: '<minimumValues>'`, this will generate a range of objects of this schema, between (0 and max) or (min and max) randomly.
     - JSON with this object `{uniqueField: '<yourUniqueField>'}` this means that this field (<yourUniqueField>) is an array and you want to generate entities with this unique values
 
 - **_reset()_**: Clean the internal DB.

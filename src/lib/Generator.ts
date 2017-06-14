@@ -14,6 +14,8 @@ export class Generator {
     }
     options: {
         uniqueField: string
+        max: number
+        min: number
     }
     virtualPaths: string[]
 

@@ -123,7 +123,23 @@ export class Schema extends Generator {
                 this.object = {}
             })
 
-        } else if (isObject(this.options)) {
+        } else if (isObject(this.options) && this.options.max) {
+
+            let max = this.options.max
+            let min = (this.options.min)
+                ? this.options.min
+                : 0
+
+            let length = Math.floor(Math.random() * (max - min + 1) + min)
+
+            Array.from(new Array(length)).map(() => {
+                this.buildSingle(this.schema)
+                this.DB[this.name].push(this.object)
+                this.object = {}
+            })
+
+        } else if (isObject(this.options) && this.options.uniqueField) {
+
             let f = this.options.uniqueField
             let entityConfig = this.schema
             let possibleValues
@@ -160,6 +176,7 @@ export class Schema extends Generator {
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
+
         } else {
             console.error('An string ' + this.options + ', is not recognized as a parameter.')
         }

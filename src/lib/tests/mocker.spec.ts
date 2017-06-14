@@ -259,6 +259,37 @@ test('Should uniqueField works', async t => {
     t.deepEqual(data.cat, result)
     t.deepEqual(data.cat2, result)
 })
+
+test('Should max works', async t => {
+    let cat = {
+        name: ['txuri', 'pitxi', 'kitty']
+    }
+
+    let data = await mocker()
+        .schema('cat', cat, {max: 10})
+        .schema('cat2', cat, {max: 40})
+        .build()
+
+    t.true(data.cat.length <= 10)
+    t.true(data.cat2.length <= 40)
+})
+
+test('Should max and min works', async t => {
+    let cat = {
+        name: ['txuri', 'pitxi', 'kitty']
+    }
+
+    let data = await mocker()
+        .schema('cat', cat, {min: 5, max: 10})
+        .schema('cat2', cat, {min: 10, max: 40})
+        .build()
+
+    t.true(data.cat.length <= 10)
+    t.true(data.cat.length >= 5)
+    t.true(data.cat2.length <= 40)
+    t.true(data.cat2.length >= 10)
+})
+
 /*
 test('Should generate correctly with 2 ways of uniqueField', function(done) {
             var cat = {
