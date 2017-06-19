@@ -66,7 +66,7 @@
   "devDependencies": {
     "@types/chance": "^0.7.33",
     "@types/faker": "^4.1.0",
-    "@types/node": "^7.0.22",
+    "@types/node": "^8.0.0",
     "ava": "^0.19.1",
     "codecov": "^2.1.0",
     "multiview": "^2.5.3",
