@@ -98,7 +98,7 @@ mocker()
 ```
 
 ## Documentation
-Data generation goes with model based composed by generators, the generators can have access to the data generated and to the entity generated. **_Generators run syncronously, take care of the related entities!!_**
+Data generation goes with model based composed by generators, the generators can have access to the data generated and to the entity generated. **_Generators run synchronously, take care of the related entities!!_**
 
 ### Methods
 - **_schema(name, schema, generationType)_**: Add a new schema, you must specify this params:
