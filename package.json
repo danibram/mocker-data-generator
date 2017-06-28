@@ -67,7 +67,7 @@
     "@types/chance": "^0.7.33",
     "@types/faker": "^4.1.0",
     "@types/node": "^8.0.0",
-    "ava": "^0.19.1",
+    "ava": "^0.20.0",
     "codecov": "^2.1.0",
     "multiview": "^2.5.3",
     "npm-scripts-info": "^0.3.6",
