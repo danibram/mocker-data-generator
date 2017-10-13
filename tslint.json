@@ -1,8 +1,14 @@
 {
   "extends": "tslint-config-standard",
   "rules": {
-    "ter-indent": [true, 4],
+    "indent": [true, "spaces", 4],
     "no-eval": false,
     "no-empty": false
+  },
+  "linterOptions":{
+    "exclude": [
+        "src/lib/tests",
+        "src/*.spec.ts"
+    ]
   }
 }
