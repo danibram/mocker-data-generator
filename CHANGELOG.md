@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/danibram/mocker-data-generator/compare/v2.2.0...v2.2.1) (2017-10-13)
+
+
+### Bug Fixes
+
+* **linter:** trying to use supported tslint rule ([5edac70](https://github.com/danibram/mocker-data-generator/commit/5edac70))
+* **updates:** Update libs to last releases ([a6ce60b](https://github.com/danibram/mocker-data-generator/commit/a6ce60b))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/danibram/mocker-data-generator/compare/v2.1.0...v2.2.0) (2017-06-14)
 
