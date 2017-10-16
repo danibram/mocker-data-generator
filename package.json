@@ -1,6 +1,6 @@
 {
   "name": "mocker-data-generator",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -45,7 +45,8 @@
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "release": "standard-version"
+    "release": "standard-version",
+    "release-github": "sh .env;conventional-github-releaser -p angular -r 0"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
@@ -69,6 +70,7 @@
     "@types/node": "^8.0.0",
     "ava": "^0.22.0",
     "codecov": "^2.3.0",
+    "conventional-github-releaser": "^1.1.12",
     "multiview": "^2.5.3",
     "npm-scripts-info": "^0.3.6",
     "nyc": "^11.0.2",
