@@ -245,7 +245,7 @@ Data generation goes with model based composed by generators, the generators can
         } }
   ```
 
-- **_faker_**: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
+- **_faker_**: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**, now also the multilang is supported by the property locale (This are the locales supported: [https://github.com/marak/Faker.js/#localization](https://github.com/marak/Faker.js/#localization)).
 
   ```javascript
         { faker: 'lorem.words' }                            //Run faker.lorem.words()
@@ -254,6 +254,9 @@ Data generation goes with model based composed by generators, the generators can
         { faker: 'integer({"min": 1, "max": 10})' }         //Run faker.lorem.words(1) and take the first
         { faker: 'random.arrayElement(db.users)' }          //Run faker.arrayElement over a generated user entity
         { faker: 'random.arrayElement(db.users)["userId"]' }  //Run faker.arrayElement over a generated user entity and take the userId only
+
+        { faker: 'address.streetAddress', locale: 'zh_CN' }  //got 711 蔡 街
+        { faker: 'address.streetAddress' }  //got 5036 Daniel Village
   ```
 
 - **_chance_**: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
