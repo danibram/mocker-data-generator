@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/danibram/mocker-data-generator/compare/v2.2.1...v2.3.0) (2017-10-16)
+
+
+### Bug Fixes
+
+* **builder:** fix tslint space identation ([b3f9f7c](https://github.com/danibram/mocker-data-generator/commit/b3f9f7c))
+
+
+### Features
+
+* **fakerjs:** Added multilanguaje support ([0b94471](https://github.com/danibram/mocker-data-generator/commit/0b94471))
+* **fakerjs:** Added tests for multilang support ([5078d24](https://github.com/danibram/mocker-data-generator/commit/5078d24))
+* **fakerjs:** Updates on the readme ([b79e88f](https://github.com/danibram/mocker-data-generator/commit/b79e88f))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/danibram/mocker-data-generator/compare/v2.2.0...v2.2.1) (2017-10-13)
 

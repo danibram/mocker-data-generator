@@ -23,8 +23,8 @@ export class Generator {
         let faker = f
         let db = this.DB
         let object = this.object
-        let re = /(^[a-z_A-Z]*)/   // en_US
-        let matches = re.exec(cfg.locale)
+        let re
+        let matches
         let strFn
 
         if (cfg.locale) {

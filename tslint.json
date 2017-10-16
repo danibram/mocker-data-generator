@@ -1,7 +1,7 @@
 {
   "extends": "tslint-config-standard",
   "rules": {
-    "indent": [true, "spaces"],
+    "indent": [true, "spaces", 4],
     "ter-indent": [true, 4],
     "no-eval": false,
     "no-empty": false
