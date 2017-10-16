@@ -1,7 +1,8 @@
 import { test } from 'ava'
-import { Generator } from '../../'
+import { Generator, Mocker, Schema } from '../../'
 
 const gen = new Generator()
+const mocker = new Mocker()
 
 test('Should be "lorem.words"', async t => {
     let res = gen.faker({ faker: 'lorem.words' })
@@ -40,3 +41,41 @@ test('Should be "lorem.words(1)[0]""', async t => {
     let res = gen.faker({ faker: 'lorem.words(1)[0]' })
     t.true(typeof res === 'string')
 })
+
+test('Should use locale "address.streetAddress"', async t => {
+    let res = gen.faker({ faker: 'address.streetAddress', locale: 'de_CH' })
+    console.log(res)
+    t.true(typeof res === 'string')
+})
+
+test('Should use locale "address.streetAddress"', async t => {
+    let res = gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
+    console.log(res)
+    t.true(typeof res === 'string')
+    t.true(res.match(/[\u3400-\u9FBF]/) && res.match(/[\u3400-\u9FBF]/).length > 0)
+})
+
+test('Should use locale "address.streetAddress"', async t => {
+    gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
+    let res = gen.faker({ faker: 'address.streetAddress' })
+    console.log(res)
+    t.true(typeof res === 'string')
+    t.true(res.match(/[\u3400-\u9FBF]/) === null)
+})
+
+test('Faker lang not affect others', async t => {
+    let street = {
+        str1: { faker: 'address.streetAddress', locale: 'zh_CN' },
+        str2: { faker: 'address.streetAddress' }
+    }
+
+    let schema = new Schema('street', street, 1)
+    let data = schema.build()
+    let res = data[0]
+
+    t.true(typeof res.str1 === 'string')
+    t.true(typeof res.str2 === 'string')
+    t.true(res.str1.match(/[\u3400-\u9FBF]/).length > 0)
+    t.true(res.str2.match(/[\u3400-\u9FBF]/) === null)
+})
+
