@@ -6,3 +6,4 @@ src/**.js
 coverage
 .nyc_output
 *.log
+.env.sh
