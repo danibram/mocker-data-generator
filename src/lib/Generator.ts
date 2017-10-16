@@ -24,16 +24,9 @@ export class Generator {
         let db = this.DB
         let object = this.object
 
-        let re = /(^[a-z_A-Z]*)/   // en_US
-        let matches = re.exec(cfg.locale)
+        let re = /(^[a-zA-Z.]*)/   // aZ.aZ
+        let matches = re.exec(cfg.faker)
         let strFn
-        if (matches && matches.length === 2) {
-            strFn = 'faker.' + cfg.locale
-            eval(strFn)
-        }
-
-        re = /(^[a-zA-Z.]*)/   // aZ.aZ
-        matches = re.exec(cfg.faker)
         if (matches && matches.length === 2) {
             strFn = 'faker.' + cfg.faker
         }
