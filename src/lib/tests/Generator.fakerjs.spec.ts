@@ -44,13 +44,11 @@ test('Should be "lorem.words(1)[0]""', async t => {
 
 test('Should use locale "address.streetAddress"', async t => {
     let res = gen.faker({ faker: 'address.streetAddress', locale: 'de_CH' })
-    console.log(res)
     t.true(typeof res === 'string')
 })
 
 test('Should use locale "address.streetAddress"', async t => {
     let res = gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
-    console.log(res)
     t.true(typeof res === 'string')
     t.true(res.match(/[\u3400-\u9FBF]/) && res.match(/[\u3400-\u9FBF]/).length > 0)
 })
@@ -58,7 +56,6 @@ test('Should use locale "address.streetAddress"', async t => {
 test('Should use locale "address.streetAddress"', async t => {
     gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
     let res = gen.faker({ faker: 'address.streetAddress' })
-    console.log(res)
     t.true(typeof res === 'string')
     t.true(res.match(/[\u3400-\u9FBF]/) === null)
 })
