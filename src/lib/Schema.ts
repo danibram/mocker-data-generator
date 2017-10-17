@@ -95,7 +95,7 @@ export class Schema extends Generator {
                     result = this[key](cfg, ...args)
                 }
             } catch (e) {
-                throw new Error('Generator: "' + key + '" ' + e)
+                throw new Error('Error: "' + key + '" ' + e)
             }
         })
 

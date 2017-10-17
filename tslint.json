@@ -4,7 +4,8 @@
     "indent": [true, "spaces", 4],
     "ter-indent": [true, 4],
     "no-eval": false,
-    "no-empty": false
+    "no-empty": false,
+    "no-string-throw": false
   },
   "linterOptions":{
     "exclude": [

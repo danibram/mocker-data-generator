@@ -1,5 +1,6 @@
 import { test } from 'ava'
 import { Generator, Mocker, Schema } from '../../'
+import * as fakerJS from 'faker'
 
 const gen = new Generator()
 const mocker = new Mocker()
@@ -76,3 +77,32 @@ test('Faker lang not affect others', async t => {
     t.true(res.str2.match(/[\u3400-\u9FBF]/) === null)
 })
 
+test('Test all fakerJS locales', async t => {
+    let supportedLocales = Object.keys((fakerJS as any).locales)
+
+    supportedLocales
+        .forEach(locale => {
+            let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
+            t.true(typeof res === 'string')
+        })
+})
+
+test('Not supported locale @', async t => {
+    let noLocaleSupported = '@'
+    let street = {
+        str1: { faker: 'address.streetAddress', locale: noLocaleSupported }
+    }
+
+    let schema = new Schema('street', street, 1)
+    t.throws(() => schema.build(), `Error: "faker" Locale '${noLocaleSupported}' is not supported by faker.`)
+})
+
+test('Not supported locale empty "" ', async t => {
+    let noLocaleSupported = ''
+    let street = {
+        str1: { faker: 'address.streetAddress', locale: noLocaleSupported }
+    }
+
+    let schema = new Schema('street', street, 1)
+    t.throws(() => schema.build(), `Error: "faker" Locale is empty '${noLocaleSupported}'.`)
+})

@@ -27,13 +27,17 @@ export class Generator {
         let matches
         let strFn
 
-        if (cfg.locale) {
-            re = /(^[a-z_A-Z]*)/   // en_US
-            matches = re.exec(cfg.locale)
+        if (cfg.locale === '') {
+            throw `Locale is empty '${cfg.locale}'.`
+        }
 
-            if (matches && matches.length === 2) {
-                faker = require('faker/locale/' + cfg.locale)
+        if (cfg.locale) {
+            let supportedLocales = Object.keys((faker as any).locales)
+            if (supportedLocales.indexOf(cfg.locale) === -1) {
+                throw `Locale '${cfg.locale}' is not supported by faker.`
             }
+
+            faker = require('faker/locale/' + cfg.locale)
         }
 
         re = /(^[a-zA-Z.]*)/   // aZ.aZ
