@@ -6,7 +6,7 @@ const gen = new Generator()
 
 test('Normal Function', async t => {
     let res = gen.function({
-        function: function () {
+        function: function() {
             return 'test'
         }
     })
@@ -26,7 +26,7 @@ test('ES6 Function', async t => {
 
 test('Should call function with context', async t => {
     let res = gen.function({
-        function: function () {
+        function: function() {
             return this
         }
     })

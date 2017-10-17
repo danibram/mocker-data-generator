@@ -4,9 +4,11 @@ import { isArray, isObject } from '../utils'
 
 test('Should build with callback', async t => {
     let result = {
-        users: [{
-            hello: 'world'
-        }]
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
     }
     let mock = new Mocker()
     mock.schema('users', { hello: { static: 'world' } }, 1)
@@ -15,9 +17,11 @@ test('Should build with callback', async t => {
 
 test('Should build with await (Promised)', async t => {
     let result = {
-        users: [{
-            hello: 'world'
-        }]
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
     }
     let mock = new Mocker()
     let db = await mock
@@ -29,9 +33,11 @@ test('Should build with await (Promised)', async t => {
 
 test('Should build with Promised old style', async t => {
     let result = {
-        users: [{
-            hello: 'world'
-        }]
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
     }
     let mock = new Mocker()
 

@@ -27,7 +27,7 @@ test('Virtuals should be eliminated in the final object and can be accesible dur
         },
 
         id: {
-            function: function () {
+            function: function() {
                 return this.object.exampleVirtual
             }
         },
@@ -75,31 +75,51 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
             },
             much: {
                 deeper: {
-                    function: function () {
-                        return this.object.name.firstName + ' ' + this.object.name.lastName
+                    function: function() {
+                        return (
+                            this.object.name.firstName +
+                            ' ' +
+                            this.object.name.lastName
+                        )
                     }
                 },
                 more: {
                     deeper: {
-                        function: function () {
-                            return this.object.name.firstName + ' ' + this.object.name.lastName
+                        function: function() {
+                            return (
+                                this.object.name.firstName +
+                                ' ' +
+                                this.object.name.lastName
+                            )
                         }
                     },
                     level: {
                         deeper: {
-                            function: function () {
-                                return this.object.name.firstName + ' ' + this.object.name.lastName
+                            function: function() {
+                                return (
+                                    this.object.name.firstName +
+                                    ' ' +
+                                    this.object.name.lastName
+                                )
                             }
                         },
                         awesome: {
                             deeper: {
-                                function: function () {
-                                    return this.object.name.firstName + ' ' + this.object.name.lastName
+                                function: function() {
+                                    return (
+                                        this.object.name.firstName +
+                                        ' ' +
+                                        this.object.name.lastName
+                                    )
                                 }
                             },
                             deeper2: {
-                                function: function () {
-                                    return this.object.name.firstName + ' ' + this.object.name.lastName
+                                function: function() {
+                                    return (
+                                        this.object.name.firstName +
+                                        ' ' +
+                                        this.object.name.lastName
+                                    )
                                 }
                             }
                         }
@@ -158,7 +178,6 @@ test('Should work with conditional keys', async t => {
         .build()
 
     t.deepEqual(db.situation[0], expectedResult)
-
 })
 
 test('Should not affect init values to next entity', async t => {
@@ -186,34 +205,37 @@ test('Should not affect init values to next entity', async t => {
             t.notDeepEqual(r2, r)
         })
     })
-
 })
 
 test('Should generate more entities', async t => {
     let length = 10
-    let model1 = { request: {
-        id: {
-            faker: 'random.number'
-        },
-        title: {
-            faker: 'lorem.sentence'
-        },
-        number: {
-            faker: 'random.number'
+    let model1 = {
+        request: {
+            id: {
+                faker: 'random.number'
+            },
+            title: {
+                faker: 'lorem.sentence'
+            },
+            number: {
+                faker: 'random.number'
+            }
         }
-    } }
+    }
 
-    let model2 = { request: {
-        id: {
-            faker: 'random.number'
-        },
-        title: {
-            faker: 'lorem.sentence'
-        },
-        number: {
-            faker: 'random.number'
+    let model2 = {
+        request: {
+            id: {
+                faker: 'random.number'
+            },
+            title: {
+                faker: 'lorem.sentence'
+            },
+            number: {
+                faker: 'random.number'
+            }
         }
-    } }
+    }
 
     let data = await mocker()
         .schema('act', model1, length)
@@ -249,10 +271,10 @@ test('Should uniqueField works', async t => {
         }
     }
 
-    let result = [ { name: 'txuri' }, { name: 'pitxi' }, { name: 'kitty' } ]
+    let result = [{ name: 'txuri' }, { name: 'pitxi' }, { name: 'kitty' }]
     let data = await mocker()
-        .schema('cat', cat, {uniqueField: 'name'})
-        .schema('cat2', cat2, {uniqueField: 'name'})
+        .schema('cat', cat, { uniqueField: 'name' })
+        .schema('cat2', cat2, { uniqueField: 'name' })
         .build()
 
     t.deepEqual(data.cat, data.cat2)
@@ -266,8 +288,8 @@ test('Should max works', async t => {
     }
 
     let data = await mocker()
-        .schema('cat', cat, {max: 10})
-        .schema('cat2', cat, {max: 40})
+        .schema('cat', cat, { max: 10 })
+        .schema('cat2', cat, { max: 40 })
         .build()
 
     t.true(data.cat.length <= 10)
@@ -280,8 +302,8 @@ test('Should max and min works', async t => {
     }
 
     let data = await mocker()
-        .schema('cat', cat, {min: 5, max: 10})
-        .schema('cat2', cat, {min: 10, max: 40})
+        .schema('cat', cat, { min: 5, max: 10 })
+        .schema('cat2', cat, { min: 10, max: 40 })
         .build()
 
     t.true(data.cat.length <= 10)

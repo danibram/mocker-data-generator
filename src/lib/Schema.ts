@@ -1,50 +1,57 @@
-import { isObject, isArray, iamLastParent, iamLastChild, fieldArrayCalcLength, evalWithContextData, isConditional } from './utils'
+import {
+    isObject,
+    isArray,
+    iamLastParent,
+    iamLastChild,
+    fieldArrayCalcLength,
+    evalWithContextData,
+    isConditional
+} from './utils'
 
 import { Generator } from './Generator'
 
-let iterate = function (obj, res, currentPath) {
-    if (!currentPath) { currentPath = [] }
-    Object.keys(obj)
-        .map((k) => {
-            let value = obj[k]
+let iterate = function(obj, res, currentPath) {
+    if (!currentPath) {
+        currentPath = []
+    }
+    Object.keys(obj).map(k => {
+        let value = obj[k]
 
-            let path = currentPath.slice(0)
-            path.push(k)
+        let path = currentPath.slice(0)
+        path.push(k)
 
-            if (iamLastParent(value)) {
-
-                if (path) {
-                    if ( isArray(value) ) {
-                        if (value[0] && value[0].virtual) {
-                            this.virtualPaths.push(path.toString())
-                        }
-                    } else {
-                        if (value.virtual) {
-                            this.virtualPaths.push(path.toString())
-                        }
+        if (iamLastParent(value)) {
+            if (path) {
+                if (isArray(value)) {
+                    if (value[0] && value[0].virtual) {
+                        this.virtualPaths.push(path.toString())
                     }
-                }
-
-                let fieldCalculated = this.proccessLeaf(value)
-
-                if (!isConditional(k)) {
-                    res[k] = fieldCalculated
                 } else {
-                    let key = k.split(',')
-                    if (evalWithContextData(key[0], this.object)) {
-                        res[key[1]] = fieldCalculated
+                    if (value.virtual) {
+                        this.virtualPaths.push(path.toString())
                     }
                 }
-            } else {
-                res[k] = {}
-                iterate.call(this, value, res[k], path)
             }
-        })
+
+            let fieldCalculated = this.proccessLeaf(value)
+
+            if (!isConditional(k)) {
+                res[k] = fieldCalculated
+            } else {
+                let key = k.split(',')
+                if (evalWithContextData(key[0], this.object)) {
+                    res[key[1]] = fieldCalculated
+                }
+            }
+        } else {
+            res[k] = {}
+            iterate.call(this, value, res[k], path)
+        }
+    })
 }
 
 export class Schema extends Generator {
-
-    constructor (name: string, cfg, options) {
+    constructor(name: string, cfg, options) {
         super()
         this.schema = cfg
         this.name = name
@@ -56,28 +63,33 @@ export class Schema extends Generator {
         this.virtualPaths = []
     }
 
-    proccessLeaf (field) {
-
-        if ( isArray(field) ) {
+    proccessLeaf(field) {
+        if (isArray(field)) {
             let fieldConfig = field[0]
             let na = Array()
 
             if (fieldConfig.concat) {
-                na = evalWithContextData(fieldConfig.concat, this.object, this.DB)
+                na = evalWithContextData(
+                    fieldConfig.concat,
+                    this.object,
+                    this.DB
+                )
                 // Strict Mode
 
-                na = (fieldConfig.concatStrict) ? [...Array.from(new Set(na))] : na
+                na = fieldConfig.concatStrict
+                    ? [...Array.from(new Set(na))]
+                    : na
             }
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
-            let array = Array
-                .from(new Array(length))
-                .reduce((acc, el, index) => {
-                    let self = acc.slice(0)
-                    acc.push(this.generateField(fieldConfig, index, length, self))
-                    return acc
-                }, [])
+            let array = Array.from(
+                new Array(length)
+            ).reduce((acc, el, index) => {
+                let self = acc.slice(0)
+                acc.push(this.generateField(fieldConfig, index, length, self))
+                return acc
+            }, [])
 
             return array.concat(na)
         } else {
@@ -85,11 +97,25 @@ export class Schema extends Generator {
         }
     }
 
-    generateField (cfg, ...args): {} {
+    generateField(cfg, ...args): {} {
         let result = {}
-        let generators = ['faker', 'chance', 'casual', 'randexp', 'self', 'db', 'eval', 'hasOne', 'hasMany', 'static', 'function', 'values', 'incrementalId']
+        let generators = [
+            'faker',
+            'chance',
+            'casual',
+            'randexp',
+            'self',
+            'db',
+            'eval',
+            'hasOne',
+            'hasMany',
+            'static',
+            'function',
+            'values',
+            'incrementalId'
+        ]
 
-        generators.forEach((key) => {
+        generators.forEach(key => {
             try {
                 if (cfg.hasOwnProperty(key)) {
                     result = this[key](cfg, ...args)
@@ -102,7 +128,7 @@ export class Schema extends Generator {
         return result
     }
 
-    buildSingle (schema) {
+    buildSingle(schema) {
         if (iamLastParent(schema)) {
             this.object = this.proccessLeaf(schema)
         } else {
@@ -110,25 +136,20 @@ export class Schema extends Generator {
         }
     }
 
-    build (db = {}) {
+    build(db = {}) {
         this.object = {}
         this.DB = db ? db : {}
         this.DB[this.name] = []
 
-        if (Number.isInteger((this.options as any))) {
-
+        if (Number.isInteger(this.options as any)) {
             Array.from(new Array(this.options)).map(() => {
                 this.buildSingle(this.schema)
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
-
         } else if (isObject(this.options) && this.options.max) {
-
             let max = this.options.max
-            let min = (this.options.min)
-                ? this.options.min
-                : 0
+            let min = this.options.min ? this.options.min : 0
 
             let length = Math.floor(Math.random() * (max - min + 1) + min)
 
@@ -137,9 +158,7 @@ export class Schema extends Generator {
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
-
         } else if (isObject(this.options) && this.options.uniqueField) {
-
             let f = this.options.uniqueField
             let entityConfig = this.schema
             let possibleValues
@@ -153,34 +172,46 @@ export class Schema extends Generator {
                         possibleValues = this.schema[f]
                     }
                 } else {
-                    console.error('The field ' + f + ', on the scheema ' + this.name + ' not exists.')
+                    console.error(
+                        'The field ' +
+                            f +
+                            ', on the scheema ' +
+                            this.name +
+                            ' not exists.'
+                    )
                     return this.DB[this.name]
                 }
-
             }
 
-            if ( !isArray(possibleValues) ) {
-                console.error('The field ' + f + ', on the scheema ' + this.name + ' is not an array.')
+            if (!isArray(possibleValues)) {
+                console.error(
+                    'The field ' +
+                        f +
+                        ', on the scheema ' +
+                        this.name +
+                        ' is not an array.'
+                )
                 return this.DB[this.name]
             }
 
-            possibleValues.map((value) => {
-
+            possibleValues.map(value => {
                 if (f === '.') {
                     return
                 }
 
-                entityConfig[f] = {static: value}
+                entityConfig[f] = { static: value }
 
                 this.buildSingle(entityConfig)
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
-
         } else {
-            console.error('An string ' + this.options + ', is not recognized as a parameter.')
+            console.error(
+                'An string ' +
+                    this.options +
+                    ', is not recognized as a parameter.'
+            )
         }
         return this.DB[this.name]
     }
-
 }

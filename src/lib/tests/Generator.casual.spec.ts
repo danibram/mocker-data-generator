@@ -12,14 +12,14 @@ test('Should be "country"', async t => {
 test('Should be "array_of_digits()"', async t => {
     let res = gen.casual({ casual: 'array_of_digits()' })
     t.true(isArray(res))
-    res.forEach( d => t.true(typeof d === 'number') )
+    res.forEach(d => t.true(typeof d === 'number'))
 })
 
 test('Should be "array_of_digits(3)"', async t => {
     let res = gen.casual({ casual: 'array_of_digits(3)' })
     t.true(isArray(res))
     t.true(res.length === 3)
-    res.forEach( d => t.true(typeof d === 'number') )
+    res.forEach(d => t.true(typeof d === 'number'))
 })
 
 test('Should be "integer(1,2)"', async t => {

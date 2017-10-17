@@ -6,35 +6,34 @@ export type IDB = {
     [key: string]: any[]
 }
 export class Mocker {
-
     schemas: Schema[] = []
     DB: IDB = {}
     options = {}
 
-    constructor (options= {}) {
+    constructor(options = {}) {
         this.options = options
         this.DB = {}
     }
 
-    schema (name: string, schema: {}, options?: {}): Mocker {
+    schema(name: string, schema: {}, options?: {}): Mocker {
         this.schemas.push(new Schema(name, schema, options))
         return this
     }
 
-    reset (): Mocker {
+    reset(): Mocker {
         this.DB = {}
         return this
     }
 
-    restart (): Mocker {
+    restart(): Mocker {
         this.DB = {}
         this.schemas = []
         return this
     }
 
-    build (cb?: (( _: any ) => void) ): Promise<any>
-    build (cb?: (( _: any ) => void) ): void
-    build (cb?: (( _: any ) => void) ): any {
+    build(cb?: ((_: any) => void)): Promise<any>
+    build(cb?: ((_: any) => void)): void
+    build(cb?: ((_: any) => void)): any {
         this.schemas.reduce((acc, schema) => {
             let instances
 
@@ -46,7 +45,12 @@ export class Mocker {
 
             // Clean virtuals
             if (schema.virtualPaths.length > 0) {
-                instances.forEach(x => cleanVirtuals(schema.virtualPaths, x, {strict: true, symbol: ','}))
+                instances.forEach(x =>
+                    cleanVirtuals(schema.virtualPaths, x, {
+                        strict: true,
+                        symbol: ','
+                    })
+                )
             }
 
             // Add to db

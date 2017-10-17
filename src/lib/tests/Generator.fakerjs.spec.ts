@@ -51,7 +51,9 @@ test('Should use locale "address.streetAddress"', async t => {
 test('Should use locale "address.streetAddress"', async t => {
     let res = gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
     t.true(typeof res === 'string')
-    t.true(res.match(/[\u3400-\u9FBF]/) && res.match(/[\u3400-\u9FBF]/).length > 0)
+    t.true(
+        res.match(/[\u3400-\u9FBF]/) && res.match(/[\u3400-\u9FBF]/).length > 0
+    )
 })
 
 test('Should use locale "address.streetAddress"', async t => {
@@ -80,11 +82,10 @@ test('Faker lang not affect others', async t => {
 test('Test all fakerJS locales', async t => {
     let supportedLocales = Object.keys((fakerJS as any).locales)
 
-    supportedLocales
-        .forEach(locale => {
-            let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
-            t.true(typeof res === 'string')
-        })
+    supportedLocales.forEach(locale => {
+        let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
+        t.true(typeof res === 'string')
+    })
 })
 
 test('Not supported locale @', async t => {
@@ -94,7 +95,10 @@ test('Not supported locale @', async t => {
     }
 
     let schema = new Schema('street', street, 1)
-    t.throws(() => schema.build(), `Error: "faker" Locale '${noLocaleSupported}' is not supported by faker.`)
+    t.throws(
+        () => schema.build(),
+        `Error: "faker" Locale '${noLocaleSupported}' is not supported by faker.`
+    )
 })
 
 test('Not supported locale empty "" ', async t => {
@@ -104,5 +108,8 @@ test('Not supported locale empty "" ', async t => {
     }
 
     let schema = new Schema('street', street, 1)
-    t.throws(() => schema.build(), `Error: "faker" Locale is empty '${noLocaleSupported}'.`)
+    t.throws(
+        () => schema.build(),
+        `Error: "faker" Locale is empty '${noLocaleSupported}'.`
+    )
 })

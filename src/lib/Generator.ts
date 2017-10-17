@@ -19,7 +19,7 @@ export class Generator {
     }
     virtualPaths: string[]
 
-    faker (cfg) {
+    faker(cfg) {
         let faker = f
         let db = this.DB
         let object = this.object
@@ -40,7 +40,7 @@ export class Generator {
             faker = require('faker/locale/' + cfg.locale)
         }
 
-        re = /(^[a-zA-Z.]*)/   // aZ.aZ
+        re = /(^[a-zA-Z.]*)/ // aZ.aZ
         matches = re.exec(cfg.faker)
         if (matches && matches.length === 2) {
             strFn = 'faker.' + cfg.faker
@@ -55,12 +55,12 @@ export class Generator {
         return eval(strFn)
     }
 
-    chance (cfg) {
+    chance(cfg) {
         let chance = ch
         let db = this.DB
         let object = this.object
 
-        let re = /(^[a-zA-Z.]*)/   // aZ.aZ
+        let re = /(^[a-zA-Z.]*)/ // aZ.aZ
         let matches = re.exec(cfg.chance)
         let strFn
         if (matches && matches.length === 2) {
@@ -76,9 +76,9 @@ export class Generator {
         return eval(strFn)
     }
 
-    casual (cfg) {
+    casual(cfg) {
         let casual = c
-        let re = /(^[a-zA-Z.]*)/   // aZ.aZ
+        let re = /(^[a-zA-Z.]*)/ // aZ.aZ
         let matches = re.exec(cfg.casual)
         let strFn
         if (matches && matches.length === 2) {
@@ -88,21 +88,21 @@ export class Generator {
         return eval(strFn)
     }
 
-    randexp (cfg) {
+    randexp(cfg) {
         return new R(cfg.randexp).gen()
     }
 
-    self (cfg) {
+    self(cfg) {
         let object = this.object
         return eval('object.' + cfg.self)
     }
 
-    db (cfg) {
+    db(cfg) {
         let db = this.DB
         return eval('db.' + cfg.db)
     }
 
-    eval (cfg) {
+    eval(cfg) {
         let db = this.DB
         let object = this.object
         let faker = f
@@ -113,12 +113,12 @@ export class Generator {
         return eval(cfg.eval)
     }
 
-    values (cfg) {
+    values(cfg) {
         let i = Math.floor(cfg.values.length * Math.random())
         return cfg.values[i]
     }
 
-    function (cfg, ...args) {
+    function(cfg, ...args) {
         let object = this.object
         let db = this.DB
         let faker = f
@@ -126,14 +126,17 @@ export class Generator {
         let casual = c
         let randexp = R
 
-        return cfg.function.call({object, db, faker, chance, casual, randexp}, ...args)
+        return cfg.function.call(
+            { object, db, faker, chance, casual, randexp },
+            ...args
+        )
     }
 
-    static (cfg) {
+    static(cfg) {
         return cfg.static
     }
 
-    incrementalId (cfg) {
+    incrementalId(cfg) {
         let n = 0
         let db = this.DB
 
@@ -143,10 +146,10 @@ export class Generator {
         if (cfg.incrementalId === true) {
             cfg.incrementalId = 0
         }
-        return (n + parseInt(cfg.incrementalId, 10))
+        return n + parseInt(cfg.incrementalId, 10)
     }
 
-    hasOne (cfg) {
+    hasOne(cfg) {
         let db = this.DB
         let i = Math.floor(db[cfg.hasOne].length * Math.random())
         let entity = db[cfg.hasOne][i]
@@ -158,12 +161,12 @@ export class Generator {
         }
     }
 
-    hasMany (cfg) {
+    hasMany(cfg) {
         let amount = 1
         let db = this.DB
 
-        let min = (cfg.min) ? cfg.min : 1
-        let max = (cfg.max) ? cfg.max : db[cfg.hasMany].length
+        let min = cfg.min ? cfg.min : 1
+        let max = cfg.max ? cfg.max : db[cfg.hasMany].length
 
         if (cfg.amount) {
             amount = cfg.amount
