@@ -12,6 +12,7 @@
         "email": "info@dbr.io",
         "url": "dbr.io"
     },
+    "files": ["build/main/**/*", "package.json", "README.md", "CHANGELOG.md", "LICENSE"],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/danibram/mocker-data-generator/issues"
