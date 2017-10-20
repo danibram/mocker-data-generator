@@ -30,6 +30,11 @@ export default class Index extends React.Component {
                         defer
                         src="https://buttons.github.io/buttons.js"
                     />
+                    <script
+                        async
+                        defer
+                        src="https://unpkg.com/mocker-data-generator@latest/build/browser/index.js"
+                    />
                 </Head>
                 <a
                     href="https://github.com/danibram/mocker-data-generator"
