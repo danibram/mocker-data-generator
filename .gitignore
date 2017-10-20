@@ -8,3 +8,7 @@ coverage
 *.log
 .env.sh
 .idea
+
+_docs_website/out
+_docs_website/.next
+_docs_website/static/examples.json
