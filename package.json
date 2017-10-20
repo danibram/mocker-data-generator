@@ -41,7 +41,7 @@
         "docs:examples": "node _docs_website/generateExamples.js",
         "docs:export": "yarn docs:examples && cd _docs_website && next build && next export && touch out/.nojekyll",
         "docs:serve:prod": "http-server _docs_website/out",
-        "docs:deploy:gh-pages": "git push origin `git subtree split --prefix _docs_website/out master`:gh-pages --force"
+        "docs:deploy:gh-pages": "git subtree push --prefix _docs_website/out origin gh-pages"
     },
     "scripts-info": {
         "info": "Display information about the scripts",
