@@ -5,14 +5,14 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="2.4.9"></a>
 ## [2.4.9](https://github.com/danibram/mocker-data-generator/compare/v2.4.7...v2.4.9) (2017-10-20)
 
+### Features
+
+* Added browser build
+* Fixes in build to sync with gh-pages
 
 
 <a name="2.4.5"></a>
 ## [2.4.5](https://github.com/danibram/mocker-data-generator/compare/v2.4.4...v2.4.5) (2017-10-20)
-
-### Features
-
-* Added browser build
 
 <a name="2.4.4"></a>
 ## [2.4.4](https://github.com/danibram/mocker-data-generator/compare/v2.4.3...v2.4.4) (2017-10-17)
