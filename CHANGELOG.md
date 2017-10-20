@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.9"></a>
+## [2.4.9](https://github.com/danibram/mocker-data-generator/compare/v2.4.7...v2.4.9) (2017-10-20)
+
+
+
 <a name="2.4.5"></a>
 ## [2.4.5](https://github.com/danibram/mocker-data-generator/compare/v2.4.4...v2.4.5) (2017-10-20)
 
