@@ -39,7 +39,7 @@
         "docs:build": "cd _docs_website && next build",
         "docs:start": "cd _docs_website && next start",
         "docs:examples": "node _docs_website/generateExamples.js",
-        "docs:export": "yarn docs:examples && cd _docs_website && next build && next export && touch out/.nojekyll",
+        "docs:export": "yarn docs:examples && cd _docs_website && next build && NODE_ENV=production next export && touch out/.nojekyll",
         "docs:serve:prod": "http-server _docs_website/out",
         "docs:deploy:gh-pages": "git subtree push --prefix=_docs_website/out origin gh-pages"
     },
