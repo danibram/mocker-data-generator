@@ -1,7 +1,9 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import value from '../static/examples.json'
-
+const mockerDataGenerator = dynamic(import('../../build/main/index.js'), {
+    ssr: false
+})
 const Editor = dynamic(import('./Editor'), { ssr: false })
 const SEditor = dynamic(import('./Split-Editor'), { ssr: false })
 
@@ -21,7 +23,7 @@ export default class Index extends React.Component {
     onChangeCode = ([value]) => {
         this.setState({ value })
         try {
-            let mocker = require('../../build/main/index.js').default
+            let mocker = mockerDataGenerator
             let compiled = eval(value)
             compiled.build(data => {
                 this.setState({
