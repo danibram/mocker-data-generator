@@ -1,1 +1,0 @@
-__NEXT_REGISTER_PAGE("/",function(){return{page:(module.exports=webpackJsonp([4],[],[217])).default}});
