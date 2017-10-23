@@ -2,13 +2,194 @@ import React from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import Doc from '../components/Doc'
+import Router from 'next/router'
 
 export default class Index extends React.Component {
+    state = {
+        ready: false
+    }
+
+    componentDidMount() {
+        Router.onRouteChangeComplete = () => this.setState({ ready: true })
+        Router.onRouteChangeError = () => this.setState({ ready: true })
+        Router.ready(() => this.setState({ ready: true }))
+    }
+
     render() {
         return (
             <div
                 style={{ position: 'absolute', width: '100%', height: '100%' }}
             >
+                <style global jsx>{`
+                    .github-corner:hover .octo-arm {
+                        animation: octocat-wave 560ms ease-in-out;
+                    }
+                    @keyframes octocat-wave {
+                        0%,
+                        100% {
+                            transform: rotate(0);
+                        }
+                        20%,
+                        60% {
+                            transform: rotate(-25deg);
+                        }
+                        40%,
+                        80% {
+                            transform: rotate(10deg);
+                        }
+                    }
+                    @media (max-width: 500px) {
+                        .github-corner:hover .octo-arm {
+                            animation: none;
+                        }
+                        .github-corner .octo-arm {
+                            animation: octocat-wave 560ms ease-in-out;
+                        }
+                    }
+
+                    .sk-cube-grid {
+                        width: 40px;
+                        height: 40px;
+                        margin: 100px auto;
+                    }
+
+                    .sk-cube-grid .sk-cube {
+                        width: 33%;
+                        height: 33%;
+                        background-color: #333;
+                        float: left;
+                        -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite
+                            ease-in-out;
+                        animation: sk-cubeGridScaleDelay 1.3s infinite
+                            ease-in-out;
+                    }
+                    .sk-cube-grid .sk-cube1 {
+                        -webkit-animation-delay: 0.2s;
+                        animation-delay: 0.2s;
+                    }
+                    .sk-cube-grid .sk-cube2 {
+                        -webkit-animation-delay: 0.3s;
+                        animation-delay: 0.3s;
+                    }
+                    .sk-cube-grid .sk-cube3 {
+                        -webkit-animation-delay: 0.4s;
+                        animation-delay: 0.4s;
+                    }
+                    .sk-cube-grid .sk-cube4 {
+                        -webkit-animation-delay: 0.1s;
+                        animation-delay: 0.1s;
+                    }
+                    .sk-cube-grid .sk-cube5 {
+                        -webkit-animation-delay: 0.2s;
+                        animation-delay: 0.2s;
+                    }
+                    .sk-cube-grid .sk-cube6 {
+                        -webkit-animation-delay: 0.3s;
+                        animation-delay: 0.3s;
+                    }
+                    .sk-cube-grid .sk-cube7 {
+                        -webkit-animation-delay: 0s;
+                        animation-delay: 0s;
+                    }
+                    .sk-cube-grid .sk-cube8 {
+                        -webkit-animation-delay: 0.1s;
+                        animation-delay: 0.1s;
+                    }
+                    .sk-cube-grid .sk-cube9 {
+                        -webkit-animation-delay: 0.2s;
+                        animation-delay: 0.2s;
+                    }
+
+                    @-webkit-keyframes sk-cubeGridScaleDelay {
+                        0%,
+                        70%,
+                        100% {
+                            -webkit-transform: scale3D(1, 1, 1);
+                            transform: scale3D(1, 1, 1);
+                        }
+                        35% {
+                            -webkit-transform: scale3D(0, 0, 1);
+                            transform: scale3D(0, 0, 1);
+                        }
+                    }
+
+                    @keyframes sk-cubeGridScaleDelay {
+                        0%,
+                        70%,
+                        100% {
+                            -webkit-transform: scale3D(1, 1, 1);
+                            transform: scale3D(1, 1, 1);
+                        }
+                        35% {
+                            -webkit-transform: scale3D(0, 0, 1);
+                            transform: scale3D(0, 0, 1);
+                        }
+                    }
+                    .home-menu {
+                        padding: 0.5em;
+                        text-align: center;
+                        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+                    }
+                    .home-menu {
+                        background: #2d3e50;
+                    }
+                    .pure-menu.pure-menu-fixed {
+                        border-bottom: none;
+                        z-index: 999;
+                    }
+
+                    .pure-menu-heading {
+                        padding: 1em;
+                    }
+                    .pure-menu-list {
+                        padding: 1em;
+                        padding-right: 4em;
+                    }
+
+                    .home-menu .pure-menu-heading {
+                        color: white;
+                        font-weight: 400;
+                        font-size: 120%;
+                    }
+
+                    .home-menu .pure-menu-selected a {
+                        color: white;
+                    }
+
+                    .home-menu a {
+                        color: #6fbef3;
+                    }
+                    .home-menu li a:hover,
+                    .home-menu li a:focus {
+                        background: none;
+                        border: none;
+                        color: #aecfe5;
+                    }
+                    .footer {
+                        text-align: center;
+                        font-size: 10pt;
+                    }
+                    @media (min-width: 48em) {
+                        /* We increase the body font size */
+                        body {
+                            font-size: 16px;
+                        }
+
+                        /* We can align the menu header to the left, but float the
+                            menu items to the right. */
+                        .home-menu {
+                            text-align: left;
+                        }
+                        .home-menu ul {
+                            float: right;
+                        }
+
+                        /* We remove the border-separator assigned to .l-box-lrg */
+                        .l-box-lrg {
+                            border: none;
+                        }
+                    }
+                `}</style>
                 <Head>
                     <title>Docs: mocker-data-generator</title>
                     <meta charSet="utf-8" />
@@ -31,6 +212,7 @@ export default class Index extends React.Component {
                         src="https://buttons.github.io/buttons.js"
                     />
                 </Head>
+
                 <a
                     href="https://github.com/danibram/mocker-data-generator"
                     className="github-corner"
@@ -101,7 +283,7 @@ export default class Index extends React.Component {
                     </div>
                 </div>
                 <div style={{ marginTop: '57px' }}>
-                    <Doc />
+                    <Doc ready={this.state.ready} />
                 </div>
                 <div className="footer">
                     <div className="pure-menu pure-menu-horizontal">
@@ -117,100 +299,6 @@ export default class Index extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <style global jsx>{`
-                    .github-corner:hover .octo-arm {
-                        animation: octocat-wave 560ms ease-in-out;
-                    }
-                    @keyframes octocat-wave {
-                        0%,
-                        100% {
-                            transform: rotate(0);
-                        }
-                        20%,
-                        60% {
-                            transform: rotate(-25deg);
-                        }
-                        40%,
-                        80% {
-                            transform: rotate(10deg);
-                        }
-                    }
-                    @media (max-width: 500px) {
-                        .github-corner:hover .octo-arm {
-                            animation: none;
-                        }
-                        .github-corner .octo-arm {
-                            animation: octocat-wave 560ms ease-in-out;
-                        }
-                    }
-                `}</style>
-
-                <style jsx>{`
-                    .home-menu {
-                        padding: 0.5em;
-                        text-align: center;
-                        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-                    }
-                    .home-menu {
-                        background: #2d3e50;
-                    }
-                    .pure-menu.pure-menu-fixed {
-                        border-bottom: none;
-                        z-index: 999;
-                    }
-
-                    .pure-menu-heading {
-                        padding: 1em;
-                    }
-                    .pure-menu-list {
-                        padding: 1em;
-                        padding-right: 4em;
-                    }
-
-                    .home-menu .pure-menu-heading {
-                        color: white;
-                        font-weight: 400;
-                        font-size: 120%;
-                    }
-
-                    .home-menu .pure-menu-selected a {
-                        color: white;
-                    }
-
-                    .home-menu a {
-                        color: #6fbef3;
-                    }
-                    .home-menu li a:hover,
-                    .home-menu li a:focus {
-                        background: none;
-                        border: none;
-                        color: #aecfe5;
-                    }
-                    .footer {
-                        text-align: center;
-                        font-size: 10pt;
-                    }
-                    @media (min-width: 48em) {
-                        /* We increase the body font size */
-                        body {
-                            font-size: 16px;
-                        }
-
-                        /* We can align the menu header to the left, but float the
-                            menu items to the right. */
-                        .home-menu {
-                            text-align: left;
-                        }
-                        .home-menu ul {
-                            float: right;
-                        }
-
-                        /* We remove the border-separator assigned to .l-box-lrg */
-                        .l-box-lrg {
-                            border: none;
-                        }
-                    }
-                `}</style>
             </div>
         )
     }
