@@ -17,20 +17,32 @@ export default class Index extends React.Component {
         mockerLoaded: false
     }
 
+    selectExample(ex) {
+        this.onChangeCode([value[ex]])
+    }
+
+    syncHash = () => {
+        if (typeof window !== 'undefined') {
+            var hash = window.location.hash
+            if (hash === '') {
+                hash = '#initial'
+            }
+            hash = hash.split('#').reverse()[0]
+            this.setState({ hash })
+            this.state.mockerLoaded && this.props.ready
+                ? this.onChangeCode([value[hash]])
+                : () => {}
+        }
+    }
+
     componentDidMount() {
         this.setState({ examples: Object.keys(value) })
-        this.onChangeCode([value.initial])
 
         import('../../build/main/index.js').then(m => {
             this.setState({ mocker: m.mocker, mockerLoaded: true })
-            this.onChangeCode([value.initial])
+            this.syncHash()
         })
-    }
-
-    componentWillMount() {
-        this.state.mockerLoaded && this.props.ready
-            ? this.onChangeCode([value.initial])
-            : null
+        window.addEventListener('hashchange', () => this.syncHash(), false)
     }
 
     onChangeCode = ([value]) => {
@@ -51,6 +63,10 @@ export default class Index extends React.Component {
                 error
             })
         }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('hashchange', () => this.syncHash(), false)
     }
 
     render() {
@@ -79,27 +95,59 @@ export default class Index extends React.Component {
                         </div>
                     </div>
                 )}
-                <h2 style={{ paddingTop: '0.83em', paddingLeft: '0.2em' }}>
-                    {'Example: '}
-                    <select id="state" className="pure-input-1-2">
-                        {this.state.examples.map((e, i) => (
-                            <option key={i}>{e}</option>
-                        ))}
-                    </select>
-                </h2>
-                <div className="pure-u-1">
-                    {this.state.error ? (
-                        <span style={{ fontSize: '10pt', color: 'red' }}>
-                            {this.state.error.toString()}
-                        </span>
-                    ) : null}
-                </div>
-                <div className="pure-u-1">
-                    <SEditor
-                        value={this.state.value}
-                        output={this.state.compiled}
-                        onChange={this.onChangeCode}
-                    />
+
+                <div className="container">
+                    <div className="columns">
+                        <div className="column col-1">
+                            <ul className="nav">
+                                <li className="nav-item">
+                                    <a href="#">{'Examples: '}</a>
+                                    <ul className="nav">
+                                        {this.state.examples.map((e, i) => (
+                                            <li
+                                                className={`nav-item ${e ===
+                                                this.state.hash
+                                                    ? 'active'
+                                                    : ''}`}
+                                                key={i}
+                                            >
+                                                <a
+                                                    href={`#${e}`}
+                                                    onClick={() =>
+                                                        this.selectExample(e)}
+                                                >{`${e[0].toUpperCase() +
+                                                    e.substring(1)}`}</a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="column col-11">
+                            <div className="columns">
+                                <div className="column col-12">
+                                    {this.state.error ? (
+                                        <div className="toast toast-error">
+                                            {`There is an error: ${this.state.error.toString()}`}
+                                        </div>
+                                    ) : (
+                                        <div className="toast toast-success">
+                                            {`Text is valid!!`}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="pure-u-1" />
+                            <div className="pure-u-1">
+                                <SEditor
+                                    value={this.state.value}
+                                    output={this.state.compiled}
+                                    onChange={this.onChangeCode}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

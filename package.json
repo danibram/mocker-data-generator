@@ -108,6 +108,7 @@
         "rollup-plugin-commonjs": "^8.0.2",
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-watch": "^4.0.0",
+        "spectre.css": "^0.4.4",
         "standard-version": "^4.2.0",
         "trash-cli": "^1.4.0",
         "tslint": "^5.4.2",

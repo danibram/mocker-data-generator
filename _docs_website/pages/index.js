@@ -198,7 +198,7 @@ export default class Index extends React.Component {
                         content="initial-scale=1.0, width=device-width"
                     />
                     <link
-                        href="static/pure.min.css"
+                        href="static/spectre.min.css"
                         media="all"
                         rel="stylesheet"
                     />
@@ -231,8 +231,8 @@ export default class Index extends React.Component {
                         height="80"
                         viewBox="0 0 250 250"
                         style={{
-                            fill: '#fff',
-                            color: '#151513',
+                            fill: '#151513',
+                            color: '#fff',
                             position: 'absolute',
                             top: 0,
                             border: 0,
@@ -254,51 +254,46 @@ export default class Index extends React.Component {
                         />
                     </svg>
                 </a>
-                <div className="header">
-                    <div
-                        className="home-menu pure-menu pure-menu-horizontal pure-menu-fixed"
-                        style={{ backgroundColor: '#000', height: '80px' }}
-                    >
-                        <a className="pure-menu-heading" href="">
+
+                <header
+                    className="navbar"
+                    style={{ height: '80px', backgroundColor: '#eee' }}
+                >
+                    <section className="navbar-section">
+                        <a
+                            href="https://github.com/danibram/mocker-data-generator"
+                            className="btn btn-link"
+                        >
+                            Github
+                        </a>
+                    </section>
+                    <section className="navbar-center">
+                        <a className="navbar-brand mr-2" href="#">
                             {'Playground: '}
                             <span style={{ fontSize: '12pt' }}>
                                 mocker-data-generator
                             </span>
                         </a>
-                        <ul className="pure-menu-list">
-                            <li className="pure-menu-item pure-menu-selected">
-                                {/*'<!-- Place this tag where you want the button to render. -->'*/}
-                                <a
-                                    className="github-button"
-                                    href="https://github.com/danibram/mocker-data-generator"
-                                    data-icon="octicon-star"
-                                    data-size="large"
-                                    data-show-count="true"
-                                    aria-label="Star danibram/mocker-data-generator on GitHub"
-                                >
-                                    Star
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div style={{ marginTop: '57px' }}>
+                    </section>
+                    <section className="navbar-section">
+                        <div style={{ marginRight: '80px' }}>
+                            <a
+                                className="github-button"
+                                href="https://github.com/danibram/mocker-data-generator"
+                                data-icon="octicon-star"
+                                data-size="large"
+                                data-show-count="true"
+                                aria-label="Star danibram/mocker-data-generator on GitHub"
+                            >
+                                Star
+                            </a>
+                        </div>
+                    </section>
+                </header>
+                <div>
                     <Doc ready={this.state.ready} />
                 </div>
-                <div className="footer">
-                    <div className="pure-menu pure-menu-horizontal">
-                        <ul>
-                            <li className="pure-menu-item">
-                                <a
-                                    href="https://github.com/danibram/mocker-data-generator"
-                                    className="pure-menu-link"
-                                >
-                                    Github
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <div className="footer" />
             </div>
         )
     }

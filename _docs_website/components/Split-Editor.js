@@ -13,7 +13,7 @@ export default ({ value, output, onChange }) => (
         onChange={onChange}
         value={[value, output]}
         name="editor"
-        height="500px"
+        height="600px"
         width="100%"
         editorProps={{ $blockScrolling: true }}
     />

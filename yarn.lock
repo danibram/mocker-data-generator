@@ -5836,6 +5836,10 @@ spdx-license-ids@^1.0.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-1.2.2.tgz#c9df7a3424594ade6bd11900d596696dc06bac57"
 
+spectre.css@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/spectre.css/-/spectre.css-0.4.4.tgz#7f1c3ca42d61c8bff906d0335f25e955b6d0fd93"
+
 split2@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/split2/-/split2-2.2.0.tgz#186b2575bcf83e85b7d18465756238ee4ee42493"
