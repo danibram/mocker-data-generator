@@ -1,5 +1,6 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
+
 import value from '../static/examples.json'
 const Editor = dynamic(import('./Editor'), { ssr: false })
 const SEditor = dynamic(import('./Split-Editor'), { ssr: false })
@@ -9,16 +10,23 @@ export default class Index extends React.Component {
         value: '',
         error: null,
         compiled: '',
-        examples: []
+        examples: [],
+        mocker: null
     }
 
     componentDidMount() {
         this.setState({ examples: Object.keys(value) })
         this.onChangeCode([value.initial])
+        System.import('../../build/main/index.js').then(m => {
+            this.setState({ mocker: m.mocker })
+        })
     }
 
     onChangeCode = ([value]) => {
         this.setState({ value })
+        if (!this.state.mocker) return
+
+        const mocker = this.state.mocker
         try {
             let compiled = eval(value)
             compiled.build(data => {
