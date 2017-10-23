@@ -23,6 +23,8 @@ A simplified way to generate massive mock data based on a schema, using the awes
 
 Now the library has been migrated 100% to typescript typing are included.
 
+You can test online here: `https://danibram.github.io/mocker-data-generator/`
+
 ## Getting started
 Install the module with: `npm install mocker-data-generator`
 
