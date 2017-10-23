@@ -17,7 +17,7 @@ export default class Index extends React.Component {
                         content="initial-scale=1.0, width=device-width"
                     />
                     <link
-                        href="/static/pure.min.css"
+                        href="static/pure.min.css"
                         media="all"
                         rel="stylesheet"
                     />
@@ -29,11 +29,6 @@ export default class Index extends React.Component {
                         async
                         defer
                         src="https://buttons.github.io/buttons.js"
-                    />
-                    <script
-                        async
-                        defer
-                        src="https://unpkg.com/mocker-data-generator@latest/build/browser/index.js"
                     />
                 </Head>
                 <a

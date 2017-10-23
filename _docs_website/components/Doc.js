@@ -17,7 +17,8 @@ export default class Index extends React.Component {
     componentDidMount() {
         this.setState({ examples: Object.keys(value) })
         this.onChangeCode([value.initial])
-        System.import('../../build/main/index.js').then(m => {
+        import('../../build/main/index.js').then(m => {
+            console.log('Loaded mocker!')
             this.setState({ mocker: m.mocker })
         })
     }
