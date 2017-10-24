@@ -6,35 +6,13 @@
     "typings": "build/main/index.d.ts",
     "module": "build/module/index.js",
     "repository": "https://github.com/danibram/mocker-data-generator",
-    "keywords": [
-        "mock",
-        "data",
-        "faker",
-        "fakerjs",
-        "chance",
-        "chancejs",
-        "casual",
-        "randexp",
-        "json",
-        "fake",
-        "mocks",
-        "massive",
-        "generator"
-    ],
+    "keywords": ["mock", "data", "faker", "fakerjs", "chance", "chancejs", "casual", "randexp", "json", "fake", "mocks", "massive", "generator"],
     "author": {
         "name": "Daniel Biedma Ramos",
         "email": "info@dbr.io",
         "url": "dbr.io"
     },
-    "files": [
-        "build/main/**/*",
-        "build/module/**/*",
-        "build/browser/**/*",
-        "package.json",
-        "README.md",
-        "CHANGELOG.md",
-        "LICENSE"
-    ],
+    "files": ["build/main/**/*", "build/module/**/*", "build/browser/**/*", "package.json", "README.md", "CHANGELOG.md", "LICENSE"],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/danibram/mocker-data-generator/issues"
@@ -90,25 +68,15 @@
         "@types/node": "^8.0.41",
         "ava": "^0.22.0",
         "babel-preset-stage-0": "^6.24.1",
-        "brace": "^0.10.0",
         "codecov": "^2.3.1",
         "conventional-github-releaser": "^1.1.12",
         "gh-pages": "^1.0.0",
         "http-server": "^0.10.0",
         "multiview": "^2.5.3",
-        "next": "^4.0.0-beta.6",
         "npm-scripts-info": "^0.3.6",
         "nyc": "^11.0.2",
         "opn-cli": "^3.1.0",
         "prettier": "^1.7.4",
-        "react": "^16.0.0",
-        "react-ace": "^5.4.0",
-        "react-dom": "^16.0.0",
-        "rollup": "^0.50.0",
-        "rollup-plugin-commonjs": "^8.0.2",
-        "rollup-plugin-node-resolve": "^3.0.0",
-        "rollup-watch": "^4.0.0",
-        "spectre.css": "^0.4.4",
         "standard-version": "^4.2.0",
         "trash-cli": "^1.4.0",
         "tslint": "^5.4.2",
@@ -124,16 +92,10 @@
         "tslib": "^1.8.0"
     },
     "nyc": {
-        "exclude": [
-            "**/*.spec.js"
-        ]
+        "exclude": ["**/*.spec.js"]
     },
     "ava": {
-        "files": [
-            "build/main/**/*.spec.js"
-        ],
-        "source": [
-            "build/main/**/*"
-        ]
+        "files": ["build/main/**/*.spec.js"],
+        "source": ["build/main/**/*"]
     }
 }

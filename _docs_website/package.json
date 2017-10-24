@@ -1,0 +1,40 @@
+{
+    "name": "mocker-data-generator",
+    "version": "2.4.9",
+    "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
+    "main": "build/main/index.js",
+    "typings": "build/main/index.d.ts",
+    "module": "build/module/index.js",
+    "repository": "https://github.com/danibram/mocker-data-generator",
+    "keywords": ["mock", "data", "faker", "fakerjs", "chance", "chancejs", "casual", "randexp", "json", "fake", "mocks", "massive", "generator"],
+    "author": {
+        "name": "Daniel Biedma Ramos",
+        "email": "info@dbr.io",
+        "url": "dbr.io"
+    },
+    "files": ["build/main/**/*", "build/module/**/*", "build/browser/**/*", "package.json", "README.md", "CHANGELOG.md", "LICENSE"],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/danibram/mocker-data-generator/issues"
+    },
+    "scripts": {
+        "docs:dev": "next",
+        "docs:serve:dev": "yarn run docs:build &&  yarn run docs:start",
+        "docs:build": "next build",
+        "docs:start": "next start",
+        "docs:examples": "node _docs_website/generateExamples.js",
+        "docs:export:dev": "trash _docs_website/.next && trash _docs_website/out && yarn docs:examples && NODE_ENV=development next build && NODE_ENV=development next export && yarn run docs:serve:prod",
+        "docs:export": "trash _docs_website/.next && trash _docs_website/out && yarn docs:examples && NODE_ENV=production next build && next export && touch out/.nojekyll",
+        "docs:serve:prod": "http-server _docs_website/out",
+        "docs:deploy:gh-pages": "gh-pages -d _docs_website/out -b gh-pages -t"
+    },
+    "devDependencies": {
+        "gh-pages": "^1.0.0",
+        "next": "^4.0.0-beta.6",
+        "brace": "^0.10.0",
+        "react": "^16.0.0",
+        "react-ace": "^5.4.0",
+        "react-dom": "^16.0.0"
+    },
+    "dependencies": {}
+}
