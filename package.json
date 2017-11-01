@@ -6,13 +6,35 @@
     "typings": "build/main/index.d.ts",
     "module": "build/module/index.js",
     "repository": "https://github.com/danibram/mocker-data-generator",
-    "keywords": ["mock", "data", "faker", "fakerjs", "chance", "chancejs", "casual", "randexp", "json", "fake", "mocks", "massive", "generator"],
+    "keywords": [
+        "mock",
+        "data",
+        "faker",
+        "fakerjs",
+        "chance",
+        "chancejs",
+        "casual",
+        "randexp",
+        "json",
+        "fake",
+        "mocks",
+        "massive",
+        "generator"
+    ],
     "author": {
         "name": "Daniel Biedma Ramos",
         "email": "info@dbr.io",
         "url": "dbr.io"
     },
-    "files": ["build/main/**/*", "build/module/**/*", "build/browser/**/*", "package.json", "README.md", "CHANGELOG.md", "LICENSE"],
+    "files": [
+        "build/main/**/*",
+        "build/module/**/*",
+        "build/browser/**/*",
+        "package.json",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+    ],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/danibram/mocker-data-generator/issues"
@@ -65,11 +87,11 @@
     "devDependencies": {
         "@types/chance": "^0.7.35",
         "@types/faker": "^4.1.1",
-        "@types/node": "^8.0.41",
+        "@types/node": "^8.0.47",
         "ava": "^0.23.0",
         "babel-preset-stage-0": "^6.24.1",
         "codecov": "^3.0.0",
-        "conventional-github-releaser": "^1.1.12",
+        "conventional-github-releaser": "^1.1.13",
         "gh-pages": "^1.0.0",
         "http-server": "^0.10.0",
         "multiview": "^2.5.3",
@@ -80,22 +102,28 @@
         "standard-version": "^4.2.0",
         "trash-cli": "^1.4.0",
         "tslint": "^5.4.2",
-        "tslint-config-standard": "^6.0.0",
+        "tslint-config-standard": "^7.0.0",
         "typedoc": "^0.9.0",
-        "typescript": "^2.5.3"
+        "typescript": "^2.6.1"
     },
     "dependencies": {
         "casual-browserify": "^1.5.12",
-        "chance": "^1.0.11",
+        "chance": "^1.0.12",
         "faker": "^4.1.0",
         "randexp": "^0.4.6",
         "tslib": "^1.8.0"
     },
     "nyc": {
-        "exclude": ["**/*.spec.js"]
+        "exclude": [
+            "**/*.spec.js"
+        ]
     },
     "ava": {
-        "files": ["build/main/**/*.spec.js"],
-        "source": ["build/main/**/*"]
+        "files": [
+            "build/main/**/*.spec.js"
+        ],
+        "source": [
+            "build/main/**/*"
+        ]
     }
 }
