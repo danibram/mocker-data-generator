@@ -91,7 +91,7 @@
     "ava": "^0.23.0",
     "babel-preset-stage-0": "^6.24.1",
     "codecov": "^3.0.0",
-    "conventional-github-releaser": "^1.1.13",
+    "conventional-github-releaser": "^2.0.0",
     "gh-pages": "^1.0.0",
     "http-server": "^0.10.0",
     "multiview": "^2.5.3",
