@@ -172,26 +172,12 @@ export class Schema extends Generator {
                         possibleValues = this.schema[f]
                     }
                 } else {
-                    console.error(
-                        'The field ' +
-                            f +
-                            ', on the scheema ' +
-                            this.name +
-                            ' not exists.'
-                    )
-                    return this.DB[this.name]
+                    throw `The field "${f}" not exists.`
                 }
             }
 
             if (!isArray(possibleValues)) {
-                console.error(
-                    'The field ' +
-                        f +
-                        ', on the scheema ' +
-                        this.name +
-                        ' is not an array.'
-                )
-                return this.DB[this.name]
+                throw `The posible values value is not an Array`
             }
 
             possibleValues.map(value => {
@@ -206,11 +192,7 @@ export class Schema extends Generator {
                 this.object = {}
             })
         } else {
-            console.error(
-                'An string ' +
-                    this.options +
-                    ', is not recognized as a parameter.'
-            )
+            throw `An string "${this.options}" is not recognized as a parameter.`
         }
         return this.DB[this.name]
     }
