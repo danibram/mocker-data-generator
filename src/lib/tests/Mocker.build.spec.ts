@@ -12,7 +12,27 @@ test('Should build with callback', async t => {
     }
     let mock = new Mocker()
     mock.schema('users', { hello: { static: 'world' } }, 1)
-    mock.build(db => t.deepEqual(db, result))
+    mock.build((e, db) => t.deepEqual(db, result))
+})
+
+test('Should produce an error', async t => {
+    let result = {
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
+    }
+    let mock = new Mocker()
+    mock.schema('users', { hello: { faker: 'worldrqwerqw' } }, 1)
+    t.throws(() => mock.build((error) => {
+        throw error
+    }), 'Schema: "users" Error: Error: "faker" TypeError: faker.worldrqwerqw is not a function')
+
+    await mock.build()
+        .then(data => data, e => {
+            t.deepEqual(e.message, 'Schema: "users" Error: Error: "faker" TypeError: faker.worldrqwerqw is not a function')
+        })
 })
 
 test('Should build with await (Promised)', async t => {
