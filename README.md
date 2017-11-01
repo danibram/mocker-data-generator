@@ -84,11 +84,16 @@ var conditionalField = {
     }
 };
 
+// Using traditional callback Style
+
 mocker()
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
-    .build(function(data) {
+    .build(function(error, data) {
+        if (error) {
+            throw error
+        }
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
 // {
@@ -96,7 +101,25 @@ mocker()
 //      group: [array of groups],
 //      conditionalField: [array of conditionalFields]
 // }
-        })
+})
+
+// Using promises
+
+mocker()
+    .schema('user', user, 2)
+    .schema('group', group, 2)
+    .schema('conditionalField', conditionalField, 2)
+    .build()
+    .then(data => {
+        console.log(util.inspect(data, { depth: 10 }))
+        //This returns an object
+        // {
+        //      user:[array of users],
+        //      group: [array of groups],
+        //      conditionalField: [array of conditionalFields]
+        // }
+    }, err => console.error(err))
+
 ```
 
 ## Documentation
@@ -113,7 +136,7 @@ Data generation goes with model based composed by generators, the generators can
 
 - **_reset()_**: Clean the internal DB.
 - **_restart()_**: Clean the internal DB and all the schemas inside.
-- **_build(callback)_**: This methods start to produce the data and wrap it to the callback
+- **_build(callback)_**: This methods start to produce the data and wrap it to the callback function, the callback funtion have 2 parameters, error and data generated.
 
 ### Schema definition
 #### Every schema should contains the specified fields. Key can be 2 types:
@@ -339,7 +362,7 @@ mocker()
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
-    .build(function(data) {
+    .build(function(err, data) {
         console.log(util.inspect(data, { depth: 10 }))
 //This returns an object
 // {
@@ -365,7 +388,7 @@ var cat = {
 var m = mocker()
     .schema('cat', cat, 10)
     .schema('cat2', cat, {uniqueField: 'name'})
-    .build(function(data){
+    .build(function(err, data){
         console.log(util.inspect(data, {depth:10}))
     })
 
@@ -379,7 +402,7 @@ var cat = {
 var m = mocker()
     .schema('cat', cat, 10)
     .schema('cat2', cat, {uniqueField: 'name'})
-    .build(function(data){
+    .build(function(err, data){
         console.log(util.inspect(data, {depth:10}))
     })
 ```
