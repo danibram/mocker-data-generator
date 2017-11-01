@@ -34,13 +34,14 @@ export class Mocker {
     build(cb?: ((_: any) => void)): Promise<any>
     build(cb?: ((_: any) => void)): void
     build(cb?: ((_: any) => void)): any {
+		let error
         this.schemas.reduce((acc, schema) => {
             let instances
-
             try {
                 instances = schema.build(acc)
             } catch (e) {
-                console.error(new Error(' Schema: "' + schema.name + '" ' + e))
+				error = new Error(' Schema: "' + schema.name + '" ' + e)
+                console.error(error)
             }
 
             // Clean virtuals
@@ -61,7 +62,9 @@ export class Mocker {
 
         if (cb) {
             return cb(this.DB)
-        } else {
+        } else if(error) {
+			return Promise.reject(error);
+		} else {
             return Promise.resolve(this.DB)
         }
     }
