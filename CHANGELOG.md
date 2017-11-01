@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/danibram/mocker-data-generator/compare/v2.4.9...v2.5.0) (2017-11-01)
+
+
+### Bug Fixes
+
+* **test:** separate gh-pages generation modules from the mocker modules for development, some test fails ([2cc421e](https://github.com/danibram/mocker-data-generator/commit/2cc421e))
+* Better error throwing and test covered ([20ca0a0](https://github.com/danibram/mocker-data-generator/commit/20ca0a0))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/danibram/mocker-data-generator/compare/v2.4.10...v3.0.0) (2017-11-01)
 
