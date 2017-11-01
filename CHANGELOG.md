@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/danibram/mocker-data-generator/compare/v2.4.9...v2.5.0) (2017-11-01)
 
+### Breaking Changes!
+
+* Now the build method throws the error, in the case of the callback in a traditional style function **function(err, data)** in the case of promise style in the reject.
+
 ### Bug Fixes
 
 * **test:** separate gh-pages generation modules from the mocker modules for development, some test fails ([2cc421e](https://github.com/danibram/mocker-data-generator/commit/2cc421e))
