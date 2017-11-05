@@ -1,6 +1,4 @@
-# mocker-data-generator
-
-[![NPM](https://nodei.co/npm/mocker-data-generator.png?downloads=true&stars=true)][npm-home-module]
+# mocker-data-generator [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Im%20testing%20mocker-data-generator%20is%20awesome!&via=danibram&url=http://bit.ly/2ziE8qT&hashtags=mock,javascript,developers)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/danibram/mocker-data-generator.svg)](https://greenkeeper.io/)
 
@@ -11,9 +9,6 @@
 [![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
 
 [![bitHound Overall Score](https://www.bithound.io/github/danibram/mocker-data-generator/badges/score.svg)](https://www.bithound.io/github/danibram/mocker-data-generator)
-[![bitHound Dependencies](https://www.bithound.io/github/danibram/mocker-data-generator/badges/dependencies.svg)](https://www.bithound.io/github/danibram/mocker-data-generator/master/dependencies/npm)
-[![bitHound Dev Dependencies](https://www.bithound.io/github/danibram/mocker-data-generator/badges/devDependencies.svg)](https://www.bithound.io/github/danibram/mocker-data-generator/master/dependencies/npm)
-[![bitHound Code](https://www.bithound.io/github/danibram/mocker-data-generator/badges/code.svg)](https://www.bithound.io/github/danibram/mocker-data-generator)
 
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Awesome license](https://img.shields.io/badge/bateries-included-orange.svg?style=flat-square)][npm-home-module]
 
