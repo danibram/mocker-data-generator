@@ -88,7 +88,7 @@
     "@types/chance": "^0.7.35",
     "@types/faker": "^4.1.1",
     "@types/node": "^8.0.47",
-    "ava": "^0.23.0",
+    "ava": "^0.24.0",
     "babel-preset-stage-0": "^6.24.1",
     "codecov": "^3.0.0",
     "conventional-github-releaser": "^2.0.0",
