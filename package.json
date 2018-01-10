@@ -93,7 +93,7 @@
     "codecov": "^3.0.0",
     "conventional-github-releaser": "^2.0.0",
     "gh-pages": "^1.0.0",
-    "http-server": "^0.10.0",
+    "http-server": "^0.11.0",
     "multiview": "^2.5.3",
     "npm-scripts-info": "^0.3.6",
     "nyc": "^11.0.2",
