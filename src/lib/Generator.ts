@@ -165,7 +165,7 @@ export class Generator {
         let amount = 1
         let db = this.DB
 
-        let min = cfg.min ? cfg.min : 1
+        let min = cfg.min || cfg.min === 0 ? cfg.min : 1
         let max = cfg.max ? cfg.max : db[cfg.hasMany].length
 
         if (cfg.amount) {
