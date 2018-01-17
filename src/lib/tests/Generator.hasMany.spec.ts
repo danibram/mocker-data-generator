@@ -33,6 +33,21 @@ test('Should get many from the DB with min', async t => {
     t.true(res.length >= 4)
 })
 
+test('Should get many from the DB with min = 0', async t => {
+    let data = Array.from(new Array(10)).map((el, i) => ({ id: i }))
+    gen.DB = { hello: data }
+
+    let res = gen.hasMany({
+        hasMany: 'hello',
+        max: 1,
+        min: 0
+    })
+
+    res.forEach(r => t.true(data.indexOf(r) > -1))
+    t.true(res.length <= 1)
+    t.true(res.length >= 0)
+})
+
 test('Should get many from the DB with fixed amount', async t => {
     let data = Array.from(new Array(10)).map((el, i) => ({ id: i }))
     gen.DB = { hello: data }
