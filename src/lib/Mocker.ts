@@ -31,9 +31,9 @@ export class Mocker {
         return this
     }
 
-    build(cb?: ((error: Error | null , _?: any) => void)): Promise<any>
-    build(cb?: ((error: Error | null , _?: any) => void)): void
-    build(cb?: ((error: Error | null , _?: any) => void)): any {
+    build(cb?: ((error: Error | null, _?: any) => void)): Promise<any>
+    build(cb?: ((error: Error | null, _?: any) => void)): void
+    build(cb?: ((error: Error | null, _?: any) => void)): any {
         try {
             this.schemas.reduce((acc, schema) => {
                 let instances

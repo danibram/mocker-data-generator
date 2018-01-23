@@ -95,10 +95,11 @@ test('Not supported locale @', async t => {
     }
 
     let schema = new Schema('street', street, 1)
-    t.throws(
-        () => schema.build(),
-        `Error: "faker" Locale '${noLocaleSupported}' is not supported by faker.`
-    )
+    try {
+        schema.build()
+    } catch (e) {
+        t.deepEqual(e, 'Error: "faker" Locale \'@\' is not supported by faker.')
+    }
 })
 
 test('Not supported locale empty "" ', async t => {
@@ -108,8 +109,10 @@ test('Not supported locale empty "" ', async t => {
     }
 
     let schema = new Schema('street', street, 1)
-    t.throws(
-        () => schema.build(),
-        `Error: "faker" Locale is empty '${noLocaleSupported}'.`
-    )
+
+    try {
+        schema.build()
+    } catch (e) {
+        t.deepEqual(e, `Error: "faker" Locale is empty '${noLocaleSupported}'.`)
+    }
 })

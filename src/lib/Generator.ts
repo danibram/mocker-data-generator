@@ -5,6 +5,8 @@ const c = require('casual-browserify')
 import * as Ch from 'chance'
 const ch = new Ch()
 
+import { fnParser } from './utils'
+
 export class Generator {
     name: string
     DB: {}
@@ -21,11 +23,6 @@ export class Generator {
 
     faker(cfg) {
         let faker = f
-        let db = this.DB
-        let object = this.object
-        let re
-        let matches
-        let strFn
 
         if (cfg.locale === '') {
             throw `Locale is empty '${cfg.locale}'.`
@@ -40,52 +37,18 @@ export class Generator {
             faker = require('faker/locale/' + cfg.locale)
         }
 
-        re = /(^[a-zA-Z.]*)/ // aZ.aZ
-        matches = re.exec(cfg.faker)
-        if (matches && matches.length === 2) {
-            strFn = 'faker.' + cfg.faker
-        }
-
-        re = /\((.*?)\)/ // Match ()
-        matches = re.exec(cfg.faker)
-        if (!matches) {
-            strFn = 'faker.' + cfg.faker + '()'
-        }
-
-        return eval(strFn)
+        return fnParser('faker', faker, cfg.faker)
     }
 
     chance(cfg) {
         let chance = ch
-        let db = this.DB
-        let object = this.object
-
-        let re = /(^[a-zA-Z.]*)/ // aZ.aZ
-        let matches = re.exec(cfg.chance)
-        let strFn
-        if (matches && matches.length === 2) {
-            strFn = 'chance.' + cfg.chance
-        }
-
-        re = /\((.*?)\)/ // Match ()
-        matches = re.exec(cfg.chance)
-        if (!matches) {
-            strFn = 'chance.' + cfg.chance + '()'
-        }
-
-        return eval(strFn)
+        return fnParser.call(chance, 'chance', chance, cfg.chance)
     }
 
     casual(cfg) {
         let casual = c
-        let re = /(^[a-zA-Z.]*)/ // aZ.aZ
-        let matches = re.exec(cfg.casual)
-        let strFn
-        if (matches && matches.length === 2) {
-            strFn = 'casual.' + cfg.casual
-        }
-
-        return eval(strFn)
+        return fnParser
+            .call(casual, 'casual', casual, cfg.casual)
     }
 
     randexp(cfg) {

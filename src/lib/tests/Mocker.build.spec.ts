@@ -27,11 +27,11 @@ test('Should produce an error', async t => {
     mock.schema('users', { hello: { faker: 'worldrqwerqw' } }, 1)
     t.throws(() => mock.build((error) => {
         throw error
-    }), 'Schema: "users" Error: Error: "faker" TypeError: faker.worldrqwerqw is not a function')
+    }), 'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.')
 
     await mock.build()
         .then(data => data, e => {
-            t.deepEqual(e.message, 'Schema: "users" Error: Error: "faker" TypeError: faker.worldrqwerqw is not a function')
+            t.deepEqual(e.message, 'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.')
         })
 })
 

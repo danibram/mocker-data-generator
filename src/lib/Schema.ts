@@ -10,7 +10,7 @@ import {
 
 import { Generator } from './Generator'
 
-let iterate = function(obj, res, currentPath) {
+let iterate = function (obj, res, currentPath) {
     if (!currentPath) {
         currentPath = []
     }
@@ -121,7 +121,7 @@ export class Schema extends Generator {
                     result = this[key](cfg, ...args)
                 }
             } catch (e) {
-                throw new Error('Error: "' + key + '" ' + e)
+                throw 'Error: "' + key + '" ' + e
             }
         })
 
