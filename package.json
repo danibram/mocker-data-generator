@@ -101,7 +101,7 @@
     "prettier": "^1.7.4",
     "standard-version": "^4.2.0",
     "trash-cli": "^1.4.0",
-    "ts-node": "^4.1.0",
+    "ts-node": "^5.0.0",
     "tslint": "^5.4.2",
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.10.0",
