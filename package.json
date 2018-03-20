@@ -86,8 +86,13 @@
   },
   "devDependencies": {
     "@types/chance": "^1.0.0",
+<<<<<<< HEAD
     "@types/faker": "^4.1.2",
     "@types/node": "^9.4.7",
+=======
+    "@types/faker": "^4.1.1",
+    "@types/node": "^9.3.0",
+>>>>>>> 2308ab51625cdca815b1234f803a053bdd8005d0
     "ava": "^0.25.0",
     "babel-preset-stage-0": "^6.24.1",
     "codecov": "^3.0.0",
@@ -101,18 +106,31 @@
     "prettier": "^1.11.1",
     "standard-version": "^4.3.0",
     "trash-cli": "^1.4.0",
+<<<<<<< HEAD
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.11.1",
     "typescript": "^2.7.2"
+=======
+    "ts-node": "^5.0.0",
+    "tslint": "^5.4.2",
+    "tslint-config-standard": "^7.0.0",
+    "typedoc": "^0.11.0",
+    "typescript": "^2.6.1"
+>>>>>>> 2308ab51625cdca815b1234f803a053bdd8005d0
   },
   "dependencies": {
     "casual-browserify": "^1.5.12",
     "chance": "^1.0.13",
     "faker": "^4.1.0",
+<<<<<<< HEAD
     "randexp": "^0.4.9",
     "tslib": "^1.9.0"
+=======
+    "randexp": "^0.5.0",
+    "tslib": "^1.8.0"
+>>>>>>> 2308ab51625cdca815b1234f803a053bdd8005d0
   },
   "nyc": {
     "exclude": [
