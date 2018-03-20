@@ -211,6 +211,16 @@ export default class Index extends React.Component {
                         defer
                         src="https://buttons.github.io/buttons.js"
                     />
+                    {/*<!-- Global site tag (gtag.js) - Google Analytics -->*/}
+                    <script
+                        async
+                        src="https://www.googletagmanager.com/gtag/js?id=UA-29255626-5"
+                    />
+                    <script>
+                        window.dataLayer = window.dataLayer || []; function
+                        gtag(){dataLayer.push(arguments)}
+                        gtag('js', new Date()); gtag('config', 'UA-29255626-5');
+                    </script>
                 </Head>
 
                 <a
