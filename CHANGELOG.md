@@ -3,9 +3,14 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="2.6.1"></a>
-## [2.6.1](https://github.com/danibram/mocker-data-generator/compare/v2.6.0...v2.6.1) (2018-03-20)
+## [2.6.1](https://github.com/danibram/mocker-data-generator/compare/v2.5.2...v2.6.1) (2018-03-20)
 
+### Improvements!
 
+ * Now I rework internal part of the generators to offer the posibility of avoid **eval** step, i used eval to offer the maximum flexibility, but now its optional, of course that without eval, is less flexible, but if it fits for your mock data right now you will gain **10x speed**, Awesome!
+Also it offers the posibility of use eval like in the older versions of mocker.
+
+Welcome to the ludicrous speed! 🎉
 
 <a name="2.5.2"></a>
 
