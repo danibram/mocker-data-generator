@@ -53,8 +53,6 @@ export default class Index extends React.Component {
         try {
             let compiled = eval(value)
             compiled.build((err, data) => {
-                console.log(err)
-                console.log(data)
                 this.setState({
                     error: null,
                     compiled: JSON.stringify(data, null, 2)
