@@ -6,35 +6,13 @@
     "typings": "build/main/index.d.ts",
     "module": "build/module/index.js",
     "repository": "https://github.com/danibram/mocker-data-generator",
-    "keywords": [
-        "mock",
-        "data",
-        "faker",
-        "fakerjs",
-        "chance",
-        "chancejs",
-        "casual",
-        "randexp",
-        "json",
-        "fake",
-        "mocks",
-        "massive",
-        "generator"
-    ],
+    "keywords": ["mock", "data", "faker", "fakerjs", "chance", "chancejs", "casual", "randexp", "json", "fake", "mocks", "massive", "generator"],
     "author": {
         "name": "Daniel Biedma Ramos",
         "email": "info@dbr.io",
         "url": "dbr.io"
     },
-    "files": [
-        "build/main/**/*",
-        "build/module/**/*",
-        "build/browser/**/*",
-        "package.json",
-        "README.md",
-        "CHANGELOG.md",
-        "LICENSE"
-    ],
+    "files": ["build/main/**/*", "build/module/**/*", "build/browser/**/*", "package.json", "README.md", "CHANGELOG.md", "LICENSE"],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/danibram/mocker-data-generator/issues"

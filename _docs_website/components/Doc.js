@@ -39,8 +39,6 @@ export default class Index extends React.Component {
         this.setState({ examples: Object.keys(value) })
 
         import('../../build/main/index.js').then(m => {
-            console.log('mocker loaded')
-            console.log(m)
             this.setState({ mocker: m.mocker, mockerLoaded: true })
             this.syncHash()
         })
@@ -54,7 +52,7 @@ export default class Index extends React.Component {
         const mocker = this.state.mocker
         try {
             let compiled = eval(value)
-            compiled.build(data => {
+            compiled.build((err, data) => {
                 this.setState({
                     error: null,
                     compiled: JSON.stringify(data, null, 2)
