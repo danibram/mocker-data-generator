@@ -4,17 +4,103 @@ import { isArray, isObject } from '../utils'
 
 const gen = new Generator()
 
+const set1 = [
+    {
+        id: 0
+    },
+    {
+        id: 1
+    },
+    {
+        id: 2
+    },
+    {
+        id: 3
+    },
+    {
+        id: 4
+    },
+    {
+        id: 5
+    },
+    {
+        id: 6
+    },
+    {
+        id: 7
+    },
+    {
+        id: 8
+    },
+    {
+        id: 9
+    }
+]
+
+const set2 = [
+    {
+        id: {
+            id: 0
+        }
+    },
+    {
+        id: {
+            id: 1
+        }
+    },
+    {
+        id: {
+            id: 2
+        }
+    },
+    {
+        id: {
+            id: 3
+        }
+    },
+    {
+        id: {
+            id: 4
+        }
+    },
+    {
+        id: {
+            id: 5
+        }
+    },
+    {
+        id: {
+            id: 6
+        }
+    },
+    {
+        id: {
+            id: 7
+        }
+    },
+    {
+        id: {
+            id: 8
+        }
+    },
+    {
+        id: {
+            id: 9
+        }
+    }
+]
+
 test('Should get one of the DB', async t => {
-    let data = Array.from(new Array(10)).map((el, i) => ({ id: i }))
-    gen.DB = { hello: data }
+    gen.DB = { hello: set1 }
 
     let res = gen.hasOne({ hasOne: 'hello' })
-    t.true(data.indexOf(res) > -1)
+    t.true(set1.indexOf(res) > -1)
 })
 
 test('Should get one of the DB, and one field of that entity', async t => {
-    let data = Array.from(new Array(10)).map((el, i) => ({ id: i }))
-    gen.DB = { hello: data }
+    gen.DB = {
+        hello: set1
+    }
 
     let res = gen.hasOne({ hasOne: 'hello', get: 'id' })
     t.true(res !== undefined)
@@ -25,7 +111,7 @@ test('Should get one of the DB, and one field of that entity', async t => {
 
 test('Should get one of the DB, and one field of that entity, more deep', async t => {
     gen.DB = {
-        hello: Array.from(new Array(10)).map((el, i) => ({ id: { id: i } }))
+        hello: set2
     }
 
     let res = await gen.hasOne({ hasOne: 'hello', get: 'id.id' })
