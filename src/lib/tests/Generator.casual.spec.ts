@@ -9,6 +9,11 @@ test('Should be "country"', async t => {
     t.true(typeof res === 'string')
 })
 
+test('Should be "country"', async t => {
+    let res = gen.casual({ casual: 'country', eval: true })
+    t.true(typeof res === 'string')
+})
+
 test('Should be "array_of_digits()"', async t => {
     let res = gen.casual({ casual: 'array_of_digits()' })
     t.true(isArray(res))

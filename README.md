@@ -165,17 +165,30 @@ Data generation goes with model based composed by generators, the generators can
 
 * **_self_**: get himself object, and evaluate the string, so you can get calculated fields.
 
+    * **_eval_** (Optional): Also now you can pass, eval to true, to use like like in versions < 2.6.0
+
     ```javascript
     {
         self: 'id'
     } //will get the id of the generated entity
+    {
+        self: 'id',
+        eval: true
+    } //will get the first user id
     ```
 
 * **_db_**: get the db, and evaluate the string, so you can access to this entities.
 
+    * **_eval_** (Optional): Also now you can pass, fast to true, eval to true, to use like like in versions < 2.6.0
+
     ```javascript
     {
         db: 'user[0].id'
+    } //will get the first user id
+
+    {
+        db: 'user[0].id',
+        eval: true
     } //will get the first user id
     ```
 
@@ -203,6 +216,7 @@ Data generation goes with model based composed by generators, the generators can
 
     * **_hasOne_**: the name of the related entity, get one random.
     * **_get_** (Optional): String that will be evaluated over the random related entity.
+    * **_eval_** (Optional): Only affects if get is passed, the get param only support dotted paths, with eval=true you can use an eval string, this impacts on the performance
 
         ```javascript
             {
@@ -215,6 +229,14 @@ Data generation goes with model based composed by generators, the generators can
                 hasOne: 'user',
                 get: 'id' //this populate the field with one id of a random user
             }
+
+            //OR:
+
+            {
+                hasOne: 'user',
+                get: 'id',
+                eval: true //this populate the field with one id of a random user with eval string
+            }
         ```
 
 * **_hasMany_**: You can pass 4 parameters:
@@ -224,6 +246,7 @@ Data generation goes with model based composed by generators, the generators can
     * **_min_** (Optional): Minimum entities to get, buy default is 1, if you want the chance to have empty arrays please specify min to 0.
     * **_max_** (Optional): Maximum entities to get.
     * **_get_** (Optional): String that will be evaluated over the random related entity.
+    * **_eval_** (Optional): Get will only support dotted paths, with eval= true you can get from an evaluable string
 
         ```javascript
             // In this case we will get 1 user (hasMany)
@@ -299,6 +322,9 @@ Data generation goes with model based composed by generators, the generators can
 
 * **_faker_**: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**, now also the multilang is supported by the property locale (Thanks @sleicht for the inspiration. This are the locales supported: [https://github.com/marak/Faker.js/#localization](https://github.com/marak/Faker.js/#localization)).
 
+    * **_eval_** (Optional):  You can use like in versions < 2.6.0, su with this true, it will turn faker field string into an evaluable string, also loosing speed
+
+
     ```javascript
           { faker: 'lorem.words' }                            //Run faker.lorem.words()
           { faker: 'lorem.words()' }                          //Run faker.lorem.words()
@@ -309,9 +335,12 @@ Data generation goes with model based composed by generators, the generators can
 
           { faker: 'address.streetAddress', locale: 'zh_CN' }  //got 711 蔡 街
           { faker: 'address.streetAddress' }  //got 5036 Daniel Village
+          { faker: 'address.streetAddress', fast: true }  //got 5036 Daniel Village
     ```
 
 * **_chance_**: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
+
+    * **_eval_** (Optional): You can use like in versions < 2.6.0, su with this true, it will turn chance field string into an evaluable string, also loosing speed
 
     ```javascript
     {
@@ -326,9 +355,15 @@ Data generation goes with model based composed by generators, the generators can
     {
         chance: 'street_suffixes()[0]["name"]'
     } //Run chance.street_suffixes() takes first result and the name inside
+    {
+        chance: 'street_suffixes()[0]["name"]',
+        fast: true
+    } //Run chance.street_suffixes() takes first result and the name inside
     ```
 
 * **_casual_**: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
+
+    * **_eval_** (Optional):  You can use like in versions < 2.6.0, su with this true, it will turn casual field string into an evaluable string, also loosing speed
 
     ```javascript
     {
@@ -338,7 +373,12 @@ Data generation goes with model based composed by generators, the generators can
         chance: 'array_of_digits()'
     }
     {
-        casual: 'array_of_digits(3)[0]'
+        casual: 'array_of_digits(3)[0]',
+        eval: true
+    }
+    {
+        casual: 'array_of_digits(3)[0]',
+        eval: true
     }
     ```
 
@@ -451,6 +491,19 @@ var m = mocker()
     .build(function(err, data) {
         console.log(util.inspect(data, { depth: 10 }))
     })
+```
+
+### *eval* Option (Beta):
+
+In version >= 2.6.0, eval option was introduced to run mocker-data-generator like olders versions, so by default is running without eval: `faker`, `chance`, `casual`, `hasMany`, `hasOne`, `db` and `self`. This means that this methods loose habilities, when eval is not passed, but this are the speed results with eval active (old way) and without (new way)
+
+```
+faker eval old:  0.969ms
+faker now:       0.215ms
+chance eval old: 0.559ms
+chance now:      0.099ms
+casual eval old: 0.360ms
+casual now:      0.026ms
 ```
 
 ### More, Coming soon

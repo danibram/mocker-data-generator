@@ -22,3 +22,14 @@ test('Should get one of the DB, and one field of that entity', async t => {
     t.true(res <= 10)
     t.true(res >= 0)
 })
+
+test('Should get one of the DB, and one field of that entity, more deep', async t => {
+    let data = Array.from(new Array(10)).map((el, i) => ({ id: { id: i } }))
+    gen.DB = { hello: data }
+
+    let res = gen.hasOne({ hasOne: 'hello', get: 'id.id' })
+    t.true(res !== undefined)
+    t.true(res !== null)
+    t.true(res <= 10)
+    t.true(res >= 0)
+})

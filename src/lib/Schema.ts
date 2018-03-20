@@ -10,7 +10,7 @@ import {
 
 import { Generator } from './Generator'
 
-let iterate = function (obj, res, currentPath) {
+let iterate = function(obj, res, currentPath) {
     if (!currentPath) {
         currentPath = []
     }
@@ -192,7 +192,8 @@ export class Schema extends Generator {
                 this.object = {}
             })
         } else {
-            throw `An string "${this.options}" is not recognized as a parameter.`
+            throw `An string "${this
+                .options}" is not recognized as a parameter.`
         }
         return this.DB[this.name]
     }

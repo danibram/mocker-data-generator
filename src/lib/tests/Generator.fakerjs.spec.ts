@@ -10,6 +10,11 @@ test('Should be "lorem.words"', async t => {
     t.true(typeof res === 'string')
 })
 
+test('Should be "lorem.words"', async t => {
+    let res = gen.faker({ faker: 'lorem.words', eval: true })
+    t.true(typeof res === 'string')
+})
+
 test('Should be "lorem.words()"', async t => {
     let res = gen.faker({ faker: 'lorem.words()' })
     t.true(typeof res === 'string')

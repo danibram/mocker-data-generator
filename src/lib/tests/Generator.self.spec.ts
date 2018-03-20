@@ -10,3 +10,10 @@ test('Should have access to object', async t => {
     let res = gen.self({ self: 'hello' })
     t.true(res === 'world')
 })
+
+test('Should have access to object', async t => {
+    gen.object = { hello: 'world' }
+
+    let res = gen.self({ self: 'hello', eval: true })
+    t.true(res === 'world')
+})

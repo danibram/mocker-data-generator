@@ -85,34 +85,34 @@
     "release": "Bump package.json version, update CHANGELOG.md, tag a release"
   },
   "devDependencies": {
-    "@types/chance": "^0.7.35",
-    "@types/faker": "^4.1.1",
-    "@types/node": "^9.3.0",
+    "@types/chance": "^1.0.0",
+    "@types/faker": "^4.1.2",
+    "@types/node": "^9.4.7",
     "ava": "^0.25.0",
     "babel-preset-stage-0": "^6.24.1",
     "codecov": "^3.0.0",
     "conventional-github-releaser": "^2.0.0",
-    "gh-pages": "^1.0.0",
+    "gh-pages": "^1.1.0",
     "http-server": "^0.11.0",
     "multiview": "^2.5.3",
-    "npm-scripts-info": "^0.3.6",
-    "nyc": "^11.0.2",
+    "npm-scripts-info": "^0.3.7",
+    "nyc": "^11.6.0",
     "opn-cli": "^3.1.0",
-    "prettier": "^1.7.4",
-    "standard-version": "^4.2.0",
+    "prettier": "^1.11.1",
+    "standard-version": "^4.3.0",
     "trash-cli": "^1.4.0",
-    "ts-node": "^4.1.0",
-    "tslint": "^5.4.2",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
-    "typedoc": "^0.10.0",
-    "typescript": "^2.6.1"
+    "typedoc": "^0.11.1",
+    "typescript": "^2.7.2"
   },
   "dependencies": {
     "casual-browserify": "^1.5.12",
-    "chance": "^1.0.12",
+    "chance": "^1.0.13",
     "faker": "^4.1.0",
-    "randexp": "^0.4.6",
-    "tslib": "^1.8.0"
+    "randexp": "^0.4.9",
+    "tslib": "^1.9.0"
   },
   "nyc": {
     "exclude": [

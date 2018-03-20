@@ -9,6 +9,11 @@ test('Should be "country"', async t => {
     t.true(typeof res === 'number')
 })
 
+test('Should be "country"', async t => {
+    let res = gen.chance({ chance: 'integer', eval: true })
+    t.true(typeof res === 'number')
+})
+
 test('Should be "integer()"', async t => {
     let res = gen.chance({ chance: 'integer()' })
     t.true(typeof res === 'number')

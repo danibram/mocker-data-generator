@@ -60,13 +60,9 @@ export class Mocker {
                 return acc
             }, this.DB)
         } catch (e) {
-            return (cb)
-                ? cb(e)
-                : Promise.reject(e)
+            return cb ? cb(e) : Promise.reject(e)
         }
 
-        return (cb)
-            ? cb(null, this.DB)
-            : Promise.resolve(this.DB)
+        return cb ? cb(null, this.DB) : Promise.resolve(this.DB)
     }
 }
