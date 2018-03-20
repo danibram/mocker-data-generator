@@ -95,7 +95,6 @@
         "gh-pages": "^1.1.0",
         "http-server": "^0.11.0",
         "multiview": "^2.5.3",
-        "next": "^5.0.0",
         "npm-scripts-info": "^0.3.7",
         "nyc": "^11.6.0",
         "opn-cli": "^3.1.0",
