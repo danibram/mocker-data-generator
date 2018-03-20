@@ -211,6 +211,11 @@ export default class Index extends React.Component {
                         media="all"
                         rel="stylesheet"
                     />
+                    {/*<!-- Global site tag (gtag.js) - Google Analytics -->*/}
+                    <script
+                        async
+                        src="https://www.googletagmanager.com/gtag/js?id=UA-29255626-5"
+                    />
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Raleway:200"
@@ -219,11 +224,6 @@ export default class Index extends React.Component {
                         async
                         defer
                         src="https://buttons.github.io/buttons.js"
-                    />
-                    {/*<!-- Global site tag (gtag.js) - Google Analytics -->*/}
-                    <script
-                        async
-                        src="https://www.googletagmanager.com/gtag/js?id=UA-29255626-5"
                     />
                 </Head>
 
