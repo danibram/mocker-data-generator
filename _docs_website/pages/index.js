@@ -12,7 +12,16 @@ export default class Index extends React.Component {
     componentDidMount() {
         Router.onRouteChangeComplete = () => this.setState({ ready: true })
         Router.onRouteChangeError = () => this.setState({ ready: true })
-        Router.ready(() => this.setState({ ready: true }))
+        Router.ready(() => {
+            this.setState({ ready: true })
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+                dataLayer.push(arguments)
+            }
+            gtag('js', new Date())
+
+            gtag('config', 'UA-29255626-5')
+        })
     }
 
     render() {
@@ -216,17 +225,6 @@ export default class Index extends React.Component {
                         async
                         src="https://www.googletagmanager.com/gtag/js?id=UA-29255626-5"
                     />
-                    <script>
-                        {() => {
-                            window.dataLayer = window.dataLayer || []
-                            function gtag() {
-                                dataLayer.push(arguments)
-                            }
-                            gtag('js', new Date())
-
-                            gtag('config', 'UA-29255626-5')
-                        }}
-                    </script>
                 </Head>
 
                 <a
