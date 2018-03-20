@@ -38,7 +38,7 @@ export default class Index extends React.Component {
     componentDidMount() {
         this.setState({ examples: Object.keys(value) })
 
-        import('../../build/main/index.js').then(m => {
+        import('../build/main/index.js').then(m => {
             this.setState({ mocker: m.mocker, mockerLoaded: true })
             this.syncHash()
         })
@@ -105,16 +105,18 @@ export default class Index extends React.Component {
                                     <ul className="nav">
                                         {this.state.examples.map((e, i) => (
                                             <li
-                                                className={`nav-item ${e ===
-                                                this.state.hash
-                                                    ? 'active'
-                                                    : ''}`}
+                                                className={`nav-item ${
+                                                    e === this.state.hash
+                                                        ? 'active'
+                                                        : ''
+                                                }`}
                                                 key={i}
                                             >
                                                 <a
                                                     href={`#${e}`}
                                                     onClick={() =>
-                                                        this.selectExample(e)}
+                                                        this.selectExample(e)
+                                                    }
                                                 >{`${e[0].toUpperCase() +
                                                     e.substring(1)}`}</a>
                                             </li>
