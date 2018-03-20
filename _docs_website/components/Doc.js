@@ -38,7 +38,7 @@ export default class Index extends React.Component {
     componentDidMount() {
         this.setState({ examples: Object.keys(value) })
 
-        import('../build/main/index.js').then(m => {
+        import('../../build/main/index.js').then(m => {
             this.setState({ mocker: m.mocker, mockerLoaded: true })
             this.syncHash()
         })
