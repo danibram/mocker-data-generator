@@ -87,7 +87,7 @@
     "devDependencies": {
         "@types/chance": "^1.0.0",
         "@types/faker": "^4.1.2",
-        "@types/node": "^9.4.7",
+        "@types/node": "^10.0.3",
         "ava": "^0.25.0",
         "babel-preset-stage-0": "^6.24.1",
         "codecov": "^3.0.0",
