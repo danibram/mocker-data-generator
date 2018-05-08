@@ -66,8 +66,12 @@ export class Schema extends Generator {
     proccessLeaf(field) {
         if (isArray(field)) {
             let fieldConfig = field[0]
-            let na = Array()
 
+            if (field.length > 1) {
+                fieldConfig = { values: field }
+            }
+
+            let na = Array()
             if (fieldConfig.concat) {
                 na = evalWithContextData(
                     fieldConfig.concat,
@@ -83,13 +87,16 @@ export class Schema extends Generator {
 
             let length = fieldArrayCalcLength(fieldConfig, na.length, this)
 
-            let array = Array.from(
-                new Array(length)
-            ).reduce((acc, el, index) => {
-                let self = acc.slice(0)
-                acc.push(this.generateField(fieldConfig, index, length, self))
-                return acc
-            }, [])
+            let array = Array.from(new Array(length)).reduce(
+                (acc, el, index) => {
+                    let self = acc.slice(0)
+                    acc.push(
+                        this.generateField(fieldConfig, index, length, self)
+                    )
+                    return acc
+                },
+                []
+            )
 
             return array.concat(na)
         } else {
@@ -106,7 +113,6 @@ export class Schema extends Generator {
             'randexp',
             'self',
             'db',
-            'eval',
             'hasOne',
             'hasMany',
             'static',
@@ -115,15 +121,30 @@ export class Schema extends Generator {
             'incrementalId'
         ]
 
-        generators.forEach(key => {
-            try {
-                if (cfg.hasOwnProperty(key)) {
-                    result = this[key](cfg, ...args)
-                }
-            } catch (e) {
-                throw 'Error: "' + key + '" ' + e
+        let keys = Object.keys(cfg)
+
+        let key = keys.reduce((acc, val) => {
+            if ((generators as any).includes(val)) {
+                acc = val
             }
-        })
+            return acc
+        }, 'noKey')
+
+        if (key === 'noKey' && !(keys as any).includes('eval')) {
+            throw `Error: Cant find key, please check model and use one of this [${generators.join(
+                ','
+            )}]`
+        }
+
+        if ((keys as any).includes('eval') && keys.length === 1) {
+            key = 'eval'
+        }
+
+        try {
+            result = this[key](cfg, ...args)
+        } catch (e) {
+            throw 'Error: "' + key + '" ' + e
+        }
 
         return result
     }
@@ -192,8 +213,9 @@ export class Schema extends Generator {
                 this.object = {}
             })
         } else {
-            throw `An string "${this
-                .options}" is not recognized as a parameter.`
+            throw `An string "${
+                this.options
+            }" is not recognized as a parameter.`
         }
         return this.DB[this.name]
     }

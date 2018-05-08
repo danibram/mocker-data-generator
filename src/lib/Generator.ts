@@ -174,6 +174,7 @@ export class Generator {
     hasOne(cfg: { hasOne: string; get?: string; eval?: boolean }) {
         let db = this.DB
         let i = Math.floor(db[cfg.hasOne].length * Math.random())
+
         let entity = db[cfg.hasOne][i]
 
         if (cfg.get) {

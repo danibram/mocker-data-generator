@@ -162,15 +162,15 @@ test('Should work with conditional keys', async t => {
             static: 'a'
         },
         'object.condition==="a",a': {
-            static: 'conditionLinkedToConditionField'
+            static: 'conditionLinkedToA'
         },
         'object.condition==="b",b': {
-            static: 'conditionLinkedToConditionField'
+            static: 'conditionLinkedToB'
         }
     }
     let expectedResult = {
         condition: 'a',
-        a: 'conditionLinkedToConditionField'
+        a: 'conditionLinkedToA'
     }
 
     let db = await mocker()
@@ -178,6 +178,38 @@ test('Should work with conditional keys', async t => {
         .build()
 
     t.deepEqual(db.situation[0], expectedResult)
+})
+
+test('Should work with conditional keys II', async t => {
+    let conditional = {
+        condition: {
+            faker: 'helpers.randomize(["email", "user"])'
+        },
+        'object.condition==="email",show': {
+            static: 'email'
+        },
+        'object.condition==="user",show': {
+            static: 'user'
+        },
+        'object.condition==="email",email': {
+            hasOne: 'emails'
+        },
+        'object.condition==="user",user': {
+            hasOne: 'users'
+        }
+    }
+
+    let user = { faker: 'name.findName' }
+    let email = { faker: 'internet.email' }
+
+    let db = await mocker()
+        .schema('users', user, 2)
+        .schema('emails', email, 2)
+        .schema('situation', conditional, 3)
+        .build()
+
+    t.true(true)
+    // t.deepEqual(db.situation[0], expectedResult)
 })
 
 test('Should not affect init values to next entity', async t => {
@@ -266,9 +298,7 @@ test('Should uniqueField works', async t => {
     }
 
     let cat2 = {
-        name: {
-            values: ['txuri', 'pitxi', 'kitty']
-        }
+        name: ['txuri', 'pitxi', 'kitty']
     }
 
     let result = [{ name: 'txuri' }, { name: 'pitxi' }, { name: 'kitty' }]
@@ -284,7 +314,7 @@ test('Should uniqueField works', async t => {
 
 test('Should max works', async t => {
     let cat = {
-        name: ['txuri', 'pitxi', 'kitty']
+        name: { values: ['txuri', 'pitxi', 'kitty'] }
     }
 
     let data = await mocker()
@@ -296,6 +326,7 @@ test('Should max works', async t => {
     t.true(data.cat2.length <= 40)
 })
 
+/*
 test('Should max and min works', async t => {
     let cat = {
         name: ['txuri', 'pitxi', 'kitty']
@@ -312,7 +343,6 @@ test('Should max and min works', async t => {
     t.true(data.cat2.length >= 10)
 })
 
-/*
 test('Should generate correctly with 2 ways of uniqueField', function(done) {
             var cat = {
                 name: ['txuri', 'pitxi', 'kitty']
