@@ -101,8 +101,13 @@
         "prettier": "^1.12.1",
         "standard-version": "^4.3.0",
         "trash-cli": "^1.4.0",
+<<<<<<< HEAD
         "ts-node": "^6.0.3",
         "tslint": "^5.10.0",
+=======
+        "ts-node": "^6.0.0",
+        "tslint": "^5.9.1",
+>>>>>>> greenkeeper/update-to-node-10
         "tslint-config-standard": "^7.0.0",
         "typedoc": "^0.11.1",
         "typescript": "^2.8.3"
