@@ -97,7 +97,19 @@ test('Should get one of the DB', async t => {
     t.true(set1.indexOf(res) > -1)
 })
 
-test('Should get one of the DB, and one field of that entity', async t => {
+test('Should get one of the DB, and one field of that entity (eval)', async t => {
+    gen.DB = {
+        hello: set1
+    }
+
+    let res = gen.hasOne({ hasOne: 'hello', get: 'id', eval: true })
+    t.true(res !== undefined)
+    t.true(res !== null)
+    t.true(res <= 10)
+    t.true(res >= 0)
+})
+
+test('Should get one of the DB, and one field of that entity (no-eval)', async t => {
     gen.DB = {
         hello: set1
     }

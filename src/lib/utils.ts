@@ -153,7 +153,9 @@ export const fnParser = function(name, fn, cfg) {
     let [args2, mods] = args.split(')')
 
     args = args2
-        ? args2[0] === '{' ? [JSON.parse(args2)] : args2.split(',')
+        ? args2[0] === '{'
+            ? [JSON.parse(args2)]
+            : args2.split(',')
         : []
 
     let result = func.call(this, ...args)
@@ -179,7 +181,7 @@ export const fnParser = function(name, fn, cfg) {
 export const loopInside = function(object: any, path: string) {
     let p = path.split('.')
     return p.reduce((acc, val) => {
-        if (!acc[val]) {
+        if (acc[val] === null) {
             throw `'${acc}' doesnt have key '${val}'.`
         }
         return acc[val]
