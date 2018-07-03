@@ -55,7 +55,7 @@
         "gh-pages": "^1.0.0",
         "next": "^6.0.2",
         "react": "^16.0.0",
-        "react-ace": "^6.1.1",
+        "react-ace": "^6.1.4",
         "react-dom": "^16.0.0"
     },
     "dependencies": {
