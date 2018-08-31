@@ -103,7 +103,7 @@
         "trash-cli": "^1.4.0",
         "ts-node": "^7.0.0",
         "tslint": "^5.10.0",
-        "tslint-config-standard": "^7.0.0",
+        "tslint-config-standard": "^8.0.0",
         "typedoc": "^0.11.1",
         "typescript": "^2.8.3"
     },
