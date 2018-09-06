@@ -1,11 +1,10 @@
-import * as R from 'randexp'
-import * as f from 'faker'
-const c = require('casual-browserify')
 // import * as c from 'casual-browserify'
 import { Chance } from 'chance'
-const ch = new Chance()
-
+import * as f from 'faker'
+import * as R from 'randexp'
 import { fnParser, loopInside } from './utils'
+const c = require('casual-browserify')
+const ch = new Chance()
 
 export class Generator {
     name: string
