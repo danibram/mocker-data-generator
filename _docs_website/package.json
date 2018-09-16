@@ -52,7 +52,7 @@
     },
     "devDependencies": {
         "brace": "^0.11.1",
-        "gh-pages": "^1.0.0",
+        "gh-pages": "^2.0.0",
         "next": "^6.0.2",
         "react": "^16.0.0",
         "react-ace": "^6.1.1",
