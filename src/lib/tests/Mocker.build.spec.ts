@@ -1,6 +1,5 @@
 import { test } from 'ava'
-import { Mocker, Schema } from '../../'
-import { isArray, isObject } from '../utils'
+import { Mocker } from '../../'
 
 test('Should build with callback', async t => {
     let result = {

@@ -1,14 +1,12 @@
-import {
-    isObject,
-    isArray,
-    iamLastParent,
-    iamLastChild,
-    fieldArrayCalcLength,
-    evalWithContextData,
-    isConditional
-} from './utils'
-
 import { Generator } from './Generator'
+import {
+    evalWithContextData,
+    fieldArrayCalcLength,
+    iamLastParent,
+    isArray,
+    isConditional,
+    isObject
+} from './utils'
 
 let iterate = function(obj, res, currentPath) {
     if (!currentPath) {
@@ -33,15 +31,19 @@ let iterate = function(obj, res, currentPath) {
                 }
             }
 
-            let fieldCalculated = this.proccessLeaf(value)
+            let key = ''
 
             if (!isConditional(k)) {
-                res[k] = fieldCalculated
+                key = k
             } else {
-                let key = k.split(',')
-                if (evalWithContextData(key[0], this.object)) {
-                    res[key[1]] = fieldCalculated
+                let keykey = k.split(',')
+                if (evalWithContextData(keykey[0], this.object)) {
+                    key = keykey[1]
                 }
+            }
+
+            if (key !== '') {
+                res[key] = this.proccessLeaf(value)
             }
         } else {
             res[k] = {}

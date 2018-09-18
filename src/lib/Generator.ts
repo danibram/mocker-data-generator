@@ -9,6 +9,7 @@ const ch = new Chance()
 export class Generator {
     name: string
     DB: {}
+    key: string
     object: {}
     schema: {
         values: string[]
@@ -29,13 +30,13 @@ export class Generator {
         let strFn
 
         if (cfg.locale === '') {
-            throw `Locale is empty '${cfg.locale}'.`
+            throw `Locale is empty "${cfg.locale}".`
         }
 
         if (cfg.locale) {
             let supportedLocales = Object.keys((faker as any).locales)
             if (supportedLocales.indexOf(cfg.locale) === -1) {
-                throw `Locale '${cfg.locale}' is not supported by faker.`
+                throw `Locale "${cfg.locale}" is not supported by faker.`
             }
 
             faker = require('faker/locale/' + cfg.locale)
@@ -170,21 +171,53 @@ export class Generator {
         return n + parseInt(cfg.incrementalId as string, 10)
     }
 
-    hasOne(cfg: { hasOne: string; get?: string; eval?: boolean }) {
+    hasOne(cfg: {
+        hasOne: string
+        get?: string
+        eval?: boolean
+        uniqueDB?: any[]
+    }) {
         let db = this.DB
-        let i = Math.floor(db[cfg.hasOne].length * Math.random())
 
-        let entity = db[cfg.hasOne][i]
+        let entity = null
 
-        if (cfg.get) {
-            if (cfg.eval) {
-                return eval('entity.' + cfg.get)
-            } else {
-                return loopInside(entity, cfg.get)
+        if (cfg.uniqueDB) {
+            const dbString = JSON.stringify(cfg.uniqueDB)
+            for (let i = 0; i < db[cfg.hasOne].length; i++) {
+                let element = db[cfg.hasOne][i]
+
+                element = cfg.get
+                    ? cfg.eval
+                        ? eval('element.' + cfg.get)
+                        : loopInside(element, cfg.get)
+                    : element
+
+                if (
+                    cfg.uniqueDB.length === 0 ||
+                    dbString.indexOf(JSON.stringify(element)) < 0
+                ) {
+                    entity = element
+                    break
+                }
+            }
+
+            if (entity === null) {
+                throw `Can´t get unique data. Source "${
+                    cfg.hasOne
+                }" has not enough data`
             }
         } else {
-            return entity
+            let i = Math.floor(db[cfg.hasOne].length * Math.random())
+            entity = db[cfg.hasOne][i]
+
+            entity = cfg.get
+                ? cfg.eval
+                    ? eval('entity.' + cfg.get)
+                    : loopInside(entity, cfg.get)
+                : entity
         }
+
+        return entity
     }
 
     hasMany(cfg: {
@@ -194,6 +227,7 @@ export class Generator {
         amount?: number
         get?: string
         eval?: boolean
+        unique?: boolean
     }) {
         let amount = 1
         let db = this.DB
@@ -212,6 +246,15 @@ export class Generator {
             get: cfg.get ? cfg.get : undefined,
             eval: cfg.eval ? true : false
         }
-        return Array.from(new Array(amount)).map(() => this.hasOne(newCfg))
+
+        return cfg.unique
+            ? Array.from(new Array(amount)).reduce(
+                  (acc, val) => [
+                      ...acc,
+                      this.hasOne({ ...newCfg, uniqueDB: acc })
+                  ],
+                  []
+              )
+            : Array.from(new Array(amount)).map(() => this.hasOne(newCfg))
     }
 }

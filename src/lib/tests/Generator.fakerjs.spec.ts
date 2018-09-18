@@ -1,6 +1,6 @@
 import { test } from 'ava'
-import { Generator, Mocker, Schema } from '../../'
 import * as fakerJS from 'faker'
+import { Generator, Mocker, Schema } from '../../'
 
 const gen = new Generator()
 const mocker = new Mocker()
@@ -103,7 +103,7 @@ test('Not supported locale @', async t => {
     try {
         schema.build()
     } catch (e) {
-        t.deepEqual(e, 'Error: "faker" Locale \'@\' is not supported by faker.')
+        t.deepEqual(e, 'Error: "faker" Locale "@" is not supported by faker.')
     }
 })
 
@@ -118,6 +118,6 @@ test('Not supported locale empty "" ', async t => {
     try {
         schema.build()
     } catch (e) {
-        t.deepEqual(e, `Error: "faker" Locale is empty '${noLocaleSupported}'.`)
+        t.deepEqual(e, `Error: "faker" Locale is empty "${noLocaleSupported}".`)
     }
 })
