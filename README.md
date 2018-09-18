@@ -249,6 +249,7 @@ Data generation goes with model based composed by generators, the generators can
     *   **_max_** (Optional): Maximum entities to get.
     *   **_get_** (Optional): String that will be evaluated over the random related entity.
     *   **_eval_** (Optional): Get will only support dotted paths, with eval= true you can get from an evaluable string
+    *   **_unique_** (Optional): hasMany will get unique values from the entity (Make sure that you have many unique data in the source)
 
         ```javascript
             // In this case we will get 1 user (hasMany)
