@@ -8,8 +8,6 @@
 
 [![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
 
-[![bitHound Overall Score](https://www.bithound.io/github/danibram/mocker-data-generator/badges/score.svg)](https://www.bithound.io/github/danibram/mocker-data-generator)
-
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Awesome license](https://img.shields.io/badge/bateries-included-orange.svg?style=flat-square)][npm-home-module]
 
 [![Support link][paypal-badge]][paypal-link]
