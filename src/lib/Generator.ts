@@ -9,7 +9,6 @@ const ch = new Chance()
 export class Generator {
     name: string
     DB: {}
-    key: string
     object: {}
     schema: {
         values: string[]
