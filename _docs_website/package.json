@@ -60,6 +60,6 @@
     },
     "dependencies": {
         "@babel/preset-stage-0": "^7.0.0-beta.51",
-        "trash-cli": "^1.4.0"
+        "trash-cli": "^2.0.0"
     }
 }
