@@ -97,7 +97,7 @@
     "npm-scripts-info": "^0.3.7",
     "nyc": "^13.0.1",
     "opn-cli": "^3.1.0",
-    "prettier": "^1.12.1",
+    "prettier": "^1.18.1",
     "standard-version": "^4.3.0",
     "trash-cli": "^1.4.0",
     "ts-node": "^7.0.0",
