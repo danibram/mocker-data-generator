@@ -1,8 +1,7 @@
-import React from 'react'
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
-import Doc from '../components/Doc'
 import Router from 'next/router'
+import React from 'react'
+import Doc from '../components/Doc'
 
 export default class Index extends React.Component {
     state = {
@@ -207,7 +206,7 @@ export default class Index extends React.Component {
                         content="initial-scale=1.0, width=device-width"
                     />
                     <link
-                        href="static/spectre.min.css"
+                        href="/spectre.min.css"
                         media="all"
                         rel="stylesheet"
                     />
