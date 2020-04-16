@@ -206,7 +206,7 @@ export default class Index extends React.Component {
                         content="initial-scale=1.0, width=device-width"
                     />
                     <link
-                        href="/spectre.min.css"
+                        href={`${process.env.ASSET_PREFIX}/spectre.min.css`}
                         media="all"
                         rel="stylesheet"
                     />

@@ -64,7 +64,7 @@
         "docs:start": "cd _docs_website && next start",
         "docs:examples": "node _docs_website/generateExamples.js",
         "docs:export:dev": "trash _docs_website/.next && trash _docs_website/out && npm run docs:examples && cd _docs_website && NODE_ENV=development next build && NODE_ENV=development next export && npm run docs:serve:prod",
-        "docs:export": "trash _docs_website/.next && trash _docs_website/out && npm run docs:examples && cd _docs_website && NODE_ENV=production next build && next export && touch out/.nojekyll",
+        "docs:export": "trash _docs_website/.next && trash _docs_website/out && npm run docs:examples && cd _docs_website && NODE_ENV=production next build && NODE_ENV=production next export && touch out/.nojekyll",
         "docs:serve:prod": "http-server _docs_website/out",
         "docs:deploy:gh-pages": "gh-pages -d _docs_website/out -b gh-pages -t"
     },
