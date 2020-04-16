@@ -1,17 +1,21 @@
-export const isArray = function(arg: any): boolean {
+export const isArray = function (arg: any): boolean {
     return Object.prototype.toString.call(arg) === '[object Array]'
 }
 
-export const isObject = function(arg: any): boolean {
+export const isObject = function (arg: any): boolean {
     return Object.prototype.toString.call(arg) === '[object Object]'
 }
 
-export const evalWithContextData = function(key: string, object: {}, db?) {
+export const evalWithContextData = function (key: string, object: {}, db?) {
     // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }
 
-export const fieldArrayCalcLength = function(config, fixedArrayLength, schema) {
+export const fieldArrayCalcLength = function (
+    config,
+    fixedArrayLength,
+    schema
+) {
     let length
     if (typeof config.length === 'function') {
         length = config.length.call(schema)
@@ -23,7 +27,7 @@ export const fieldArrayCalcLength = function(config, fixedArrayLength, schema) {
     return length
 }
 
-export const iamLastChild = function(parent, k) {
+export const iamLastChild = function (parent, k) {
     if (isArray(parent[k])) {
         let last = false
 
@@ -44,7 +48,7 @@ export const iamLastChild = function(parent, k) {
     }
 }
 
-export const iamLastParent = function(obj) {
+export const iamLastParent = function (obj) {
     let last = false
     if (isObject(obj)) {
         let ks = Object.keys(obj)
@@ -62,14 +66,14 @@ export const iamLastParent = function(obj) {
     return last
 }
 
-export const isConditional = function(str) {
+export const isConditional = function (str) {
     let arr = str.split(',')
     return arr.length > 1
 }
 
-export const cleanVirtuals = function(paths, object, options) {
+export const cleanVirtuals = function (paths, object, options) {
     // clean specific paths
-    let objectCleaner = function*(path, obj, options) {
+    let objectCleaner = function* (path, obj, options) {
         let lvls = path.split(options.symbol)
         let dest = obj
 
@@ -100,7 +104,7 @@ export const cleanVirtuals = function(paths, object, options) {
         }
     }
 
-    let forEachPath = function*(path, object, options) {
+    let forEachPath = function* (path, object, options) {
         let lvls = path.split(options.symbol)
         let dest = object
 
@@ -117,7 +121,7 @@ export const cleanVirtuals = function(paths, object, options) {
         }
     }
 
-    let forPaths = function*(paths, object, options) {
+    let forPaths = function* (paths, object, options) {
         for (let i = 0; i < paths.length; i++) {
             let path = paths[i]
             yield* Array.from(forEachPath(path, object, options))
@@ -130,7 +134,7 @@ export const cleanVirtuals = function(paths, object, options) {
     return object
 }
 
-export const fnParser = function(name, fn, cfg) {
+export const fnParser = function (name, fn, cfg) {
     let [body, args] = cfg.split('(')
 
     body = body.split('.')
@@ -144,7 +148,7 @@ export const fnParser = function(name, fn, cfg) {
 
     if (!args) {
         if (typeof func === 'function') {
-            return func.call(this, ...args)
+            return func.call(this)
         } else {
             return func
         }
@@ -166,9 +170,9 @@ export const fnParser = function(name, fn, cfg) {
 
     mods = mods
         .split('[')
-        .filter(i => i !== '')
-        .map(i => i.slice(0, -1))
-        .map(i => (i[0] === '"' ? i.slice(1, -1) : parseInt(i, 10)))
+        .filter((i) => i !== '')
+        .map((i) => i.slice(0, -1))
+        .map((i) => (i[0] === '"' ? i.slice(1, -1) : parseInt(i, 10)))
 
     return mods.reduce((acc, val) => {
         if (!acc[val]) {
@@ -178,7 +182,7 @@ export const fnParser = function(name, fn, cfg) {
     }, result)
 }
 
-export const loopInside = function(object: any, path: string) {
+export const loopInside = function (object: any, path: string) {
     let p = path.split('.')
     return p.reduce((acc, val) => {
         if (acc[val] === null) {

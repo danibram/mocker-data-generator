@@ -2,12 +2,11 @@
     "tabWidth": 4,
     "singleQuote": true,
     "semi": false,
-    "overrides": [
-        {
-            "files": "*.json",
-            "options": {
-                "printWidth": 99999999999999999
-            }
+    "trailingComma": "none",
+    "overrides": [{
+        "files": "*.json",
+        "options": {
+            "printWidth": 99999999999999999
         }
-    ]
+    }]
 }

@@ -1,12 +1,12 @@
-import { test } from 'ava'
+import test from 'ava'
 import { Generator } from '../../'
-import { isArray, isObject } from '../utils'
+import { isObject } from '../utils'
 
 const gen = new Generator()
 
-test('Normal Function', async t => {
+test('Normal Function', async (t) => {
     let res = gen.function({
-        function: function() {
+        function: function () {
             return 'test'
         }
     })
@@ -15,7 +15,7 @@ test('Normal Function', async t => {
     t.true(res === 'test')
 })
 
-test('ES6 Function', async t => {
+test('ES6 Function', async (t) => {
     let res = gen.function({
         function: () => 'test'
     })
@@ -24,9 +24,9 @@ test('ES6 Function', async t => {
     t.true(res === 'test')
 })
 
-test('Should call function with context', async t => {
+test('Should call function with context', async (t) => {
     let res = gen.function({
-        function: function() {
+        function: function () {
             return this
         }
     })
@@ -34,5 +34,5 @@ test('Should call function with context', async t => {
     t.true(isObject(res))
     let ctx = ['object', 'db', 'faker', 'chance', 'casual', 'randexp']
     t.true(isObject(res))
-    ctx.forEach(c => t.true(res.hasOwnProperty(c)))
+    ctx.forEach((c) => t.true(res.hasOwnProperty(c)))
 })

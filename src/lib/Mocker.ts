@@ -31,9 +31,9 @@ export class Mocker {
         return this
     }
 
-    build(cb?: ((error: Error | null, _?: any) => void)): Promise<any>
-    build(cb?: ((error: Error | null, _?: any) => void)): void
-    build(cb?: ((error: Error | null, _?: any) => void)): any {
+    build(cb?: (error: Error | null, _?: any) => void): Promise<any>
+    build(cb?: (error: Error | null, _?: any) => void): void
+    build(cb?: (error: Error | null, _?: any) => void): any {
         try {
             this.schemas.reduce((acc, schema) => {
                 let instances
@@ -46,7 +46,7 @@ export class Mocker {
 
                 // Clean virtuals
                 if (schema.virtualPaths.length > 0) {
-                    instances.forEach(x =>
+                    instances.forEach((x) =>
                         cleanVirtuals(schema.virtualPaths, x, {
                             strict: true,
                             symbol: ','

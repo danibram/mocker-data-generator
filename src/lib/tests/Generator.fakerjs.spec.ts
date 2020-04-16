@@ -1,59 +1,59 @@
-import { test } from 'ava'
+import test from 'ava'
 import * as fakerJS from 'faker'
 import { Generator, Mocker, Schema } from '../../'
 
 const gen = new Generator()
 const mocker = new Mocker()
 
-test('Should be "lorem.words"', async t => {
+test('Should be "lorem.words"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words' })
     t.true(typeof res === 'string')
 })
 
-test('Should be "lorem.words"', async t => {
+test('[eval] Should be "lorem.words"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words', eval: true })
     t.true(typeof res === 'string')
 })
 
-test('Should be "lorem.words()"', async t => {
+test('Should be "lorem.words()"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words()' })
     t.true(typeof res === 'string')
 })
 
-test('Should be "lorem.words(1)"', async t => {
+test('Should be "lorem.words(1)"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words(1)' })
     t.true(typeof res === 'string')
 })
 
-test('Should be "random.number({"max": 1})"', async t => {
+test('Should be "random.number({"max": 1})"', async (t) => {
     let res = gen.faker({ faker: 'random.number({"max": 1})' })
     t.true(typeof res === 'number')
     t.true(res <= 1)
 })
 
-test('Should be "random.number({"min": 1, "max": 2})"', async t => {
+test('Should be "random.number({"min": 1, "max": 2})"', async (t) => {
     let res = gen.faker({ faker: 'random.number({"min": 1, "max": 2})' })
     t.true(typeof res === 'number')
     t.true(res <= 2)
     t.true(res >= 1)
 })
 
-test('Should be "lorem.words()[0]"', async t => {
+test('Should be "lorem.words()[0]"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words()[0]' })
     t.true(typeof res === 'string')
 })
 
-test('Should be "lorem.words(1)[0]""', async t => {
+test('Should be "lorem.words(1)[0]""', async (t) => {
     let res = gen.faker({ faker: 'lorem.words(1)[0]' })
     t.true(typeof res === 'string')
 })
 
-test('Should use locale "address.streetAddress"', async t => {
+test('Should use locale "address.streetAddress" (de_CH)', async (t) => {
     let res = gen.faker({ faker: 'address.streetAddress', locale: 'de_CH' })
     t.true(typeof res === 'string')
 })
 
-test('Should use locale "address.streetAddress"', async t => {
+test('Should use locale "address.streetAddress" (zh_CN)', async (t) => {
     let res = gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
     t.true(typeof res === 'string')
     t.true(
@@ -61,14 +61,7 @@ test('Should use locale "address.streetAddress"', async t => {
     )
 })
 
-test('Should use locale "address.streetAddress"', async t => {
-    gen.faker({ faker: 'address.streetAddress', locale: 'zh_CN' })
-    let res = gen.faker({ faker: 'address.streetAddress' })
-    t.true(typeof res === 'string')
-    t.true(res.match(/[\u3400-\u9FBF]/) === null)
-})
-
-test('Faker lang not affect others', async t => {
+test('Faker lang not affect others', async (t) => {
     let street = {
         str1: { faker: 'address.streetAddress', locale: 'zh_CN' },
         str2: { faker: 'address.streetAddress' }
@@ -84,16 +77,16 @@ test('Faker lang not affect others', async t => {
     t.true(res.str2.match(/[\u3400-\u9FBF]/) === null)
 })
 
-test('Test all fakerJS locales', async t => {
+test('Test all fakerJS locales', async (t) => {
     let supportedLocales = Object.keys((fakerJS as any).locales)
 
-    supportedLocales.forEach(locale => {
+    supportedLocales.forEach((locale) => {
         let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
         t.true(typeof res === 'string')
     })
 })
 
-test('Not supported locale @', async t => {
+test('Not supported locale @', async (t) => {
     let noLocaleSupported = '@'
     let street = {
         str1: { faker: 'address.streetAddress', locale: noLocaleSupported }
@@ -107,7 +100,7 @@ test('Not supported locale @', async t => {
     }
 })
 
-test('Not supported locale empty "" ', async t => {
+test('Not supported locale empty "" ', async (t) => {
     let noLocaleSupported = ''
     let street = {
         str1: { faker: 'address.streetAddress', locale: noLocaleSupported }

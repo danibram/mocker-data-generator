@@ -1,31 +1,21 @@
 {
-  "extends": "./config/tsconfig.flexible",
-  "compilerOptions": {
-    "target": "es5",
-    "outDir": "build/main",
-    "rootDir": "src",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "declaration": true,
-    "importHelpers": true,
-    "inlineSourceMap": true,
-    "listFiles": false,
-    "traceResolution": false,
-    "pretty": true,
-    "lib" : [
-      "es6",
-      "es5",
-      "es2015"
-    ],
-    "types" : [
-      "node"
-    ]
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules/**"
-  ],
-  "compileOnSave": false
+    "extends": "./config/tsconfig.flexible",
+    "compilerOptions": {
+        "target": "es5",
+        "outDir": "build/main",
+        "rootDir": "src",
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "declaration": true,
+        "importHelpers": true,
+        "listFiles": false,
+        "traceResolution": false,
+        "pretty": true,
+        "lib": ["es6", "es5", "es2015"],
+        "types": ["node"],
+        "sourceMap": true
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules/**"],
+    "compileOnSave": false
 }

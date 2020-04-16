@@ -201,9 +201,7 @@ export class Generator {
             }
 
             if (entity === null) {
-                throw `Can´t get unique data. Source "${
-                    cfg.hasOne
-                }" has not enough data`
+                throw `Can´t get unique data. Source "${cfg.hasOne}" has not enough data`
             }
         } else {
             let i = Math.floor(db[cfg.hasOne].length * Math.random())

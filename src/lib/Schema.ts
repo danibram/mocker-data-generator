@@ -8,11 +8,11 @@ import {
     isObject
 } from './utils'
 
-let iterate = function(obj, res, currentPath) {
+let iterate = function (obj, res, currentPath) {
     if (!currentPath) {
         currentPath = []
     }
-    Object.keys(obj).map(k => {
+    Object.keys(obj).map((k) => {
         let value = obj[k]
 
         let path = currentPath.slice(0)
@@ -203,7 +203,7 @@ export class Schema extends Generator {
                 throw `The posible values value is not an Array`
             }
 
-            possibleValues.map(value => {
+            possibleValues.map((value) => {
                 if (f === '.') {
                     return
                 }
@@ -215,9 +215,7 @@ export class Schema extends Generator {
                 this.object = {}
             })
         } else {
-            throw `An string "${
-                this.options
-            }" is not recognized as a parameter.`
+            throw `An string "${this.options}" is not recognized as a parameter.`
         }
         return this.DB[this.name]
     }

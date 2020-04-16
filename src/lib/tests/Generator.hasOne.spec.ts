@@ -1,4 +1,4 @@
-import { test } from 'ava'
+import test from 'ava'
 import { Generator } from '../../'
 
 const gen = new Generator()
@@ -89,14 +89,14 @@ const set2 = [
     }
 ]
 
-test('Should get one of the DB', async t => {
+test('Should get one of the DB', async (t) => {
     gen.DB = { hello: set1 }
 
     let res = gen.hasOne({ hasOne: 'hello' })
     t.true(set1.indexOf(res as any) > -1)
 })
 
-test('Should get one of the DB, and one field of that entity (eval)', async t => {
+test('Should get one of the DB, and one field of that entity (eval)', async (t) => {
     gen.DB = {
         hello: set1
     }
@@ -108,7 +108,7 @@ test('Should get one of the DB, and one field of that entity (eval)', async t =>
     t.true(res === 0 || (res && res >= 0))
 })
 
-test('Should get one of the DB, and one field of that entity (no-eval)', async t => {
+test('Should get one of the DB, and one field of that entity (no-eval)', async (t) => {
     gen.DB = {
         hello: set1
     }
@@ -120,7 +120,7 @@ test('Should get one of the DB, and one field of that entity (no-eval)', async t
     t.true(res === 0 || (res && res >= 0))
 })
 
-test('Should get one of the DB, and one field of that entity, more deep', async t => {
+test('Should get one of the DB, and one field of that entity, more deep', async (t) => {
     gen.DB = {
         hello: set2
     }

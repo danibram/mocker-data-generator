@@ -1,6 +1,6 @@
-import { test } from 'ava'
+import test from 'ava'
 import { Schema } from '../../'
-import { isArray, isObject } from '../utils'
+import { isArray } from '../utils'
 
 let schema = new Schema('test', {}, {})
 
@@ -26,7 +26,7 @@ const arrayGenerationFixed = (arrayModel, result) => {
     }
 }
 
-test('Array: It should recognise static field', async t => {
+test('Array: It should recognise static field', async (t) => {
     let { model, expectedResult } = arrayGenerationFixed(
         { static: 'hello' },
         'hello'
@@ -38,7 +38,7 @@ test('Array: It should recognise static field', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: It should recognise arrow function field', async t => {
+test('Array: It should recognise arrow function field', async (t) => {
     let { model, expectedResult } = arrayGenerationFixed(
         { function: () => 'hello' },
         'hello'
@@ -50,10 +50,10 @@ test('Array: It should recognise arrow function field', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: It should recognise normal function field', async t => {
+test('Array: It should recognise normal function field', async (t) => {
     let { model, expectedResult } = arrayGenerationFixed(
         {
-            function: function() {
+            function: function () {
                 return 'hello'
             }
         },
@@ -66,9 +66,9 @@ test('Array: It should recognise normal function field', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: Should generate fixed length', async t => {
+test('Array: Should generate fixed length', async (t) => {
     let expectedResult = {
-        test: Array.from(new Array(10)).map(_ => 'test')
+        test: Array.from(new Array(10)).map((_) => 'test')
     }
 
     let model = {
@@ -87,7 +87,7 @@ test('Array: Should generate fixed length', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: Should generate function length', async t => {
+test('Array: Should generate function length', async (t) => {
     let model = {
         test: [
             {
@@ -103,7 +103,7 @@ test('Array: Should generate function length', async t => {
     t.true(data[0].test.length === 10)
 })
 
-test('Array: Should generate dynamic length', async t => {
+test('Array: Should generate dynamic length', async (t) => {
     let model = {
         test: [
             {
@@ -120,7 +120,7 @@ test('Array: Should generate dynamic length', async t => {
     t.true(data[0].test.length > 0)
 })
 
-test('Array: It should recognise index param in normal function field', async t => {
+test('Array: It should recognise index param in normal function field', async (t) => {
     let expectedResult = {
         test: Array.from(new Array(10)).map((_, index) => index)
     }
@@ -128,7 +128,7 @@ test('Array: It should recognise index param in normal function field', async t 
     let model = {
         test: [
             {
-                function: function(i) {
+                function: function (i) {
                     return i
                 },
                 length: 10,
@@ -143,7 +143,7 @@ test('Array: It should recognise index param in normal function field', async t 
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: It should recognise index param in arrow function field', async t => {
+test('Array: It should recognise index param in arrow function field', async (t) => {
     let expectedResult = {
         test: Array.from(new Array(10)).map((_, index) => index)
     }
@@ -151,7 +151,7 @@ test('Array: It should recognise index param in arrow function field', async t =
     let model = {
         test: [
             {
-                function: i => i,
+                function: (i) => i,
                 length: 10,
                 fixedLength: true
             }
@@ -164,11 +164,11 @@ test('Array: It should recognise index param in arrow function field', async t =
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: It should recognise context in function field', async t => {
+test('Array: It should recognise context in function field', async (t) => {
     let model = {
         test: [
             {
-                function: function() {
+                function: function () {
                     return { ...this }
                 },
                 length: 10,
@@ -180,7 +180,7 @@ test('Array: It should recognise context in function field', async t => {
     let schema = new Schema('web', model, 1)
     let data = schema.build()
 
-    data[0].test.forEach(d => {
+    data[0].test.forEach((d) => {
         let keys = Object.keys(d)
         t.deepEqual(keys, [
             'object',
@@ -193,7 +193,7 @@ test('Array: It should recognise context in function field', async t => {
     })
 })
 
-test('Array: Function generator should include index and length', async t => {
+test('Array: Function generator should include index and length', async (t) => {
     let expectedResult = {
         test: Array.from(new Array(10)).map((_, index) => ({
             index,
@@ -204,7 +204,7 @@ test('Array: Function generator should include index and length', async t => {
     let model = {
         test: [
             {
-                function: function(index, length, self) {
+                function: function (index, length, self) {
                     return {
                         index,
                         length
@@ -222,7 +222,7 @@ test('Array: Function generator should include index and length', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: Function generator should include self too', async t => {
+test('Array: Function generator should include self too', async (t) => {
     let expectedResult = {
         test: Array.from(new Array(10)).map((_, index) => 'hello')
     }
@@ -230,7 +230,7 @@ test('Array: Function generator should include self too', async t => {
     let model = {
         test: [
             {
-                function: function(index, length, self) {
+                function: function (index, length, self) {
                     // index is provided
                     t.deepEqual(
                         self,
@@ -250,7 +250,7 @@ test('Array: Function generator should include self too', async t => {
     t.deepEqual(data[0], expectedResult)
 })
 
-test('Array: It should concat elements', async t => {
+test('Array: It should concat elements', async (t) => {
     let model = {
         name: {
             values: ['txuri', 'pitxi', 'kitty']
@@ -290,7 +290,7 @@ test('Should generate correctly with 2 ways of Array specification', async t => 
     t.true(values.indexOf(data[0].name2) > -1)
 })*/
 
-test('Array: It should concatenated strings but not repeat same element itself (concatStrict)', async t => {
+test('Array: It should concatenated strings but not repeat same element itself (concatStrict)', async (t) => {
     let model = {
         name: {
             values: ['txuri', 'pitxi', 'kitty']
@@ -313,13 +313,13 @@ test('Array: It should concatenated strings but not repeat same element itself (
     t.true(data[0].emails.length === 4)
 
     let appeared = 0
-    data[0].emails.forEach(d => {
+    data[0].emails.forEach((d) => {
         appeared = d === data[0].name ? appeared + 1 : appeared
     })
     t.true(appeared === 1)
 })
 
-test('Array: It should concatenated strings but increase the length if it is fixed', async t => {
+test('Array: It should concatenated strings but increase the length if it is fixed', async (t) => {
     let model = {
         name: {
             values: ['txuri', 'pitxi', 'kitty']
@@ -341,7 +341,7 @@ test('Array: It should concatenated strings but increase the length if it is fix
     t.true(data[0].emails.length === 10)
 
     let appeared = 0
-    data[0].emails.forEach(d => {
+    data[0].emails.forEach((d) => {
         appeared = d === data[0].name ? appeared + 1 : appeared
     })
     t.true(appeared === 2)
