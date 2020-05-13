@@ -87,7 +87,7 @@
     "devDependencies": {
         "@types/chance": "^1.0.10",
         "@types/faker": "^4.1.11",
-        "@types/node": "^13.11.1",
+        "@types/node": "^14.0.1",
         "ava": "^3.7.0",
         "codecov": "^3.6.5",
         "conventional-github-releaser": "^3.1.3",
