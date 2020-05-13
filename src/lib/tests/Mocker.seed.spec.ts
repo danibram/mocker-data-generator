@@ -33,7 +33,5 @@ test('Should merge data from seed', async (t) => {
         )
         .build()
 
-    console.log(mock)
-
     t.true(mock.cats.length === 3)
 })
