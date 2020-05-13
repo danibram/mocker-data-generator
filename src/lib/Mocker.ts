@@ -15,6 +15,11 @@ export class Mocker {
         this.DB = {}
     }
 
+    seed(name: string, data: any[]): Mocker {
+        this.DB[name] = data
+        return this
+    }
+
     schema(name: string, schema: {}, options?: {}): Mocker {
         this.schemas.push(new Schema(name, schema, options))
         return this
