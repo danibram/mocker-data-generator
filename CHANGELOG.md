@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/danibram/mocker-data-generator/compare/v2.7.0...v2.8.0) (2020-05-13)
+
+
+### Features
+
+* **chore:** easy publish as minor shortcut ([fd1a87b](https://github.com/danibram/mocker-data-generator/commit/fd1a87bfe444817b75af88c91398929fab91b83c))
+* **chore:** update chance and tslib, and some devDependencies ([59d0aea](https://github.com/danibram/mocker-data-generator/commit/59d0aea51fba7ef2e6b1ea153da4aa8007f07170))
+* **Mocker.seed:** add posibility to prepopulate the db. Thanks [@suspiciousfellow](https://github.com/suspiciousfellow) and [@marshallswain](https://github.com/marshallswain) for the idea and the code ([dfb2ad6](https://github.com/danibram/mocker-data-generator/commit/dfb2ad64fe002e4b55dfe71d1d65574d5054d6cc))
+* **Mocker.seed:** add tests ([7faafab](https://github.com/danibram/mocker-data-generator/commit/7faafab779af49434c47ac63631aea9cebbc9be7))
+* **Mocker.seed:** seed and schema and work together ([68970fc](https://github.com/danibram/mocker-data-generator/commit/68970fc3fe7a2072c99d58ed3b1ececd3b6909dd))
+
 ## [2.7.0](https://github.com/danibram/mocker-data-generator/compare/v2.6.5...v2.7.0) (2020-04-16)
 
 ### All deps updated!
