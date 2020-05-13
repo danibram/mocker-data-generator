@@ -56,6 +56,7 @@
         "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
         "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
         "release": "standard-version",
+        "release:minor": "standard-version --release-as minor",
         "release-github": "source .env.sh && conventional-github-releaser -p angular -r 1",
         "prett": "prettier 'src/**/*.ts' --write",
         "docs:dev": "cd _docs_website && next",
