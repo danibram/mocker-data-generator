@@ -125,6 +125,9 @@ mocker()
         err => console.error(err)
     )
 ```
+NOTE: 
+For the demo above you will also need to import util i.e. 
+`var util = require('util') or import util from 'util'`
 
 ## Documentation
 
