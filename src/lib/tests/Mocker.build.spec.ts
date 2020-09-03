@@ -152,3 +152,38 @@ test('Should build with Promised old style', async (t) => {
         .build()
         .then((db) => t.deepEqual(db, result))
 })
+
+test('Should build synchronously', (t) => {
+    let result = {
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
+    }
+    let mock = new Mocker()
+    let db = mock.schema('users', { hello: { static: 'world' } }, 1).buildSync()
+
+    t.deepEqual(db, result)
+})
+
+test('Should throw synchronously', (t) => {
+    let result = {
+        users: [
+            {
+                hello: 'world'
+            }
+        ]
+    }
+    let mock = new Mocker()
+    const error = t.throws(() =>
+        mock
+            .schema('users', { hello: { faker: 'worldrqwerqw' } }, 1)
+            .buildSync()
+    )
+
+    t.is(
+        error.message,
+        'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.'
+    )
+})
