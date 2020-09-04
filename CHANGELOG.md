@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/danibram/mocker-data-generator/compare/v2.8.0...v2.9.0) (2020-09-04)
+
+
+### Features
+
+* add buildSync method to Mocker class ([772b20d](https://github.com/danibram/mocker-data-generator/commit/772b20da6f9ccaba98f20a1361babe5f55810d78))
+
+
+### Bug Fixes
+
+* **appveyor:** update matrix config to install defined node version ([703aa41](https://github.com/danibram/mocker-data-generator/commit/703aa41411b3813f3d1af6e79b6d2643a36dec56))
+* **docs-website:** added seed example ([d1fa143](https://github.com/danibram/mocker-data-generator/commit/d1fa143f20467cf69c87e5cc4a74657429550384))
+
 ## [2.8.0](https://github.com/danibram/mocker-data-generator/compare/v2.7.0...v2.8.0) (2020-05-13)
 
 
