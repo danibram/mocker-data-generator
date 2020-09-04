@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * add buildSync method to Mocker class ([772b20d](https://github.com/danibram/mocker-data-generator/commit/772b20da6f9ccaba98f20a1361babe5f55810d78))
+* all deps updated!!
 
 
 ### Bug Fixes
