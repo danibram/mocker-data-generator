@@ -124,6 +124,22 @@ mocker()
         },
         err => console.error(err)
     )
+
+// Synchronously
+
+// This returns an object
+// {
+//      user:[array of users],
+//      group: [array of groups],
+//      conditionalField: [array of conditionalFields]
+// }
+var data = mocker()
+    .schema('user', user, 2)
+    .schema('group', group, 2)
+    .schema('conditionalField', conditionalField, 2)
+    .buildSync()
+
+console.log(util.inspect(data, { depth: 10 }))
 ```
 
 ## Documentation
@@ -144,6 +160,7 @@ Data generation goes with model based composed by generators, the generators can
 *   **_reset()_**: Clean the internal DB.
 *   **_restart()_**: Clean the internal DB and all the schemas inside.
 *   **_build(callback)_**: This methods start to produce the data and wrap it to the callback function, the callback funtion have 2 parameters, error and data generated.
+-   **_buildSync()_**: Synchronous version of `build(callback)`. Returns generated data or throws an error.
 
 ### Schema definition
 
