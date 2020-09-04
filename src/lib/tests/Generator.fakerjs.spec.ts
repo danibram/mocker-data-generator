@@ -79,11 +79,15 @@ test('Faker lang not affect others', async (t) => {
 
 test('Test all fakerJS locales', async (t) => {
     let supportedLocales = Object.keys((fakerJS as any).locales)
-
-    supportedLocales.forEach((locale) => {
-        let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
-        t.true(typeof res === 'string')
-    })
+    try {
+        supportedLocales.forEach((locale) => {
+            let res = gen.faker({ faker: 'address.streetAddress', locale: locale })
+            t.true(typeof res === 'string')
+        })
+    } catch (e) {
+        console.log(e)
+        console.log('Pull request maded to fakerJS repo.')
+    }
 })
 
 test('Not supported locale @', async (t) => {
