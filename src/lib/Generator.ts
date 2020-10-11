@@ -6,10 +6,10 @@ import { fnParser, loopInside } from './utils'
 const c = require('casual-browserify')
 const ch = new Chance()
 
-export class Generator {
+export class Generator<T> {
     name: string
     DB: {}
-    object: {}
+    object: T
     schema: {
         values: string[]
     }

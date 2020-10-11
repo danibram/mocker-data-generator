@@ -1,7 +1,7 @@
 import { Readable } from 'stream'
 import { Generator } from './lib/Generator'
 
-const gen = new Generator()
+const gen = new Generator<any>()
 
 let res
 console.time('faker new')

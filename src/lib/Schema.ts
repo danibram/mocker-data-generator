@@ -52,7 +52,7 @@ let iterate = function (obj, res, currentPath) {
     })
 }
 
-export class Schema extends Generator {
+export class Schema extends Generator<any> {
     constructor(name: string, cfg, options) {
         super()
         this.schema = cfg
