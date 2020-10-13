@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.10.0](https://github.com/danibram/mocker-data-generator/compare/v2.9.0...v2.10.0) (2020-10-13)
 
+### Features
+
+* Merged Array Example: [#102](https://github.com/danibram/mocker-data-generator/pull/102)
+* Merged Generic Type for Generator: [#114](https://github.com/danibram/mocker-data-generator/pull/114)
+
 ## [2.9.0](https://github.com/danibram/mocker-data-generator/compare/v2.8.0...v2.9.0) (2020-09-04)
 
 
