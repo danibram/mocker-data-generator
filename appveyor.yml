@@ -5,8 +5,8 @@ init:
 # Test against this version of Node.js
 environment:
     matrix:
+        - node_version: '14'
         - node_version: '10'
-        - node_version: '8'
 
 platform:
     - x86
