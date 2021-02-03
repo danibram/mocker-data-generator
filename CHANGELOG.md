@@ -2,41 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [2.12.0](https://github.com/danibram/mocker-data-generator/compare/v2.11.0...v2.12.0) (2021-02-03)
+## [2.12.0](https://github.com/danibram/mocker-data-generator/compare/v2.10.0...v2.12.0) (2021-02-03)
 
-## [2.11.0](https://github.com/danibram/mocker-data-generator/compare/v2.10.0...v2.11.0) (2021-02-03)
+### Features
+
+-   **chore:** updated deps
 
 ## [2.10.0](https://github.com/danibram/mocker-data-generator/compare/v2.9.0...v2.10.0) (2020-10-13)
 
 ### Features
 
-* Merged Array Example: [#102](https://github.com/danibram/mocker-data-generator/pull/102)
-* Merged Generic Type for Generator: [#114](https://github.com/danibram/mocker-data-generator/pull/114)
+-   Merged Array Example: [#102](https://github.com/danibram/mocker-data-generator/pull/102)
+-   Merged Generic Type for Generator: [#114](https://github.com/danibram/mocker-data-generator/pull/114)
 
 ## [2.9.0](https://github.com/danibram/mocker-data-generator/compare/v2.8.0...v2.9.0) (2020-09-04)
 
-
 ### Features
 
-* add buildSync method to Mocker class ([772b20d](https://github.com/danibram/mocker-data-generator/commit/772b20da6f9ccaba98f20a1361babe5f55810d78))
-* all deps updated!!
-
+-   add buildSync method to Mocker class ([772b20d](https://github.com/danibram/mocker-data-generator/commit/772b20da6f9ccaba98f20a1361babe5f55810d78))
+-   all deps updated!!
 
 ### Bug Fixes
 
-* **appveyor:** update matrix config to install defined node version ([703aa41](https://github.com/danibram/mocker-data-generator/commit/703aa41411b3813f3d1af6e79b6d2643a36dec56))
-* **docs-website:** added seed example ([d1fa143](https://github.com/danibram/mocker-data-generator/commit/d1fa143f20467cf69c87e5cc4a74657429550384))
+-   **appveyor:** update matrix config to install defined node version ([703aa41](https://github.com/danibram/mocker-data-generator/commit/703aa41411b3813f3d1af6e79b6d2643a36dec56))
+-   **docs-website:** added seed example ([d1fa143](https://github.com/danibram/mocker-data-generator/commit/d1fa143f20467cf69c87e5cc4a74657429550384))
 
 ## [2.8.0](https://github.com/danibram/mocker-data-generator/compare/v2.7.0...v2.8.0) (2020-05-13)
 
-
 ### Features
 
-* **chore:** easy publish as minor shortcut ([fd1a87b](https://github.com/danibram/mocker-data-generator/commit/fd1a87bfe444817b75af88c91398929fab91b83c))
-* **chore:** update chance and tslib, and some devDependencies ([59d0aea](https://github.com/danibram/mocker-data-generator/commit/59d0aea51fba7ef2e6b1ea153da4aa8007f07170))
-* **Mocker.seed:** add posibility to prepopulate the db. Thanks [@suspiciousfellow](https://github.com/suspiciousfellow) and [@marshallswain](https://github.com/marshallswain) for the idea and the code ([dfb2ad6](https://github.com/danibram/mocker-data-generator/commit/dfb2ad64fe002e4b55dfe71d1d65574d5054d6cc))
-* **Mocker.seed:** add tests ([7faafab](https://github.com/danibram/mocker-data-generator/commit/7faafab779af49434c47ac63631aea9cebbc9be7))
-* **Mocker.seed:** seed and schema and work together ([68970fc](https://github.com/danibram/mocker-data-generator/commit/68970fc3fe7a2072c99d58ed3b1ececd3b6909dd))
+-   **chore:** easy publish as minor shortcut ([fd1a87b](https://github.com/danibram/mocker-data-generator/commit/fd1a87bfe444817b75af88c91398929fab91b83c))
+-   **chore:** update chance and tslib, and some devDependencies ([59d0aea](https://github.com/danibram/mocker-data-generator/commit/59d0aea51fba7ef2e6b1ea153da4aa8007f07170))
+-   **Mocker.seed:** add posibility to prepopulate the db. Thanks [@suspiciousfellow](https://github.com/suspiciousfellow) and [@marshallswain](https://github.com/marshallswain) for the idea and the code ([dfb2ad6](https://github.com/danibram/mocker-data-generator/commit/dfb2ad64fe002e4b55dfe71d1d65574d5054d6cc))
+-   **Mocker.seed:** add tests ([7faafab](https://github.com/danibram/mocker-data-generator/commit/7faafab779af49434c47ac63631aea9cebbc9be7))
+-   **Mocker.seed:** seed and schema and work together ([68970fc](https://github.com/danibram/mocker-data-generator/commit/68970fc3fe7a2072c99d58ed3b1ececd3b6909dd))
 
 ## [2.7.0](https://github.com/danibram/mocker-data-generator/compare/v2.6.5...v2.7.0) (2020-04-16)
 
