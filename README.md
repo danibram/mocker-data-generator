@@ -26,7 +26,7 @@ Install the module with:
 Import it
 
 ```javascript
-var mocker = require('mocker-data-generator').default (vainilla way)
+var mocker = require('mocker-data-generator').default (vanilla way)
 
 or
 
