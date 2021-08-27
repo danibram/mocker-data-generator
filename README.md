@@ -26,11 +26,11 @@ Install the module with:
 Import it
 
 ```javascript
-var mocker = require('mocker-data-generator').default (vanilla way)
+var mocker = require('mocker-data-generator').default // (vanilla way)
 
-or
+// or
 
-import mocker from 'mocker-data-generator' (ES6 or Typescript way)
+import mocker from 'mocker-data-generator' // (ES6 or Typescript way)
 ```
 
 Then use it:
@@ -249,6 +249,7 @@ Data generation goes with model based composed by generators, the generators can
                 get: 'id' 
             }   // this populate the field with one id of a random user
 
+
             // OR:
 
             {
@@ -318,26 +319,26 @@ Data generation goes with model based composed by generators, the generators can
 
     ```javascript
           { function: function(){
-              
+  
               // this.db
               // this.object
               // this.faker
               // this.chance
               // this.casual
-              
+
               return yourValue
           } }
 
-          //OR:
+          // OR:
 
           { function(){
-              
+
               // this.db
               // this.object
               // this.faker
               // this.chance
               // this.casual
-              
+
               return yourValue
           } }
     ```
@@ -358,6 +359,7 @@ Data generation goes with model based composed by generators, the generators can
           { faker: 'address.streetAddress', locale: 'zh_CN' }   // Got 711 蔡 街
           { faker: 'address.streetAddress' }                    // Got 5036 Daniel Village
           { faker: 'address.streetAddress', eval: true }        // Got 5036 Daniel Village
+
     ```
 
 *   **_chance_**: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
@@ -386,6 +388,7 @@ Data generation goes with model based composed by generators, the generators can
         chance: 'street_suffixes()[0]["name"]',
         eval: true
     }  // Run chance.street_suffixes() takes first result and the name inside
+
     ```
 
 *   **_casual_**: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
