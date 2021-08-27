@@ -9,6 +9,6 @@ let info = filenames.reduce((acc, val) => {
 }, {})
 
 fs.writeFileSync(
-    path.join(__dirname, 'static', 'examples.json'),
+    path.join(__dirname, 'public', 'examples.json'),
     JSON.stringify(info, null, 4)
 )

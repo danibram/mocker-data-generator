@@ -1,17 +1,14 @@
 sudo: false
 language: node_js
 node_js:
-  - 8
-  - 6
-  - 4
-  - 10
+    - 10
 env:
-  - CXX=g++-4.8
+    - CXX=g++-4.8
 addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-4.8
 after_success:
-  - yarn send-coverage
+    - npm send-coverage

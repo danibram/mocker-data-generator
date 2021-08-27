@@ -8,8 +8,6 @@
 
 [![Dependency Status](https://img.shields.io/david/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![DevDependency Status](https://img.shields.io/david/dev/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module]
 
-[![bitHound Overall Score](https://www.bithound.io/github/danibram/mocker-data-generator/badges/score.svg)](https://www.bithound.io/github/danibram/mocker-data-generator)
-
 [![GitHub license](https://img.shields.io/github/license/danibram/mocker-data-generator.svg?style=flat-square)][npm-home-module][![Awesome license](https://img.shields.io/badge/bateries-included-orange.svg?style=flat-square)][npm-home-module]
 
 [![Support link][paypal-badge]][paypal-link]
@@ -28,7 +26,7 @@ Install the module with:
 Import it
 
 ```javascript
-var mocker = require('mocker-data-generator').default // (vainilla way)
+var mocker = require('mocker-data-generator').default // (vanilla way)
 
 // or
 
@@ -98,7 +96,8 @@ mocker()
             throw error
         }
         console.log(util.inspect(data, { depth: 10 }))
-        //This returns an object
+        
+        // This returns an object
         // {
         //      user:[array of users],
         //      group: [array of groups],
@@ -125,6 +124,22 @@ mocker()
         },
         err => console.error(err)
     )
+
+// Synchronously
+
+// This returns an object
+// {
+//      user:[array of users],
+//      group: [array of groups],
+//      conditionalField: [array of conditionalFields]
+// }
+var data = mocker()
+    .schema('user', user, 2)
+    .schema('group', group, 2)
+    .schema('conditionalField', conditionalField, 2)
+    .buildSync()
+
+console.log(util.inspect(data, { depth: 10 }))
 ```
 
 ## Documentation
@@ -145,6 +160,7 @@ Data generation goes with model based composed by generators, the generators can
 *   **_reset()_**: Clean the internal DB.
 *   **_restart()_**: Clean the internal DB and all the schemas inside.
 *   **_build(callback)_**: This methods start to produce the data and wrap it to the callback function, the callback funtion have 2 parameters, error and data generated.
+-   **_buildSync()_**: Synchronous version of `build(callback)`. Returns generated data or throws an error.
 
 ### Schema definition
 
@@ -171,11 +187,12 @@ Data generation goes with model based composed by generators, the generators can
     ```javascript
     {
         self: 'id'
-    } // will get the id of the generated entity
+    }   //will get the id of the generated entity
+    
     {
         self: 'id',
         eval: true
-    } // will get the first user id
+    }   // will get the first user id
     ```
 
 *   **_db_**: get the db, and evaluate the string, so you can access to this entities.
@@ -186,12 +203,12 @@ Data generation goes with model based composed by generators, the generators can
     ```javascript
     {
         db: 'user[0].id'
-    } // will get the first user id
+    }   // will get the first user id
 
     {
         db: 'user[0].id',
         eval: true
-    } // will get the first user id
+    }   // will get the first user id
     ```
 
 *   **_eval_**: evaluate the current string, remember that i inject all the awesome methods, faker, chance, casual, randexp, and also the db and object methods. With this eval field, **_you must pass an exactly JSON syntax_**:
@@ -222,23 +239,24 @@ Data generation goes with model based composed by generators, the generators can
 
         ```javascript
             {
-                hasOne: 'user' // this populates the field with one random user
-            }
+                hasOne: 'user' 
+            }   // this populate the field with one random user
 
-            //OR:
+            // OR:
 
             {
                 hasOne: 'user',
-                get: 'id' // this populates the field with one id of a random user
-            }
+                get: 'id' 
+            }   // this populate the field with one id of a random user
 
-            //OR:
+
+            // OR:
 
             {
                 hasOne: 'user',
                 get: 'id',
-                eval: true // this populates the field with one id of a random user with eval string
-            }
+                eval: true 
+            }   // this populate the field with one id of a random user with eval string
         ```
 
 *   **_hasMany_**: You can pass 4 parameters:
@@ -249,45 +267,44 @@ Data generation goes with model based composed by generators, the generators can
     *   **_max_** (Optional): Maximum entities to get.
     *   **_get_** (Optional): String that will be evaluated over the random related entity.
     *   **_eval_** (Optional): Get will only support dotted paths, with eval= true you can get from an evaluable string
+    *   **_unique_** (Optional): hasMany will get unique values from the entity (Make sure that you have many unique data in the source)
 
         ```javascript
             // In this case we will get 1 user (hasMany)
             {
-                hasMany: 'user' // this populates the field with one random user
-            }
+                hasMany: 'user'
+            }   // this populate the field with one random user
 
             // OR:
-            // In this case we will get 1 (amount) user (hasMany)
+            
 
             {
                 hasMany: 'user',
-                amount: 1, // optional
-            }
+                amount: 1, //optional
+            }   // In this case we will get 1 (amount) user (hasMany)
 
             // OR:
-            // In this case we will get as max 3 (max) users (hasMany)
-
+            
             {
                 hasMany: 'user',
                 max: 3 // optional
-            }
+            }   // In this case we will get as max 3 (max) users (hasMany)
 
             // OR:
-            // In this case we will get bettween min 1 (min) and max 3 (max) users (hasMany)
+            
 
             {
                 hasMany: 'user',
-                min: 1 // optional
-                max: 3 // optional
-            }
+                min: 1 //optional
+                max: 3 //optional
+            }   // In this case we will get bettween min 1 (min) and max 3 (max) users (hasMany)
 
             // OR:
-            // In this case we will get the id (get) from 1 random user (hasMany)
 
             {
                 hasMany: 'user',
                 get: 'id'
-            }
+            }   // In this case we will get the id (get) from 1 random user (hasMany)
         ```
 
 *   **_incrementalId_**: For incremental numeric ids, pass the start number to increment. If you put incrementalId = true it takes from 0 the ids.
@@ -302,22 +319,26 @@ Data generation goes with model based composed by generators, the generators can
 
     ```javascript
           { function: function(){
+  
               // this.db
               // this.object
               // this.faker
               // this.chance
               // this.casual
+
               return yourValue
           } }
 
           // OR:
 
           { function(){
+
               // this.db
               // this.object
               // this.faker
               // this.chance
               // this.casual
+
               return yourValue
           } }
     ```
@@ -328,16 +349,17 @@ Data generation goes with model based composed by generators, the generators can
 
 
     ```javascript
-          { faker: 'lorem.words' }                            // Run faker.lorem.words()
-          { faker: 'lorem.words()' }                          // Run faker.lorem.words()
-          { faker: 'lorem.words(1)' }                         // Run faker.lorem.words(1)
-          { faker: 'integer({"min": 1, "max": 10})' }         // Run faker.lorem.words(1) and take the first
-          { faker: 'random.arrayElement(db.users)' }          // Run faker.arrayElement over a generated user entity
+          { faker: 'lorem.words' }                              // Run faker.lorem.words()
+          { faker: 'lorem.words()' }                            // Run faker.lorem.words()
+          { faker: 'lorem.words(1)' }                           // Run faker.lorem.words(1)
+          { faker: 'integer({"min": 1, "max": 10})' }           // Run faker.lorem.words(1) and take the first
+          { faker: 'random.arrayElement(db.users)' }            // Run faker.arrayElement over a generated user entity
           { faker: 'random.arrayElement(db.users)["userId"]' }  // Run faker.arrayElement over a generated user entity and take the userId only
 
-          { faker: 'address.streetAddress', locale: 'zh_CN' }  // got 711 蔡 街
-          { faker: 'address.streetAddress' }  // got 5036 Daniel Village
-          { faker: 'address.streetAddress', eval: true }  // got 5036 Daniel Village
+          { faker: 'address.streetAddress', locale: 'zh_CN' }   // Got 711 蔡 街
+          { faker: 'address.streetAddress' }                    // Got 5036 Daniel Village
+          { faker: 'address.streetAddress', eval: true }        // Got 5036 Daniel Village
+
     ```
 
 *   **_chance_**: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
@@ -348,20 +370,25 @@ Data generation goes with model based composed by generators, the generators can
     ```javascript
     {
         chance: 'integer'
-    } // Run chance.integer()
+    }   // Run chance.integer()
+    
     {
         chance: 'integer()'
-    } // Run chance.integer()
+    }   // Run chance.integer()
+    
     {
         chance: 'integer({"min": 1, "max": 10})'
-    } // Run chance.integer({"min": 1, "max": 10})
+    }   // Run chance.integer({"min": 1, "max": 10})
+    
     {
         chance: 'street_suffixes()[0]["name"]'
-    } // Run chance.street_suffixes() takes first result and the name inside
+    }   // Run chance.street_suffixes() takes first result and the name inside
+    
     {
         chance: 'street_suffixes()[0]["name"]',
         eval: true
-    } // Run chance.street_suffixes() takes first result and the name inside
+    }  // Run chance.street_suffixes() takes first result and the name inside
+
     ```
 
 *   **_casual_**: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
@@ -432,12 +459,12 @@ Data generation goes with model based composed by generators, the generators can
         faker: 'random.arrayElement(db.users)[userId]'
             // Chance
         chance: 'integer'
-            // static
+            // Static
         static: 'any static field'
             // Function
         function: function (){ return /**/ }
 
-        // with the virtual option
+        // With the virtual option
         virtual: true
 
     }

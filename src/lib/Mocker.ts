@@ -15,6 +15,11 @@ export class Mocker {
         this.DB = {}
     }
 
+    seed(name: string, data: any[]): Mocker {
+        this.DB[name] = data
+        return this
+    }
+
     schema(name: string, schema: {}, options?: {}): Mocker {
         this.schemas.push(new Schema(name, schema, options))
         return this
@@ -31,34 +36,43 @@ export class Mocker {
         return this
     }
 
-    build(cb?: ((error: Error | null, _?: any) => void)): Promise<any>
-    build(cb?: ((error: Error | null, _?: any) => void)): void
-    build(cb?: ((error: Error | null, _?: any) => void)): any {
+    private _buildSync() {
+        this.schemas.reduce((acc, schema) => {
+            let instances
+
+            try {
+                instances = schema.build(acc)
+            } catch (e) {
+                throw new Error('Schema: "' + schema.name + '" ' + e)
+            }
+
+            // Clean virtuals
+            if (schema.virtualPaths.length > 0) {
+                instances.forEach((x) =>
+                    cleanVirtuals(schema.virtualPaths, x, {
+                        strict: true,
+                        symbol: ','
+                    })
+                )
+            }
+
+            // Add to db
+            acc[schema.name] = instances
+
+            return acc
+        }, this.DB)
+    }
+
+    buildSync() {
+        this._buildSync()
+        return this.DB
+    }
+
+    build(cb?: (error: Error | null, _?: any) => void): Promise<any>
+    build(cb?: (error: Error | null, _?: any) => void): void
+    build(cb?: (error: Error | null, _?: any) => void): any {
         try {
-            this.schemas.reduce((acc, schema) => {
-                let instances
-
-                try {
-                    instances = schema.build(acc)
-                } catch (e) {
-                    throw new Error('Schema: "' + schema.name + '" ' + e)
-                }
-
-                // Clean virtuals
-                if (schema.virtualPaths.length > 0) {
-                    instances.forEach(x =>
-                        cleanVirtuals(schema.virtualPaths, x, {
-                            strict: true,
-                            symbol: ','
-                        })
-                    )
-                }
-
-                // Add to db
-                acc[schema.name] = instances
-
-                return acc
-            }, this.DB)
+            this._buildSync()
         } catch (e) {
             return cb ? cb(e) : Promise.reject(e)
         }

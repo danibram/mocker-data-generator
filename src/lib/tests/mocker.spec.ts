@@ -1,25 +1,22 @@
-import { test } from 'ava'
-import mocker, { Mocker, Schema } from '../../'
-import { isArray, isObject } from '../utils'
+import test from 'ava'
+import mocker, { Mocker } from '../../'
 
-test('Should return an new instance of mocker', async t => {
+test('Should return an new instance of mocker', async (t) => {
     t.deepEqual(mocker(), new Mocker())
 })
 
-test('Should iterate root level too with fields in models', async t => {
+test('Should iterate root level too with fields in models', async (t) => {
     let length = 1
 
     let expectedResult = { user: ['firstName'] }
     let user = { static: 'firstName' }
 
-    let db = await mocker()
-        .schema('user', user, length)
-        .build()
+    let db = await mocker().schema('user', user, length).build()
 
     t.deepEqual(db, expectedResult)
 })
 
-test('Virtuals should be eliminated in the final object and can be accesible during generation', async t => {
+test('Virtuals should be eliminated in the final object and can be accesible during generation', async (t) => {
     let model = {
         exampleVirtual: {
             incrementalId: 0,
@@ -27,7 +24,7 @@ test('Virtuals should be eliminated in the final object and can be accesible dur
         },
 
         id: {
-            function: function() {
+            function: function () {
                 return this.object.exampleVirtual
             }
         },
@@ -57,14 +54,12 @@ test('Virtuals should be eliminated in the final object and can be accesible dur
         }
     }
 
-    let db = await mocker()
-        .schema('situation', model, 1)
-        .build()
+    let db = await mocker().schema('situation', model, 1).build()
 
     t.deepEqual(db.situation[0], expectedResult)
 })
 
-test('Should iterate over more complex levels (deeper & function used...)', async t => {
+test('Should iterate over more complex levels (deeper & function used...)', async (t) => {
     let model = {
         name: {
             firstName: {
@@ -75,7 +70,7 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
             },
             much: {
                 deeper: {
-                    function: function() {
+                    function: function () {
                         return (
                             this.object.name.firstName +
                             ' ' +
@@ -85,7 +80,7 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
                 },
                 more: {
                     deeper: {
-                        function: function() {
+                        function: function () {
                             return (
                                 this.object.name.firstName +
                                 ' ' +
@@ -95,7 +90,7 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
                     },
                     level: {
                         deeper: {
-                            function: function() {
+                            function: function () {
                                 return (
                                     this.object.name.firstName +
                                     ' ' +
@@ -105,7 +100,7 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
                         },
                         awesome: {
                             deeper: {
-                                function: function() {
+                                function: function () {
                                     return (
                                         this.object.name.firstName +
                                         ' ' +
@@ -114,7 +109,7 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
                                 }
                             },
                             deeper2: {
-                                function: function() {
+                                function: function () {
                                     return (
                                         this.object.name.firstName +
                                         ' ' +
@@ -149,14 +144,12 @@ test('Should iterate over more complex levels (deeper & function used...)', asyn
         }
     }
 
-    let db = await mocker()
-        .schema('situation', model, 1)
-        .build()
+    let db = await mocker().schema('situation', model, 1).build()
 
     t.deepEqual(db.situation[0], expectedResult)
 })
 
-test('Should work with conditional keys', async t => {
+test('Should work with conditional keys', async (t) => {
     let conditional = {
         condition: {
             static: 'a'
@@ -173,14 +166,12 @@ test('Should work with conditional keys', async t => {
         a: 'conditionLinkedToA'
     }
 
-    let db = await mocker()
-        .schema('situation', conditional, 1)
-        .build()
+    let db = await mocker().schema('situation', conditional, 1).build()
 
     t.deepEqual(db.situation[0], expectedResult)
 })
 
-test('Should work with conditional keys II', async t => {
+test('Should work with conditional keys II', async (t) => {
     let conditional = {
         condition: {
             faker: 'helpers.randomize(["email", "user"])'
@@ -212,7 +203,7 @@ test('Should work with conditional keys II', async t => {
     // t.deepEqual(db.situation[0], expectedResult)
 })
 
-test('Should not affect init values to next entity', async t => {
+test('Should not affect init values to next entity', async (t) => {
     let length = 10
 
     let request = {
@@ -232,14 +223,14 @@ test('Should not affect init values to next entity', async t => {
         .build()
 
     t.notDeepEqual(db.request, db.request2)
-    db.request2.forEach(r2 => {
-        db.request.forEach(r => {
+    db.request2.forEach((r2) => {
+        db.request.forEach((r) => {
             t.notDeepEqual(r2, r)
         })
     })
 })
 
-test('Should generate more entities', async t => {
+test('Should generate more entities', async (t) => {
     let length = 10
     let model1 = {
         request: {
@@ -279,20 +270,20 @@ test('Should generate more entities', async t => {
     t.true(data.act.length === length)
     t.true(data.act2.length === length)
 
-    data.act.forEach(d => {
+    data.act.forEach((d) => {
         t.true(Object.keys(d).length === Object.keys(model1).length)
         t.deepEqual(Object.keys(d), Object.keys(model1))
         t.deepEqual(Object.keys(d.request), Object.keys(model1.request))
     })
 
-    data.act2.forEach(d => {
+    data.act2.forEach((d) => {
         t.true(Object.keys(d).length === Object.keys(model2).length)
         t.deepEqual(Object.keys(d), Object.keys(model2))
         t.deepEqual(Object.keys(d.request), Object.keys(model2.request))
     })
 })
 
-test('Should uniqueField works', async t => {
+test('Should uniqueField works', async (t) => {
     let cat = {
         name: ['txuri', 'pitxi', 'kitty']
     }
@@ -312,7 +303,7 @@ test('Should uniqueField works', async t => {
     t.deepEqual(data.cat2, result)
 })
 
-test('Should max works', async t => {
+test('Should max works', async (t) => {
     let cat = {
         name: { values: ['txuri', 'pitxi', 'kitty'] }
     }
@@ -370,6 +361,6 @@ test('Should generate correctly with 2 ways of uniqueField', function(done) {
                 })
         })*/
 
-test('Should be awesome', async t => {
+test('Should be awesome', async (t) => {
     t.true(true)
 })

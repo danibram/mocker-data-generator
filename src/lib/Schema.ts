@@ -1,20 +1,18 @@
+import { Generator } from './Generator'
 import {
-    isObject,
-    isArray,
-    iamLastParent,
-    iamLastChild,
-    fieldArrayCalcLength,
     evalWithContextData,
-    isConditional
+    fieldArrayCalcLength,
+    iamLastParent,
+    isArray,
+    isConditional,
+    isObject
 } from './utils'
 
-import { Generator } from './Generator'
-
-let iterate = function(obj, res, currentPath) {
+let iterate = function (obj, res, currentPath) {
     if (!currentPath) {
         currentPath = []
     }
-    Object.keys(obj).map(k => {
+    Object.keys(obj).map((k) => {
         let value = obj[k]
 
         let path = currentPath.slice(0)
@@ -33,15 +31,19 @@ let iterate = function(obj, res, currentPath) {
                 }
             }
 
-            let fieldCalculated = this.proccessLeaf(value)
+            let key = ''
 
             if (!isConditional(k)) {
-                res[k] = fieldCalculated
+                key = k
             } else {
-                let key = k.split(',')
-                if (evalWithContextData(key[0], this.object)) {
-                    res[key[1]] = fieldCalculated
+                let keykey = k.split(',')
+                if (evalWithContextData(keykey[0], this.object)) {
+                    key = keykey[1]
                 }
+            }
+
+            if (key !== '') {
+                res[key] = this.proccessLeaf(value)
             }
         } else {
             res[k] = {}
@@ -50,7 +52,7 @@ let iterate = function(obj, res, currentPath) {
     })
 }
 
-export class Schema extends Generator {
+export class Schema extends Generator<any> {
     constructor(name: string, cfg, options) {
         super()
         this.schema = cfg
@@ -160,7 +162,7 @@ export class Schema extends Generator {
     build(db = {}) {
         this.object = {}
         this.DB = db ? db : {}
-        this.DB[this.name] = []
+        this.DB[this.name] = this.DB[this.name] ? this.DB[this.name] : []
 
         if (Number.isInteger(this.options as any)) {
             Array.from(new Array(this.options)).map(() => {
@@ -201,7 +203,7 @@ export class Schema extends Generator {
                 throw `The posible values value is not an Array`
             }
 
-            possibleValues.map(value => {
+            possibleValues.map((value) => {
                 if (f === '.') {
                     return
                 }
@@ -213,9 +215,7 @@ export class Schema extends Generator {
                 this.object = {}
             })
         } else {
-            throw `An string "${
-                this.options
-            }" is not recognized as a parameter.`
+            throw `An string "${this.options}" is not recognized as a parameter.`
         }
         return this.DB[this.name]
     }
