@@ -318,7 +318,7 @@ Data generation goes with model based composed by generators, the generators can
     }
     ```
 
-*   **_funcion_**: No params are passed, only context (`this`), in this you have `{db, object, faker, chance}`, and you can use faker or chance functions, object (the specified model), db (actual data generated)
+*   **_function_**: No params are passed, only context (`this`), in this you have `{db, object, faker, chance}`, and you can use faker or chance functions, object (the specified model), db (actual data generated)
 
     ```javascript
           { function: function(){
