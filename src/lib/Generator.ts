@@ -1,6 +1,6 @@
 // import * as c from 'casual-browserify'
 import { Chance } from 'chance'
-import * as f from 'faker'
+import { faker as f } from '@faker-js/faker'
 import * as R from 'randexp'
 import { fnParser, loopInside } from './utils'
 const c = require('casual-browserify')
@@ -38,7 +38,9 @@ export class Generator<T> {
                 throw `Locale "${cfg.locale}" is not supported by faker.`
             }
 
-            faker = require('faker/locale/' + cfg.locale)
+            faker.setLocale(cfg.locale)
+        } else {
+            faker.setLocale('en_US')
         }
 
         if (cfg.eval) {

@@ -174,7 +174,7 @@ test('Should work with conditional keys', async (t) => {
 test('Should work with conditional keys II', async (t) => {
     let conditional = {
         condition: {
-            faker: 'helpers.randomize(["email", "user"])'
+            faker: 'helpers.arrayElement(["email", "user"])'
         },
         'object.condition==="email",show': {
             static: 'email'
@@ -190,7 +190,7 @@ test('Should work with conditional keys II', async (t) => {
         }
     }
 
-    let user = { faker: 'name.findName' }
+    let user = { faker: 'name.fullName' }
     let email = { faker: 'internet.email' }
 
     let db = await mocker()
@@ -235,13 +235,13 @@ test('Should generate more entities', async (t) => {
     let model1 = {
         request: {
             id: {
-                faker: 'random.number'
+                faker: 'datatype.number'
             },
             title: {
                 faker: 'lorem.sentence'
             },
             number: {
-                faker: 'random.number'
+                faker: 'datatype.number'
             }
         }
     }
@@ -249,13 +249,13 @@ test('Should generate more entities', async (t) => {
     let model2 = {
         request: {
             id: {
-                faker: 'random.number'
+                faker: 'datatype.number'
             },
             title: {
                 faker: 'lorem.sentence'
             },
             number: {
-                faker: 'random.number'
+                faker: 'datatype.number'
             }
         }
     }

@@ -1,9 +1,8 @@
 import test from 'ava'
-import * as fakerJS from 'faker'
-import { Generator, Mocker, Schema } from '../../'
+import { faker as fakerJS } from '@faker-js/faker'
+import { Generator, Schema } from '../../'
 
 const gen = new Generator()
-const mocker = new Mocker()
 
 test('Should be "lorem.words"', async (t) => {
     let res = gen.faker({ faker: 'lorem.words' })
@@ -25,14 +24,14 @@ test('Should be "lorem.words(1)"', async (t) => {
     t.true(typeof res === 'string')
 })
 
-test('Should be "random.number({"max": 1})"', async (t) => {
-    let res = gen.faker({ faker: 'random.number({"max": 1})' })
+test('Should be "datatype.number({"max": 1})"', async (t) => {
+    let res = gen.faker({ faker: 'datatype.number({"max": 1})' })
     t.true(typeof res === 'number')
     t.true(res <= 1)
 })
 
-test('Should be "random.number({"min": 1, "max": 2})"', async (t) => {
-    let res = gen.faker({ faker: 'random.number({"min": 1, "max": 2})' })
+test('Should be "datatype.number({"min": 1, "max": 2})"', async (t) => {
+    let res = gen.faker({ faker: 'datatype.number({"min": 1, "max": 2})' })
     t.true(typeof res === 'number')
     t.true(res <= 2)
     t.true(res >= 1)
