@@ -1,6 +1,6 @@
 {
     "name": "mocker-data-generator",
-    "version": "2.12.0",
+    "version": "3.0.0",
     "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
     "main": "build/main/index.js",
     "typings": "build/main/index.d.ts",
@@ -57,6 +57,7 @@
         "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
         "release": "standard-version",
         "release:minor": "standard-version --release-as minor",
+        "release:major": "standard-version --release-as major",
         "release-github": "source .env.sh && conventional-github-releaser -p angular -r 1",
         "prett": "prettier 'src/**/*.ts' --write",
         "docs:dev": "cd _docs_website && next",

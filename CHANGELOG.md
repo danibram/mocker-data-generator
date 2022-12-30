@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/danibram/mocker-data-generator/compare/v2.12.0...v3.0.0) (2022-12-30)
+
 ## [2.12.0](https://github.com/danibram/mocker-data-generator/compare/v2.10.0...v2.12.0) (2021-02-03)
 
 ### Features
