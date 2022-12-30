@@ -1,6 +1,6 @@
 {
     "name": "mocker-data-generator",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
     "main": "build/main/index.js",
     "typings": "build/main/index.d.ts",
