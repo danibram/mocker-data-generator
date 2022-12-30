@@ -4,8 +4,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [3.0.0](https://github.com/danibram/mocker-data-generator/compare/v2.12.0...v3.0.0) (2022-12-30)
 
-## [2.12.0](https://github.com/danibram/mocker-data-generator/compare/v2.10.0...v2.12.0) (2021-02-03)
+### Breaking changes!
 
+-   **generators:**  Now mocker remove thirdparty generators from it. Now you should provide to the library, check the readme
+-   **string-parser:** Now to unify logic, and reduce complexity. The fast eval function not call the function. So if in the past with faker you use: `lorem.paragraph` now its important to use `lorem.paragraph()` because eval function is not doing more magic than the necesary
+
+Thank you all for you patient, this release was planned maybe a year ago, but I didnt have time to work on it.
+
+## [2.12.0](https://github.com/danibram/mocker-data-generator/compare/v2.10.0...v2.12.0) (2021-02-03)
 ### Features
 
 -   **chore:** updated deps
