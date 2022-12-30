@@ -1,4 +1,5 @@
 import { Generator } from './Generator'
+import { Generators } from './types'
 import {
     evalWithContextData,
     fieldArrayCalcLength,
@@ -37,13 +38,20 @@ let iterate = function (obj, res, currentPath) {
                 key = k
             } else {
                 let keykey = k.split(',')
-                if (evalWithContextData(keykey[0], this.object)) {
+                if (
+                    evalWithContextData(
+                        keykey[0],
+                        this.object,
+                        this.DB,
+                        this.generators
+                    )
+                ) {
                     key = keykey[1]
                 }
             }
 
             if (key !== '') {
-                res[key] = this.proccessLeaf(value)
+                res[key] = this.proccessLeaf(value, key)
             }
         } else {
             res[k] = {}
@@ -53,11 +61,12 @@ let iterate = function (obj, res, currentPath) {
 }
 
 export class Schema extends Generator<any> {
-    constructor(name: string, cfg, options) {
+    constructor(name: string, cfg, options, generators: Generators = {}) {
         super()
         this.schema = cfg
         this.name = name
         this.options = options
+        this.generators = generators
 
         // Temp fields
         this.DB = {}
@@ -65,7 +74,7 @@ export class Schema extends Generator<any> {
         this.virtualPaths = []
     }
 
-    proccessLeaf(field) {
+    proccessLeaf(field, fieldName?) {
         if (isArray(field)) {
             let fieldConfig = field[0]
 
@@ -78,7 +87,8 @@ export class Schema extends Generator<any> {
                 na = evalWithContextData(
                     fieldConfig.concat,
                     this.object,
-                    this.DB
+                    this.DB,
+                    this.generators
                 )
                 // Strict Mode
 
@@ -87,13 +97,23 @@ export class Schema extends Generator<any> {
                     : na
             }
 
-            let length = fieldArrayCalcLength(fieldConfig, na.length, this)
+            let length = fieldArrayCalcLength(
+                field.length > 1 ? fieldConfig.values : fieldConfig,
+                na.length,
+                this
+            )
 
             let array = Array.from(new Array(length)).reduce(
                 (acc, el, index) => {
                     let self = acc.slice(0)
                     acc.push(
-                        this.generateField(fieldConfig, index, length, self)
+                        this.generateField(
+                            fieldName,
+                            fieldConfig,
+                            index,
+                            length,
+                            self
+                        )
                     )
                     return acc
                 },
@@ -102,17 +122,14 @@ export class Schema extends Generator<any> {
 
             return array.concat(na)
         } else {
-            return this.generateField(field)
+            return this.generateField(fieldName, field)
         }
     }
 
-    generateField(cfg, ...args): {} {
+    generateField(fieldName, cfg, ...args): {} {
         let result = {}
-        let generators = [
-            'faker',
-            'chance',
-            'casual',
-            'randexp',
+        let customGenerators = Object.keys(this.generators)
+        let ownedByMocker = [
             'self',
             'db',
             'hasOne',
@@ -122,20 +139,23 @@ export class Schema extends Generator<any> {
             'values',
             'incrementalId'
         ]
+        let generators = [...ownedByMocker, ...customGenerators]
 
         let keys = Object.keys(cfg)
 
         let key = keys.reduce((acc, val) => {
-            if ((generators as any).includes(val)) {
+            if (generators.includes(val)) {
                 acc = val
             }
             return acc
         }, 'noKey')
 
         if (key === 'noKey' && !(keys as any).includes('eval')) {
-            throw `Error: Cant find key, please check model and use one of this [${generators.join(
+            throw `Error: Invalid or missing generator${
+                fieldName !== 'root' ? ` on field ${fieldName}` : ''
+            }. Please use one of this generators [${generators.join(
                 ','
-            )}]`
+            )}], note that if your generator doesnt appear in the list maybe you forgot to add it.`
         }
 
         if ((keys as any).includes('eval') && keys.length === 1) {
@@ -143,7 +163,14 @@ export class Schema extends Generator<any> {
         }
 
         try {
-            result = this[key](cfg, ...args)
+            result = customGenerators.includes(key)
+                ? this.custom({
+                      generator: this.generators[key]?.library,
+                      run: this.generators[key]?.run,
+                      input: cfg[key],
+                      eval: cfg.eval
+                  })
+                : this[key]({ ...cfg, generators: this.generators }, ...args)
         } catch (e) {
             throw 'Error: "' + key + '" ' + e
         }
@@ -153,13 +180,14 @@ export class Schema extends Generator<any> {
 
     buildSingle(schema) {
         if (iamLastParent(schema)) {
-            this.object = this.proccessLeaf(schema)
+            this.object = this.proccessLeaf(schema, 'root')
         } else {
             iterate.call(this, schema, this.object)
         }
     }
 
-    build(db = {}) {
+    build(generators: Generators = {}, db = {}) {
+        this.generators = generators
         this.object = {}
         this.DB = db ? db : {}
         this.DB[this.name] = this.DB[this.name] ? this.DB[this.name] : []

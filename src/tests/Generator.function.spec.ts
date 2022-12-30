@@ -1,8 +1,10 @@
 import test from 'ava'
-import { Generator } from '../../'
-import { isObject } from '../utils'
+import * as fakerJS from 'faker'
+import { Generator } from '..'
+import { isObject } from '../lib/utils'
 
 const gen = new Generator()
+gen.object = { generators: { custom: fakerJS } }
 
 test('Normal Function', async (t) => {
     let res = gen.function({
@@ -32,7 +34,7 @@ test('Should call function with context', async (t) => {
     })
 
     t.true(isObject(res))
-    let ctx = ['object', 'db', 'faker', 'chance', 'casual', 'randexp']
+    let ctx = ['object', 'db', 'generators']
     t.true(isObject(res))
     ctx.forEach((c) => t.true(res.hasOwnProperty(c)))
 })

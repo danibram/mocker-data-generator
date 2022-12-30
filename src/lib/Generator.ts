@@ -1,10 +1,5 @@
-// import * as c from 'casual-browserify'
-import { Chance } from 'chance'
-import * as f from 'faker'
-import * as R from 'randexp'
-import { fnParser, loopInside } from './utils'
-const c = require('casual-browserify')
-const ch = new Chance()
+import { CustomGeneratorRun } from './types'
+import { loopInside, stringToPathOrCall } from './utils'
 
 export class Generator<T> {
     name: string
@@ -19,93 +14,7 @@ export class Generator<T> {
         min: number
     }
     virtualPaths: string[]
-
-    faker(cfg: { locale?: string; faker: string; eval?: boolean }) {
-        let faker = f
-        let db = this.DB
-        let object = this.object
-        let re
-        let matches
-        let strFn
-
-        if (cfg.locale === '') {
-            throw `Locale is empty "${cfg.locale}".`
-        }
-
-        if (cfg.locale) {
-            let supportedLocales = Object.keys((faker as any).locales)
-            if (supportedLocales.indexOf(cfg.locale) === -1) {
-                throw `Locale "${cfg.locale}" is not supported by faker.`
-            }
-
-            faker = require('faker/locale/' + cfg.locale)
-        }
-
-        if (cfg.eval) {
-            re = /(^[a-zA-Z.]*)/ // aZ.aZ
-            matches = re.exec(cfg.faker)
-            if (matches && matches.length === 2) {
-                strFn = 'faker.' + cfg.faker
-            }
-
-            re = /\((.*?)\)/ // Match ()
-            matches = re.exec(cfg.faker)
-            if (!matches) {
-                strFn = 'faker.' + cfg.faker + '()'
-            }
-
-            return eval(strFn)
-        } else {
-            return fnParser('faker', faker, cfg.faker)
-        }
-    }
-
-    chance(cfg: { chance: string; eval?: boolean }) {
-        let chance = ch
-
-        if (cfg.eval) {
-            let db = this.DB
-            let object = this.object
-
-            let re = /(^[a-zA-Z.]*)/ // aZ.aZ
-            let matches = re.exec(cfg.chance)
-            let strFn
-            if (matches && matches.length === 2) {
-                strFn = 'chance.' + cfg.chance
-            }
-
-            re = /\((.*?)\)/ // Match ()
-            matches = re.exec(cfg.chance)
-            if (!matches) {
-                strFn = 'chance.' + cfg.chance + '()'
-            }
-
-            return eval(strFn)
-        } else {
-            return fnParser.call(chance, 'chance', chance, cfg.chance)
-        }
-    }
-
-    casual(cfg: { eval?: boolean; casual: string }) {
-        let casual = c
-
-        if (cfg.eval) {
-            let re = /(^[a-zA-Z.]*)/ // aZ.aZ
-            let matches = re.exec(cfg.casual)
-            let strFn
-            if (matches && matches.length === 2) {
-                strFn = 'casual.' + cfg.casual
-            }
-
-            return eval(strFn)
-        } else {
-            return fnParser.call(casual, 'casual', casual, cfg.casual)
-        }
-    }
-
-    randexp(cfg: { randexp: any }) {
-        return new R(cfg.randexp).gen()
-    }
+    generators: {}
 
     self(cfg: { self: any; eval?: boolean }) {
         let object = this.object
@@ -123,13 +32,38 @@ export class Generator<T> {
         }
     }
 
+    custom(cfg: {
+        generator: any
+        input: string | RegExp
+        run?: CustomGeneratorRun
+        adapter?: (generator: any, input: string | RegExp) => any
+        eval?: boolean
+    }) {
+        let db = this.DB
+        let object = this.object
+        let re
+        let matches
+        let strFn
+        let generator = cfg.generator
+
+        if (cfg.run) {
+            return cfg.run(generator, cfg.input)
+        } else if (cfg.eval) {
+            return eval('generator.' + cfg.input)
+        } else {
+            return stringToPathOrCall.call(
+                generator,
+                'generator',
+                generator,
+                cfg.input
+            )
+        }
+    }
+
     eval(cfg: { eval: string }) {
         let db = this.DB
         let object = this.object
-        let faker = f
-        let chance = ch
-        let casual = c
-        let randexp = R
+        let generators = this.generators
 
         return eval(cfg.eval)
     }
@@ -142,15 +76,9 @@ export class Generator<T> {
     function(cfg: { function: any }, ...args) {
         let object = this.object
         let db = this.DB
-        let faker = f
-        let chance = ch
-        let casual = c
-        let randexp = R
+        let generators = this.generators
 
-        return cfg.function.call(
-            { object, db, faker, chance, casual, randexp },
-            ...args
-        )
+        return cfg.function.call({ object, db, generators }, ...args)
     }
 
     static(cfg: { static: any }) {

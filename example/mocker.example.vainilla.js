@@ -1,20 +1,13 @@
-var mocker = require('../build/main/index.js').default
+var mocker = require('..').default
 var util = require('util')
-var moment = require('moment')
-
-var cat = {
-    name: ['txuri', 'pitxi', 'kitty']
-}
+var faker = require('faker')
 
 var cat2 = {
-    name: ['txuri', 'pitxi', 'kitty'],
+    name: { static: 'txuri' },
     emails: [
         {
-            faker: 'lorem.words()[0]',
-            length: 10,
-            concat: '[object.name, object.name]',
-            concatStrict: true,
-            fixedLength: true
+            faker: 'internet.email()',
+            length: 2
         }
     ],
     get: {
@@ -24,10 +17,12 @@ var cat2 = {
     }
 }
 
-var start = moment()
-var m = mocker()
+console.time('bench')
+mocker()
+    .addGenerator('faker', faker)
     .schema('cat', cat2, 1)
-    .build(function(err, data) {
-        console.log('Time: ' + moment().diff(start, 'ms') + ' ms')
+    .build(function (err, data) {
+        console.log(err)
+        console.timeEnd('bench')
         console.log(util.inspect(data, { depth: 10 }))
     })

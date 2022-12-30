@@ -1,14 +1,17 @@
 import { Schema } from './Schema'
+import { CustomGeneratorRun, Generators } from './types'
 import { cleanVirtuals } from './utils'
 
 export type PromiseCb = Promise<any> | void
 export type IDB = {
     [key: string]: any[]
 }
+
 export class Mocker {
     schemas: Schema[] = []
     DB: IDB = {}
     options = {}
+    generators: Generators = {}
 
     constructor(options = {}) {
         this.options = options
@@ -17,6 +20,11 @@ export class Mocker {
 
     seed(name: string, data: any[]): Mocker {
         this.DB[name] = data
+        return this
+    }
+
+    addGenerator(name: string, library: any, run: CustomGeneratorRun): Mocker {
+        this.generators[name] = { library, run }
         return this
     }
 
@@ -41,7 +49,7 @@ export class Mocker {
             let instances
 
             try {
-                instances = schema.build(acc)
+                instances = schema.build(this.generators, acc)
             } catch (e) {
                 throw new Error('Schema: "' + schema.name + '" ' + e)
             }

@@ -1,6 +1,6 @@
 import test from 'ava'
-import { Mocker } from '../../'
-import { isArray, isObject } from '../utils'
+import { Mocker } from '..'
+import { isArray, isObject } from '../lib/utils'
 
 const mock = new Mocker()
 

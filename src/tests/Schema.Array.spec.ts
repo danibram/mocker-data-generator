@@ -1,6 +1,6 @@
 import test from 'ava'
-import { Schema } from '../../'
-import { isArray } from '../utils'
+import { Schema } from '..'
+import { isArray } from '../lib/utils'
 
 let schema = new Schema('test', {}, {})
 
@@ -182,14 +182,7 @@ test('Array: It should recognise context in function field', async (t) => {
 
     data[0].test.forEach((d) => {
         let keys = Object.keys(d)
-        t.deepEqual(keys, [
-            'object',
-            'db',
-            'faker',
-            'chance',
-            'casual',
-            'randexp'
-        ])
+        t.deepEqual(keys, ['object', 'db', 'generators'])
     })
 })
 
@@ -257,7 +250,7 @@ test('Array: It should concat elements', async (t) => {
         },
         emails: [
             {
-                faker: 'lorem.words()[0]',
+                static: 'lorem.words()[0]',
                 length: 10,
                 concat: '[object.name, object.name]'
             }
@@ -297,7 +290,7 @@ test('Array: It should concatenated strings but not repeat same element itself (
         },
         emails: [
             {
-                faker: 'lorem.words()[0]',
+                static: 'lorem.words()[0]',
                 length: 4,
                 concat: '[object.name, object.name]',
                 concatStrict: true,
@@ -326,7 +319,7 @@ test('Array: It should concatenated strings but increase the length if it is fix
         },
         emails: [
             {
-                faker: 'lorem.words()[0]',
+                static: 'lorem.words()[0]',
                 length: 10,
                 concat: '[object.name, object.name]',
                 fixedLength: true

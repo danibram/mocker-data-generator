@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Mocker } from '../../'
+import { Mocker } from '..'
 
 test('Should build with callback', async (t) => {
     let result = {
@@ -27,7 +27,7 @@ test('Should produce an error', async (t) => {
     await mock.build((error) => {
         t.deepEqual(
             (error as Error).message,
-            'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.'
+            'Schema: "users" Error: Invalid or missing generator on field hello. Please use one of this generators [self,db,hasOne,hasMany,static,function,values,incrementalId], note that if your generator doesnt appear in the list maybe you forgot to add it.'
         )
     })
 
@@ -36,7 +36,7 @@ test('Should produce an error', async (t) => {
         (e) => {
             t.deepEqual(
                 e.message,
-                'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.'
+                'Schema: "users" Error: Invalid or missing generator on field hello. Please use one of this generators [self,db,hasOne,hasMany,static,function,values,incrementalId], note that if your generator doesnt appear in the list maybe you forgot to add it.'
             )
         }
     )
@@ -55,7 +55,7 @@ test('Should produce an error when pass an string as options', async (t) => {
         })
     )
 
-    t.is(error.message, throwedErr)
+    t.is(error?.message, throwedErr)
 
     await mock.build().then(
         (data) => data,
@@ -84,7 +84,7 @@ test('Should produce an error when uniqueField is not an array', async (t) => {
         })
     )
 
-    t.is(error.message, throwedErr)
+    t.is(error?.message, throwedErr)
 
     await mock.build().then(
         (data) => data,
@@ -112,7 +112,7 @@ test('Should produce an error when uniqueField not exists', async (t) => {
         })
     )
 
-    t.is(error.message, throwedErr)
+    t.is(error?.message, throwedErr)
 
     await mock.build().then(
         (data) => data,
@@ -183,7 +183,7 @@ test('Should throw synchronously', (t) => {
     )
 
     t.is(
-        error.message,
-        'Schema: "users" Error: "faker" This faker method doesnt exists \'worldrqwerqw\'.'
+        error?.message,
+        'Schema: "users" Error: Invalid or missing generator on field hello. Please use one of this generators [self,db,hasOne,hasMany,static,function,values,incrementalId], note that if your generator doesnt appear in the list maybe you forgot to add it.'
     )
 })

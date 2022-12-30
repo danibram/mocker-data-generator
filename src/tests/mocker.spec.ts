@@ -1,5 +1,5 @@
 import test from 'ava'
-import mocker, { Mocker } from '../../'
+import mocker, { Mocker } from '..'
 
 test('Should return an new instance of mocker', async (t) => {
     t.deepEqual(mocker(), new Mocker())
@@ -174,7 +174,7 @@ test('Should work with conditional keys', async (t) => {
 test('Should work with conditional keys II', async (t) => {
     let conditional = {
         condition: {
-            faker: 'helpers.randomize(["email", "user"])'
+            values: ['email', 'user']
         },
         'object.condition==="email",show': {
             static: 'email'
@@ -190,8 +190,8 @@ test('Should work with conditional keys II', async (t) => {
         }
     }
 
-    let user = { faker: 'name.findName' }
-    let email = { faker: 'internet.email' }
+    let user = { static: 'name.findName' }
+    let email = { static: 'internet.email' }
 
     let db = await mocker()
         .schema('users', user, 2)
@@ -235,13 +235,13 @@ test('Should generate more entities', async (t) => {
     let model1 = {
         request: {
             id: {
-                faker: 'random.number'
+                static: 0
             },
             title: {
-                faker: 'lorem.sentence'
+                static: 'hello im a cat'
             },
             number: {
-                faker: 'random.number'
+                static: 0
             }
         }
     }
@@ -249,13 +249,13 @@ test('Should generate more entities', async (t) => {
     let model2 = {
         request: {
             id: {
-                faker: 'random.number'
+                static: 0
             },
             title: {
-                faker: 'lorem.sentence'
+                static: 'hello im a cat'
             },
             number: {
-                faker: 'random.number'
+                static: 0
             }
         }
     }

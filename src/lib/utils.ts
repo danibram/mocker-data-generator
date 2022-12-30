@@ -6,7 +6,12 @@ export const isObject = function (arg: any): boolean {
     return Object.prototype.toString.call(arg) === '[object Object]'
 }
 
-export const evalWithContextData = function (key: string, object: {}, db?) {
+export const evalWithContextData = function (
+    key: string,
+    object: {},
+    db: {},
+    generators: {}
+) {
     // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }
@@ -134,7 +139,7 @@ export const cleanVirtuals = function (paths, object, options) {
     return object
 }
 
-export const fnParser = function (name, fn, cfg) {
+export const stringToPathOrCall = function (name, fn, cfg) {
     let [body, args] = cfg.split('(')
 
     body = body.split('.')
@@ -184,6 +189,7 @@ export const fnParser = function (name, fn, cfg) {
 
 export const loopInside = function (object: any, path: string) {
     let p = path.split('.')
+
     return p.reduce((acc, val) => {
         if (acc[val] === null) {
             throw `'${acc}' doesnt have key '${val}'.`

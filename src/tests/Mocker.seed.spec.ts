@@ -1,5 +1,5 @@
 import test from 'ava'
-import mocker, { Mocker } from '../../'
+import mocker, { Mocker } from '..'
 
 const cats = [
     {
