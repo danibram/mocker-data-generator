@@ -20,17 +20,20 @@ You can test online here: [https://danibram.github.io/mocker-data-generator/](ht
 
 ## Getting started
 
-Install the module with:
-`npm install mocker-data-generator`
+Install the module and the awesome generator you want:
+`npm install mocker-data-generator faker`
 
 Import it
 
 ```javascript
 var mocker = require('mocker-data-generator').default // (vanilla way)
+var faker = require('faker')
+
 
 // or
 
 import mocker from 'mocker-data-generator' // (ES6 or Typescript way)
+import * as faker from 'faker'
 ```
 
 Then use it:
@@ -38,19 +41,19 @@ Then use it:
 ```javascript
 var user = {
     firstName: {
-        faker: 'name.firstName'
+        faker: 'name.firstName()'
     },
     lastName: {
-        faker: 'name.lastName'
+        faker: 'name.lastName()'
     },
     country: {
-        faker: 'address.country'
+        faker: 'address.country()'
     },
     createdAt: {
-        faker: 'date.past'
+        faker: 'date.past()'
     },
     username: {
-        function: function() {
+        function: function () {
             return (
                 this.object.lastName.substring(0, 5) +
                 this.object.firstName.substring(0, 3) +
@@ -61,12 +64,13 @@ var user = {
 }
 var group = {
     description: {
-        faker: 'lorem.paragraph'
+        faker: 'lorem.paragraph()'
     },
     users: [
         {
-            function: function() {
-                return this.faker.random.arrayElement(this.db.user).username
+            function: function () {
+                return this.generators.faker.random.arrayElement(this.db.user)
+                    .username
             },
             length: 10,
             fixedLength: false
@@ -78,25 +82,26 @@ var conditionalField = {
         values: ['HOUSE', 'CAR', 'MOTORBIKE']
     },
     'object.type=="HOUSE",location': {
-        faker: 'address.city'
+        faker: 'address.city()'
     },
     'object.type=="CAR"||object.type=="MOTORBIKE",speed': {
-        faker: 'random.number'
+        faker: 'random.number()'
     }
 }
 
 // Using traditional callback Style
 
 mocker()
+    .addGenerator('faker', faker)
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
-    .build(function(error, data) {
+    .build(function (error, data) {
         if (error) {
             throw error
         }
         console.log(util.inspect(data, { depth: 10 }))
-        
+
         // This returns an object
         // {
         //      user:[array of users],
@@ -108,6 +113,7 @@ mocker()
 // Using promises
 
 mocker()
+    .addGenerator('faker', faker)
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
@@ -134,6 +140,7 @@ mocker()
 //      conditionalField: [array of conditionalFields]
 // }
 var data = mocker()
+    .addGenerator('faker', faker)
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
@@ -141,8 +148,8 @@ var data = mocker()
 
 console.log(util.inspect(data, { depth: 10 }))
 ```
-NOTE: 
-For the demo above you will also need to import util i.e. 
+NOTE:
+For the demo above you will also need to import util i.e.
 `var util = require('util') or import util from 'util'`
 
 ## Documentation
@@ -150,6 +157,12 @@ For the demo above you will also need to import util i.e.
 Data generation goes with model based composed by generators, the generators can have access to the data generated and to the entity generated. **_Generators run synchronously, take care of the related entities!!_**
 
 ### Methods
+
+*   **_addGenerator(name, generator, runFn)_**: Add a new generator, now generators are not included in the package, so you have to add whathever generator you want.
+
+    *   name (String): key of the generator this should match with the key in the schema.
+    *   generator (library): Library if the generator
+    *   runFN (function) (Optional) (generator: any, input: any) => any : It compose a exec function for the selected generator, only for custom generators, see randexp in the examples folder
 
 *   **_schema(name, schema, generationType)_**: Add a new schema, you must specify this params:
 
@@ -184,14 +197,14 @@ Data generation goes with model based composed by generators, the generators can
 
 *   **_self_**: get himself object, and evaluate the string, so you can get calculated fields.
 
-    *   **_eval_** (Optional): Also now you can pass, eval to true, to use like like in versions < 2.6.0
+    *   **_eval_** (Optional): Also now you can pass, eval to true, to use like in versions < 2.6.0
 
 
     ```javascript
     {
         self: 'id'
     }   //will get the id of the generated entity
-    
+
     {
         self: 'id',
         eval: true
@@ -200,7 +213,7 @@ Data generation goes with model based composed by generators, the generators can
 
 *   **_db_**: get the db, and evaluate the string, so you can access to this entities.
 
-    *   **_eval_** (Optional): Also now you can pass, fast to true, eval to true, to use like like in versions < 2.6.0
+    *   **_eval_** (Optional): Also now you can pass, fast to true, eval to true, to use like in versions < 2.6.0
 
 
     ```javascript
@@ -214,7 +227,7 @@ Data generation goes with model based composed by generators, the generators can
     }   // will get the first user id
     ```
 
-*   **_eval_**: evaluate the current string, remember that i inject all the awesome methods, faker, chance, casual, randexp, and also the db and object methods. With this eval field, **_you must pass an exactly JSON syntax_**:
+*   **_eval_**: evaluate the current string, remember that all context are injected (generators, db the actual object). With this eval field, **_you must pass an exactly JSON syntax_**:
 
     ```javascript
     {
@@ -242,14 +255,14 @@ Data generation goes with model based composed by generators, the generators can
 
         ```javascript
             {
-                hasOne: 'user' 
+                hasOne: 'user'
             }   // this populate the field with one random user
 
             // OR:
 
             {
                 hasOne: 'user',
-                get: 'id' 
+                get: 'id'
             }   // this populate the field with one id of a random user
 
 
@@ -258,7 +271,7 @@ Data generation goes with model based composed by generators, the generators can
             {
                 hasOne: 'user',
                 get: 'id',
-                eval: true 
+                eval: true
             }   // this populate the field with one id of a random user with eval string
         ```
 
@@ -279,7 +292,7 @@ Data generation goes with model based composed by generators, the generators can
             }   // this populate the field with one random user
 
             // OR:
-            
+
 
             {
                 hasMany: 'user',
@@ -287,14 +300,14 @@ Data generation goes with model based composed by generators, the generators can
             }   // In this case we will get 1 (amount) user (hasMany)
 
             // OR:
-            
+
             {
                 hasMany: 'user',
                 max: 3 // optional
             }   // In this case we will get as max 3 (max) users (hasMany)
 
             // OR:
-            
+
 
             {
                 hasMany: 'user',
@@ -322,12 +335,10 @@ Data generation goes with model based composed by generators, the generators can
 
     ```javascript
           { function: function(){
-  
+
               // this.db
               // this.object
-              // this.faker
-              // this.chance
-              // this.casual
+              // this.generators
 
               return yourValue
           } }
@@ -338,90 +349,10 @@ Data generation goes with model based composed by generators, the generators can
 
               // this.db
               // this.object
-              // this.faker
-              // this.chance
-              // this.casual
+              // this.generators
 
               return yourValue
           } }
-    ```
-
-*   **_faker_**: you can use directly faker functions like: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**, now also the multilang is supported by the property locale (Thanks @sleicht for the inspiration. By default I take English locale. This are the locales supported: [https://github.com/marak/Faker.js/#localization](https://github.com/marak/Faker.js/#localization)).
-
-    *   **_eval_** (Optional): You can use like in versions < 2.6.0, su with this true, it will turn faker field string into an evaluable string, also loosing speed
-
-
-    ```javascript
-          { faker: 'lorem.words' }                              // Run faker.lorem.words()
-          { faker: 'lorem.words()' }                            // Run faker.lorem.words()
-          { faker: 'lorem.words(1)' }                           // Run faker.lorem.words(1)
-          { faker: 'integer({"min": 1, "max": 10})' }           // Run faker.lorem.words(1) and take the first
-          { faker: 'random.arrayElement(db.users)' }            // Run faker.arrayElement over a generated user entity
-          { faker: 'random.arrayElement(db.users)["userId"]' }  // Run faker.arrayElement over a generated user entity and take the userId only
-
-          { faker: 'address.streetAddress', locale: 'zh_CN' }   // Got 711 蔡 街
-          { faker: 'address.streetAddress' }                    // Got 5036 Daniel Village
-          { faker: 'address.streetAddress', eval: true }        // Got 5036 Daniel Village
-
-    ```
-
-*   **_chance_**: you can use directly chance functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
-
-    *   **_eval_** (Optional): You can use like in versions < 2.6.0, su with this true, it will turn chance field string into an evaluable string, also loosing speed
-
-
-    ```javascript
-    {
-        chance: 'integer'
-    }   // Run chance.integer()
-    
-    {
-        chance: 'integer()'
-    }   // Run chance.integer()
-    
-    {
-        chance: 'integer({"min": 1, "max": 10})'
-    }   // Run chance.integer({"min": 1, "max": 10})
-    
-    {
-        chance: 'street_suffixes()[0]["name"]'
-    }   // Run chance.street_suffixes() takes first result and the name inside
-    
-    {
-        chance: 'street_suffixes()[0]["name"]',
-        eval: true
-    }  // Run chance.street_suffixes() takes first result and the name inside
-
-    ```
-
-*   **_casual_**: you can use directly use casualJs functions, you can do: (note that, db (actual entities generated), object (actual entity generated) are injected), **_you must pass an exactly JSON syntax_**:
-
-    *   **_eval_** (Optional): You can use like in versions < 2.6.0, su with this true, it will turn casual field string into an evaluable string, also loosing speed
-
-
-    ```javascript
-    {
-        casual: 'country'
-    }
-    {
-        chance: 'array_of_digits()'
-    }
-    {
-        casual: 'array_of_digits(3)[0]',
-        eval: true
-    }
-    {
-        casual: 'array_of_digits(3)[0]',
-        eval: true
-    }
-    ```
-
-*   **_randexp_**: pass a regexp string to use randexp generator.
-
-    ```javascript
-    {
-        randexp: /hello+ (world|to you)/
-    }
     ```
 
 *   **_[Array]_**: you can pass an array that indicates an array of data you can create, passing in the first field the generator (function, faker, or array(not Tested)), and in the second field pass a config object (length, fixedLentgh)
@@ -435,9 +366,9 @@ Data generation goes with model based composed by generators, the generators can
         [{
            // Any generator
                // Faker
+           [name of the generator injected]: 'path inside the generator'
+               // If faker is injected with .addGenerator('faker', faker) then you can use:
            faker: 'random.arrayElement(db.users).userId'
-               // Chance
-           chance: 'integer'
                // Function that has included index, length and self that refers at the actual array generation
            function: function (index, length, self){ return /**/ }
 
@@ -451,6 +382,39 @@ Data generation goes with model based composed by generators, the generators can
         }]
         ```
 
+### Custom generators
+
+It happens!Mocker now is independant of the generators so I hope this will give you more freedom. This is an example that you can check on the examples folder, where 2 generators are used:
+
+```javascript
+    var mocker = require('../build/main').default
+    var faker = require('faker')
+    var Randexp = require('randexp')
+    var util = require('util')
+
+    var user = {
+        firstName: {
+            faker: 'name.firstName()'
+        },
+        notes: {
+            randexp: /hello+ (world|to you)/
+        }
+    }
+
+    mocker()
+        .addGenerator('faker', faker)
+        .addGenerator('randexp', Randexp, function (generator, input) {
+            return new generator(input).gen()
+        })
+        .schema('user', user, 2)
+        .build(function (error, data) {
+            if (error) {
+                throw error
+            }
+            console.log(util.inspect(data, { depth: 10 }))
+        })
+```
+
 ### Optional fields
 
 *   **_[virtual]_**: Boolean, if you pass this option, this mean that this field will not appear at the output entity. But you can use during the generation.
@@ -459,9 +423,9 @@ Data generation goes with model based composed by generators, the generators can
     {
         // Any generator
             // Faker
-        faker: 'random.arrayElement(db.users)[userId]'
-            // Chance
-        chance: 'integer'
+        [name of the generator injected]: 'path inside the generator'
+            // If faker is injected with .addGenerator('faker', faker) then you can use:
+        faker: 'random.arrayElement(db.users).userId'
             // Static
         static: 'any static field'
             // Function
@@ -479,6 +443,7 @@ Initialize mocker with the config, and then generate any entity with promises st
 
 ```javascript
 mocker()
+    .addGenerator('faker', faker)
     .schema('user', user, 2)
     .schema('group', group, 2)
     .schema('conditionalField', conditionalField, 2)
@@ -506,6 +471,7 @@ var cat = {
     }
 }
 var m = mocker()
+    .addGenerator('faker', faker)
     .schema('cat', cat, 10)
     .schema('cat2', cat, { uniqueField: 'name' })
     .build(function(err, data) {
@@ -520,6 +486,7 @@ var cat = {
     name: ['txuri', 'pitxi', 'kitty']
 }
 var m = mocker()
+    .addGenerator('faker', faker)
     .schema('cat', cat, 10)
     .schema('cat2', cat, { uniqueField: 'name' })
     .build(function(err, data) {
@@ -568,7 +535,7 @@ I couldn't do this without this awesome libraries, so thanks to all:
 
 ## License
 
-Licensed under the MIT license. 2017
+Licensed under the MIT license. 2022
 
 [paypal-badge]: https://img.shields.io/badge/❤%20support-paypal-blue.svg?style=flat-square
 [paypal-link]: https://www.paypal.me/danibram
