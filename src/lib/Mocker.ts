@@ -23,7 +23,7 @@ export class Mocker {
         return this
     }
 
-    addGenerator(name: string, library: any, run: CustomGeneratorRun): Mocker {
+    addGenerator(name: string, library: any, run?: CustomGeneratorRun): Mocker {
         this.generators[name] = { library, run }
         return this
     }
