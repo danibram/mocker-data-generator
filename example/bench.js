@@ -1,7 +1,7 @@
 import * as fakerJS from 'faker'
-import { Generator } from './lib/Generator'
+var Generator = require('../build/main').Generator
 
-const gen = new Generator<any>()
+const gen = new Generator()
 
 let res
 console.time('faker new')

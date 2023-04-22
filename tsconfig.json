@@ -11,9 +11,9 @@
         "listFiles": false,
         "traceResolution": false,
         "pretty": true,
-        "lib": ["es6", "es5", "es2015"],
-        "types": ["node"],
-        "sourceMap": true
+        "lib": ["es6", "es5", "es2016"],
+        "sourceMap": true,
+        "allowJs": true
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules/**"],
