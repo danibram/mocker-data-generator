@@ -12,7 +12,7 @@
         "traceResolution": false,
         "pretty": true,
         "lib": ["es6", "es5", "es2016"],
-        "sourceMap": true,
+        "sourceMap": false,
         "allowJs": true
     },
     "include": ["src/**/*.ts"],
