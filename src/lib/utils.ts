@@ -1,26 +1,20 @@
-export const isArray = function (arg: any): boolean {
-    return Object.prototype.toString.call(arg) === '[object Array]'
-}
+export const isArray = (arg: any): boolean =>
+    Object.prototype.toString.call(arg) === '[object Array]'
 
-export const isObject = function (arg: any): boolean {
-    return Object.prototype.toString.call(arg) === '[object Object]'
-}
+export const isObject = (arg: any): boolean =>
+    Object.prototype.toString.call(arg) === '[object Object]'
 
-export const evalWithContextData = function (
+export const evalWithContextData = (
     key: string,
     object: {},
     db: {},
     generators: {}
-) {
+) => {
     // In this (way, we can pass object and use inside the eval string
     return eval(key)
 }
 
-export const fieldArrayCalcLength = function (
-    config,
-    fixedArrayLength,
-    schema
-) {
+export const fieldArrayCalcLength = (config, fixedArrayLength, schema) => {
     let length
     if (typeof config.length === 'function') {
         length = config.length.call(schema)
@@ -32,7 +26,7 @@ export const fieldArrayCalcLength = function (
     return length
 }
 
-export const iamLastChild = function (parent, k) {
+export const iamLastChild = (parent, k) => {
     if (isArray(parent[k])) {
         let last = false
 
@@ -41,7 +35,7 @@ export const iamLastChild = function (parent, k) {
         }
 
         for (let i = 0; i < parent[k].length; i++) {
-            let el = parent[k][i]
+            const el = parent[k][i]
             last = !isObject(el)
             if (last) {
                 break
@@ -53,13 +47,13 @@ export const iamLastChild = function (parent, k) {
     }
 }
 
-export const iamLastParent = function (obj) {
+export const iamLastParent = (obj) => {
     let last = false
     if (isObject(obj)) {
-        let ks = Object.keys(obj)
+        const ks = Object.keys(obj)
 
         for (let i = 0; i < ks.length; i++) {
-            let k = ks[i]
+            const k = ks[i]
             last = iamLastChild(obj, k)
             if (!last) {
                 break
@@ -71,15 +65,15 @@ export const iamLastParent = function (obj) {
     return last
 }
 
-export const isConditional = function (str) {
-    let arr = str.split(',')
+export const isConditional = (str) => {
+    const arr = str.split(',')
     return arr.length > 1
 }
 
-export const cleanVirtuals = function (paths, object, options) {
+export const cleanVirtuals = (paths, object, options) => {
     // clean specific paths
-    let objectCleaner = function* (path, obj, options) {
-        let lvls = path.split(options.symbol)
+    const objectCleaner = function* (path, obj, options) {
+        const lvls = path.split(options.symbol)
         let dest = obj
 
         if (!lvls || lvls.length === 0) {
@@ -90,7 +84,7 @@ export const cleanVirtuals = function (paths, object, options) {
         }
 
         for (let i = 0; i < lvls.length; i++) {
-            let field = lvls[i]
+            const field = lvls[i]
             if (i === lvls.length - 1 && dest[field]) {
                 if (Object.getOwnPropertyNames(dest[field]).length < 1) {
                     delete dest[field]
@@ -109,12 +103,12 @@ export const cleanVirtuals = function (paths, object, options) {
         }
     }
 
-    let forEachPath = function* (path, object, options) {
-        let lvls = path.split(options.symbol)
+    const forEachPath = function* (path, object, options) {
+        const lvls = path.split(options.symbol)
         let dest = object
 
         for (let i = 0; i < lvls.length; i++) {
-            let field = lvls[i]
+            const field = lvls[i]
             if (i === lvls.length - 1) {
                 // delete specific path
                 delete dest[field]
@@ -126,14 +120,14 @@ export const cleanVirtuals = function (paths, object, options) {
         }
     }
 
-    let forPaths = function* (paths, object, options) {
+    const forPaths = function* (paths, object, options) {
         for (let i = 0; i < paths.length; i++) {
-            let path = paths[i]
+            const path = paths[i]
             yield* Array.from(forEachPath(path, object, options))
         }
     }
 
-    for (let res of Array.from(forPaths(paths, object, options))) {
+    for (const res of Array.from(forPaths(paths, object, options))) {
     }
 
     return object
@@ -144,7 +138,7 @@ export const stringToPathOrCall = function (name, fn, cfg) {
 
     body = body.split('.')
 
-    let func = body.reduce((acc, val) => {
+    const func = body.reduce((acc, val) => {
         if (!acc[val]) {
             throw `This ${name} method doesnt exists '${cfg}'.`
         }
@@ -169,7 +163,7 @@ export const stringToPathOrCall = function (name, fn, cfg) {
                   .map((e) => (/^\d+$/.test(e) ? Number.parseInt(e) : e))
         : []
 
-    let result = func.call(this, ...args)
+    const result = func.call(this, ...args)
 
     if (!mods || mods === '') {
         return result
@@ -189,8 +183,8 @@ export const stringToPathOrCall = function (name, fn, cfg) {
     }, result)
 }
 
-export const loopInside = function (object: any, path: string) {
-    let p = path.split('.')
+export const loopInside = (object: any, path: string) => {
+    const p = path.split('.')
 
     return p.reduce((acc, val) => {
         if (acc[val] === null) {

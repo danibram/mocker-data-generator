@@ -1,5 +1,5 @@
-import { Generator } from './Generator'
-import { Generators } from './types'
+import { Generator } from './Generator.js'
+import type { Generators } from './types.js'
 import {
     evalWithContextData,
     fieldArrayCalcLength,
@@ -7,16 +7,16 @@ import {
     isArray,
     isConditional,
     isObject
-} from './utils'
+} from './utils.js'
 
-let iterate = function (obj, res, currentPath) {
+const iterate = function (obj, res, currentPath) {
     if (!currentPath) {
         currentPath = []
     }
-    Object.keys(obj).map((k) => {
-        let value = obj[k]
+    Object.keys(obj).forEach((k) => {
+        const value = obj[k]
 
-        let path = currentPath.slice(0)
+        const path = currentPath.slice(0)
         path.push(k)
 
         if (iamLastParent(value)) {
@@ -37,7 +37,7 @@ let iterate = function (obj, res, currentPath) {
             if (!isConditional(k)) {
                 key = k
             } else {
-                let keykey = k.split(',')
+                const keykey = k.split(',')
                 if (
                     evalWithContextData(
                         keykey[0],
@@ -82,7 +82,7 @@ export class Schema extends Generator<any> {
                 fieldConfig = { values: field }
             }
 
-            let na = Array()
+            let na = []
             if (fieldConfig.concat) {
                 na = evalWithContextData(
                     fieldConfig.concat,
@@ -97,15 +97,15 @@ export class Schema extends Generator<any> {
                     : na
             }
 
-            let length = fieldArrayCalcLength(
+            const length = fieldArrayCalcLength(
                 field.length > 1 ? fieldConfig.values : fieldConfig,
                 na.length,
                 this
             )
 
-            let array = Array.from(new Array(length)).reduce(
+            const array = Array.from(new Array(length)).reduce(
                 (acc, el, index) => {
-                    let self = acc.slice(0)
+                    const self = acc.slice(0)
                     acc.push(
                         this.generateField(
                             fieldName,
@@ -128,8 +128,8 @@ export class Schema extends Generator<any> {
 
     generateField(fieldName, cfg, ...args): {} {
         let result = {}
-        let customGenerators = Object.keys(this.generators)
-        let ownedByMocker = [
+        const customGenerators = Object.keys(this.generators)
+        const ownedByMocker = [
             'self',
             'db',
             'hasOne',
@@ -139,9 +139,9 @@ export class Schema extends Generator<any> {
             'values',
             'incrementalId'
         ]
-        let generators = [...ownedByMocker, ...customGenerators]
+        const generators = [...ownedByMocker, ...customGenerators]
 
-        let keys = Object.keys(cfg)
+        const keys = Object.keys(cfg)
 
         let key = keys.reduce((acc, val) => {
             if (generators.includes(val)) {
@@ -193,25 +193,25 @@ export class Schema extends Generator<any> {
         this.DB[this.name] = this.DB[this.name] ? this.DB[this.name] : []
 
         if (Number.isInteger(this.options as any)) {
-            Array.from(new Array(this.options)).map(() => {
+            Array.from(new Array(this.options)).forEach(() => {
                 this.buildSingle(this.schema)
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
         } else if (isObject(this.options) && this.options.max) {
-            let max = this.options.max
-            let min = this.options.min ? this.options.min : 0
+            const max = this.options.max
+            const min = this.options.min ? this.options.min : 0
 
-            let length = Math.floor(Math.random() * (max - min + 1) + min)
+            const length = Math.floor(Math.random() * (max - min + 1) + min)
 
-            Array.from(new Array(length)).map(() => {
+            Array.from(new Array(length)).forEach(() => {
                 this.buildSingle(this.schema)
                 this.DB[this.name].push(this.object)
                 this.object = {}
             })
         } else if (isObject(this.options) && this.options.uniqueField) {
-            let f = this.options.uniqueField
-            let entityConfig = this.schema
+            const f = this.options.uniqueField
+            const entityConfig = this.schema
             let possibleValues
             if (f === '.') {
                 possibleValues = this.schema.values
@@ -231,7 +231,7 @@ export class Schema extends Generator<any> {
                 throw `The posible values value is not an Array`
             }
 
-            possibleValues.map((value) => {
+            possibleValues.forEach((value) => {
                 if (f === '.') {
                     return
                 }

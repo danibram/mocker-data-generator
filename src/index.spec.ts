@@ -1,5 +1,5 @@
 import test from 'ava'
-import mocker, * as lib from './'
+import mocker, * as lib from './index.js'
 
 test('functions can be used without es imports', (t) => {
     t.true(typeof mocker === 'function')

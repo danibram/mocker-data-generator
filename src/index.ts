@@ -1,9 +1,8 @@
-import './array-includes'
+import { Mocker } from './lib/Mocker.js'
 
-import { Mocker } from './lib/Mocker'
-export * from './lib/Mocker'
-export * from './lib/Schema'
-export * from './lib/Generator'
+export * from './lib/Generator.js'
+export * from './lib/Mocker.js'
+export * from './lib/Schema.js'
 
 export const mocker = (opts?) => new Mocker(opts)
 export default mocker

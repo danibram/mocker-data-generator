@@ -1,10 +1,11 @@
-import test from 'ava'
-import { Chance } from 'chance'
 import { faker as fakerJS } from '@faker-js/faker'
-import * as randexp from 'randexp'
-import { Generator } from '..'
-import { isArray } from '../lib/utils'
-const casual = require('casual-browserify')
+import test from 'ava'
+import casual from 'casual-browserify'
+import { Chance } from 'chance'
+import randexp from 'randexp'
+import { Generator } from '../index.js'
+import { isArray } from '../lib/utils.js'
+
 const chance = new Chance()
 
 const gen = new Generator()
