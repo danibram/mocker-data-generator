@@ -1,6 +1,6 @@
-import { Schema } from './Schema'
-import { CustomGeneratorRun, Generators } from './types'
-import { cleanVirtuals } from './utils'
+import { Schema } from './Schema.js'
+import type { CustomGeneratorRun, Generators } from './types.js'
+import { cleanVirtuals } from './utils.js'
 
 export type PromiseCb = Promise<any> | void
 export type IDB = {
@@ -56,12 +56,12 @@ export class Mocker {
 
             // Clean virtuals
             if (schema.virtualPaths.length > 0) {
-                instances.forEach((x) =>
+                instances.forEach((x) => {
                     cleanVirtuals(schema.virtualPaths, x, {
                         strict: true,
                         symbol: ','
                     })
-                )
+                })
             }
 
             // Add to db

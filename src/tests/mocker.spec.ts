@@ -1,5 +1,5 @@
 import test from 'ava'
-import mocker, { Mocker } from '..'
+import mocker, { Mocker } from '../index.js'
 
 test('Should return an new instance of mocker', async (t) => {
     t.deepEqual(mocker(), new Mocker())

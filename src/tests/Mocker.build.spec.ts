@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Mocker } from '..'
+import { Mocker } from '../index.js'
 
 test('Should build with callback', async (t) => {
     let result = {

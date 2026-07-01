@@ -1,7 +1,7 @@
-import test from 'ava'
 import { faker as fakerJS } from '@faker-js/faker'
-import { Generator } from '..'
-import { isObject } from '../lib/utils'
+import test from 'ava'
+import { Generator } from '../index.js'
+import { isObject } from '../lib/utils.js'
 
 const gen = new Generator()
 gen.object = { generators: { custom: fakerJS } }

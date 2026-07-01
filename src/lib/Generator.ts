@@ -1,5 +1,5 @@
-import { CustomGeneratorRun } from './types'
-import { loopInside, stringToPathOrCall } from './utils'
+import type { CustomGeneratorRun } from './types.js'
+import { loopInside, stringToPathOrCall } from './utils.js'
 
 export class Generator<T> {
     name: string
@@ -17,14 +17,14 @@ export class Generator<T> {
     generators: {}
 
     self(cfg: { self: any; eval?: boolean }) {
-        let object = this.object
+        const object = this.object
         return cfg.eval
             ? eval('object.' + cfg.self)
             : loopInside(this.object, cfg.self)
     }
 
     db(cfg: { eval?: boolean; db: any }) {
-        let db = this.DB
+        const db = this.DB
         if (cfg.eval) {
             return eval('db.' + cfg.db)
         } else {
@@ -39,15 +39,17 @@ export class Generator<T> {
         adapter?: (generator: any, input: string | RegExp) => any
         eval?: boolean
     }) {
-        let db = this.DB
-        let object = this.object
+        const db = this.DB
+        const object = this.object
         let re
         let matches
         let strFn
-        let generator = cfg.generator
+        const generator = cfg.generator
 
         if (cfg.run) {
             return cfg.run(generator, cfg.input)
+        } else if (cfg.adapter) {
+            return cfg.adapter(generator, cfg.input)
         } else if (cfg.eval) {
             return eval('generator.' + cfg.input)
         } else {
@@ -61,22 +63,22 @@ export class Generator<T> {
     }
 
     eval(cfg: { eval: string }) {
-        let db = this.DB
-        let object = this.object
-        let generators = this.generators
+        const db = this.DB
+        const object = this.object
+        const generators = this.generators
 
         return eval(cfg.eval)
     }
 
     values(cfg: { values: any[] }) {
-        let i = Math.floor(cfg.values.length * Math.random())
+        const i = Math.floor(cfg.values.length * Math.random())
         return cfg.values[i]
     }
 
     function(cfg: { function: any }, ...args) {
-        let object = this.object
-        let db = this.DB
-        let generators = this.generators
+        const object = this.object
+        const db = this.DB
+        const generators = this.generators
 
         return cfg.function.call({ object, db, generators }, ...args)
     }
@@ -87,7 +89,7 @@ export class Generator<T> {
 
     incrementalId(cfg: { incrementalId: number | true | string }) {
         let n = 0
-        let db = this.DB
+        const db = this.DB
 
         if (db[this.name] && db[this.name].length) {
             n = db[this.name].length
@@ -104,7 +106,7 @@ export class Generator<T> {
         eval?: boolean
         uniqueDB?: any[]
     }) {
-        let db = this.DB
+        const db = this.DB
 
         let entity = null
 
@@ -132,7 +134,7 @@ export class Generator<T> {
                 throw `Can´t get unique data. Source "${cfg.hasOne}" has not enough data`
             }
         } else {
-            let i = Math.floor(db[cfg.hasOne].length * Math.random())
+            const i = Math.floor(db[cfg.hasOne].length * Math.random())
             entity = db[cfg.hasOne][i]
 
             entity = cfg.get
@@ -155,10 +157,10 @@ export class Generator<T> {
         unique?: boolean
     }) {
         let amount = 1
-        let db = this.DB
+        const db = this.DB
 
-        let min = cfg.min || cfg.min === 0 ? cfg.min : 1
-        let max = cfg.max ? cfg.max : cfg.hasMany ? db[cfg.hasMany].length : 1
+        const min = cfg.min || cfg.min === 0 ? cfg.min : 1
+        const max = cfg.max ? cfg.max : cfg.hasMany ? db[cfg.hasMany].length : 1
 
         if (cfg.amount) {
             amount = cfg.amount
@@ -166,7 +168,7 @@ export class Generator<T> {
             amount = Math.floor(Math.random() * (max - min + 1)) + min
         }
 
-        let newCfg = {
+        const newCfg = {
             hasOne: cfg.hasMany,
             get: cfg.get ? cfg.get : undefined,
             eval: cfg.eval ? true : false

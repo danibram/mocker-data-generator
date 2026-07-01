@@ -1,6 +1,6 @@
 import test from 'ava'
-import { Schema } from '..'
-import { isArray } from '../lib/utils'
+import { Schema } from '../index.js'
+import { isArray } from '../lib/utils.js'
 
 let schema = new Schema('test', {}, {})
 

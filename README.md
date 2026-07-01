@@ -19,17 +19,21 @@ You can test online here: [https://danibram.github.io/mocker-data-generator/](ht
 Install the module and the awesome generator you want:
 `npm install mocker-data-generator @faker-js/faker`
 
-Import it
+Import it. As of v4 the package is **ESM-only** (works in modern Node `>=20` and
+in the browser) with zero runtime dependencies — you bring your own generator:
 
 ```javascript
-var mocker = require('mocker-data-generator').default // (vanilla way)
-var { faker } = require('@faker-js/faker')
-
-
-// or
-
-import mocker from 'mocker-data-generator' // (ES6 or Typescript way)
+import mocker from 'mocker-data-generator'
 import { faker } from '@faker-js/faker'
+```
+
+In the browser you can also load the pre-bundled, minified ESM build straight
+from a CDN, with no bundler required:
+
+```html
+<script type="module">
+    import mocker from 'https://unpkg.com/mocker-data-generator'
+</script>
 ```
 
 Then use it:

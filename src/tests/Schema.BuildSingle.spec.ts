@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Schema } from '..'
+import { Schema } from '../index.js'
 
 let schema = new Schema('test', {}, {})
 

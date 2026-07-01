@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Generator } from '..'
+import { Generator } from '../index.js'
 
 const gen = new Generator()
 gen.generators = {}
