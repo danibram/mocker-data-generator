@@ -3,13 +3,19 @@
     "version": "4.0.0",
     "description": "A simplified way to generate mock data, builds using a simple schema and with the FakerJs",
     "type": "module",
-    "main": "./build/index.js",
+    "main": "./build/index.cjs",
     "module": "./build/index.js",
     "types": "./build/index.d.ts",
     "exports": {
         ".": {
-            "types": "./build/index.d.ts",
-            "default": "./build/index.js"
+            "import": {
+                "types": "./build/index.d.ts",
+                "default": "./build/index.js"
+            },
+            "require": {
+                "types": "./build/index.d.cts",
+                "default": "./build/index.cjs"
+            }
         },
         "./package.json": "./package.json"
     },
